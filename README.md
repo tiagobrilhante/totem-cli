@@ -1,6 +1,6 @@
-# pacha2-cli
+# totem-cli
 
-> Painel de Chamadas em Vue
+> Cliente para totem de informações em VUE.JS
 
 ## Build Setup
 
