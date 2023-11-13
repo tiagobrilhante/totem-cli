@@ -1,123 +1,60 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Usuarios from '../views/Usuarios.vue'
-import Paineis from '../views/Paineis'
-import TipoAtendimento from '../views/TiposAtendimentos'
-import PublicoAlvo from '../views/PublicosAlvos'
-import Guiches from '../views/Guiches'
-import Preferences from '../views/Preferences'
 import Home from '../views/Home.vue'
-import HomeChamador from '../views/HomeChamador.vue'
-import PainelChamada from '../views/PainelChamada.vue'
+import Index from '../views/Index.vue'
+import erro500 from '../views/errors/erro500.vue'
+import erroToken from '../views/errors/erroToken.vue'
 // import Reset from '../views/Reset.vue'
 import Login from '../views/Login.vue'
 import store from '@/store'
-import Oms from '../views/Oms'
-import Mensagens from '../views/Mensagens'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '',
+    path: '/home',
     name: 'home',
     component: Home,
     meta: {
-      admin: true
+      logado: true
     }
   },
   {
-    path: '*',
-    component: Home,
-    meta: {
-      admin: true
-    }
-  },
-  {
-    path: '/chamadas',
-    name: 'homeChamador',
-    component: HomeChamador,
-    meta: {
-      chamador: true
-    }
-  },
-  {
-    path: '/reset',
-    name: 'reset',
-    // component: Reset
-    component: () => import(/* webpackChunkName: "Reset" */ '../views/Reset.vue')
-  },
-  {
-    path: '/usuarios',
-    name: 'usuarios',
-    component: Usuarios,
-    meta: {
-      admin: true
-    }
-  },
-  {
-    path: '/oms',
-    name: 'oms',
-    component: Oms,
-    meta: {
-      admin: true
-    }
-  },
-  {
-    path: '/panels',
-    name: 'painéis',
-    component: Paineis,
-    meta: {
-      admin: true
-    }
-  },
-  {
-    path: '/mensagens',
-    name: 'mensagens',
-    component: Mensagens,
-    meta: {
-      chamador: true
-    }
-  },
-  {
-    path: '/painelchamada',
-    name: 'painel de chamada',
-    component: PainelChamada,
+    path: '',
+    name: 'index',
+    component: Index,
     meta: {
       publica: true
     }
   },
   {
-    path: '/tiposatendimento',
-    name: 'tipoatendimento',
-    component: TipoAtendimento,
+    path: '/erro500',
+    name: 'erro500',
+    component: erro500,
     meta: {
-      admin: true
+      logado: true
     }
   },
   {
-    path: '/publicoalvo',
-    name: 'publicoalvo',
-    component: PublicoAlvo,
+    path: '/erroToken',
+    name: 'erroToken',
+    component: erroToken,
     meta: {
-      admin: true
+      logado: true
     }
   },
   {
-    path: '/guiches',
-    name: 'Guichês',
-    component: Guiches,
-    meta: {
-      admin: true
-    }
+    path: '*',
+    component: Index
   },
   {
-    path: '/preferences',
-    name: 'Preferências',
-    component: Preferences,
+    path: '/reset',
+    name: 'reset',
     meta: {
-      chamador: true
-    }
+      logado: true
+    },
+    // component: Reset
+    component: () => import(/* webpackChunkName: "Reset" */ '../views/Reset.vue')
   },
   {
     path: '/login',
@@ -127,7 +64,6 @@ const routes = [
       publica: true
     }
   }
-
 ]
 const router = new VueRouter({
   routes,
@@ -135,13 +71,13 @@ const router = new VueRouter({
 })
 router.beforeEach((routeTo, routeFrom, next) => {
   if (!routeTo.meta.publica && !store.state.token) {
-    return next({path: '/login'})
-  }
-  if (routeTo.meta.admin && store.state.usuarioLogado.tipo === 'Chamador') {
-    return next({path: '/chamadas'})
-  } else if (routeTo.meta.chamador && store.state.usuarioLogado.tipo !== 'Chamador') {
     return next({path: '/'})
   }
+
+  if (routeTo.meta.logado && Object.values(store.state.usuarioLogado).length === 0) {
+    return next({path: '/'})
+  }
+
   next()
 })
 

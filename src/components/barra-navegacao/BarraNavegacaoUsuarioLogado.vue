@@ -5,6 +5,24 @@
       open-on-hover
       rounded="b-xl"
     >
+
+      <!--dados de usuário-->
+      <v-row>
+        <v-col>
+          <!--Dados do usuário-->
+          <v-card color="yellow lighten-4">
+            <v-card-title>Dados do usuário</v-card-title>
+            <v-card-text>
+              <v-row>
+                <v-col>
+                  <b>Email: </b>{{ usuarioLogado.email}}<br>
+                </v-col>
+              </v-row>
+            </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
+
       <template v-slot:activator="{ on, attrs }">
         <v-btn block
                color="secondary"
@@ -12,20 +30,27 @@
                v-bind="attrs"
                v-on="on"
         >
-          <i class="fa fa-user mr-5"></i> {{ usuarioLogado.posto_grad }} {{ usuarioLogado.nome_guerra }}
+          <i class="fa fa-user mr-5"></i> {{ usuarioLogado.apelido }}
         </v-btn>
       </template>
       <!--list-->
-      <v-list>
+      <v-list color="cyan lighten-4">
         <!--alterar senha-->
         <v-list-item @click.prevent="mudarSenhaAbrir">
-          <v-list-item-title>
+          <v-list-item-title><v-icon small class="mr-3">mdi-lock</v-icon>
             Alterar Senha
+          </v-list-item-title>
+        </v-list-item>
+        <!--Gerenciar Perfil-->
+        <v-list-item to="/perfil">
+          <v-icon small class="mr-3">mdi-clipboard-account</v-icon>
+          <v-list-item-title>
+            Gerenciar Perfil
           </v-list-item-title>
         </v-list-item>
         <!--Efetuar logout-->
         <v-list-item @click.prevent="efetuarLogout">
-          <v-list-item-title>
+          <v-list-item-title> <v-icon small class="mr-3">mdi-logout</v-icon>
             Sair do Sistema
           </v-list-item-title>
         </v-list-item>
@@ -42,7 +67,7 @@
             <v-alert border="left"
                      dense
                      type="warning">
-              Ao alterar a sua senha, você será desconectado do PaCha para realizar um novo login.
+              Ao alterar a sua senha, você será desconectado do RevRef para realizar um novo login.
             </v-alert>
             <v-divider></v-divider>
             <br>

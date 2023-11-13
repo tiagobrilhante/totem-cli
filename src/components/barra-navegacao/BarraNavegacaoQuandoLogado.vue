@@ -1,6 +1,6 @@
 <template>
 
-  <div class="ml-5">
+  <div>
     <!--Home-->
     <v-tooltip bottom color="primary">
       <template v-slot:activator="{ on, attrs }">
@@ -26,115 +26,109 @@
       rounded="b-xl"
       v-if="usuarioResetado"
     >
-      <template v-if="checaPermissaoAdmin" v-slot:activator="{ on, attrs }">
+      <template v-if="usuarioLogado.acesso.tipo ==='Admin'" v-slot:activator="{ on, attrs }">
         <v-btn
           color="white"
           plain
           v-bind="attrs"
           v-on="on"
-        ><i class="fa fa-cogs mr-5"></i>
+        >
+          <v-icon class="mr-5" small>fa fa-cogs</v-icon>
           Administração do Sistema
         </v-btn>
       </template>
       <!--list-->
       <v-list>
         <!--Gerenciar Oms-->
-        <v-list-item to="/oms">
-          <i class="fab fa-fort-awesome mr-5"></i>
+        <v-list-item to="/basicparam">
+          <v-icon class="mr-5" color="black">mdi-cogs</v-icon>
           <v-list-item-title>
-            Gerenciar Oms
+            Parametros Basicos Inciais
           </v-list-item-title>
         </v-list-item>
         <!--Gerenciar Usuários-->
         <v-list-item to="/usuarios">
-          <i class="fa fa-users mr-5"></i>
+          <v-icon class="mr-5" color="black">fa fa-users</v-icon>
           <v-list-item-title>
             Gerenciar Usuários
           </v-list-item-title>
         </v-list-item>
-        <!--gerenciar painéis-->
-        <v-list-item to="/panels">
-          <i class="fa fa-desktop mr-5"></i>
-          <v-list-item-title>
-            Gerenciar Painéis
-          </v-list-item-title>
-        </v-list-item>
-        <!--gerenciar Guiches-->
-        <v-list-item to="/guiches">
-          <v-icon class="mr-5" color="black">
-            mdi-desktop-classic
-          </v-icon>
-          <v-list-item-title>
-            Gerenciar Guichês
-          </v-list-item-title>
-        </v-list-item>
-        <!--gerenciar tipos de atendimento-->
-        <v-list-item to="/tiposatendimento">
-          <v-icon class="mr-5" color="black">
-            mdi-format-list-text
-          </v-icon>
-          <v-list-item-title>
-            Gerenciar tipos de atendimento
-          </v-list-item-title>
-        </v-list-item>
-        <!--gerenciar publico alvo-->
-        <v-list-item to="/publicoalvo">
-          <v-icon class="mr-5" color="black">
-            mdi-account-star-outline
-          </v-icon>
-          <v-list-item-title>
-            Gerenciar Público Alvo
-          </v-list-item-title>
-        </v-list-item>
       </v-list>
+
     </v-menu>
 
-    <!--Administração de chamadas-->
+    <!--Gerenciamento de Dados-->
     <v-menu
       offset-y
       open-on-hover
       rounded="b-xl"
       v-if="usuarioResetado"
     >
-      <template v-if="checaPermissaoChamador" v-slot:activator="{ on, attrs }">
-
-        <!--Administração de chamadas-->
+      <template v-slot:activator="{ on, attrs }">
         <v-btn
           color="white"
           plain
           v-bind="attrs"
           v-on="on"
-
         >
-          <v-icon class="mr-5">
-            mdi-speaker-wireless
-          </v-icon>
-          Administração de Chamadas
+          <v-icon class="mr-5" small>mdi-database</v-icon>
+          Gerenciamento de Dados
         </v-btn>
-
-        <!--mensagens-->
-        <v-btn
-          color="white"
-          plain
-          to="/mensagens"
-
-        >
-          <v-icon class="mr-5">
-            mdi-comment-text
-          </v-icon>
-          Mensagens
-        </v-btn>
-
       </template>
-      <!--list-->
       <v-list>
-        <!--gerenciar preferências-->
-        <v-list-item to="/preferences">
-          <v-icon class="mr-5" color="black">
-            mdi-settings-transfer-outline
-          </v-icon>
+        <!--Gerenciar Reformados-->
+        <v-list-item to="/reformados">
+          <v-icon class="mr-5" color="black">mdi-account-alert-outline</v-icon>
           <v-list-item-title>
-            Gerenciar Preferências
+            Gerenciar Reformados
+          </v-list-item-title>
+        </v-list-item>
+
+        <!--Gerenciar Padrinhos-->
+        <v-list-item to="/padrinhos">
+          <v-icon class="mr-5" color="black">mdi-account-supervisor-circle</v-icon>
+          <v-list-item-title>
+            Gerenciar Padrinhos
+          </v-list-item-title>
+        </v-list-item>
+
+        <!--gerenciar contato-->
+        <v-list-item to="/contatos">
+          <v-icon class="mr-5" color="black">mdi-contact-phone-outline</v-icon>
+          <v-list-item-title>
+            Gerenciar Contato
+          </v-list-item-title>
+        </v-list-item>
+
+        <!--Gerenciar data de inspeção-->
+        <v-list-item to="/datainspecao">
+          <v-icon class="mr-5" color="black">mdi-calendar-account-outline</v-icon>
+          <v-list-item-title>
+            Gerenciar data de inspeção
+          </v-list-item-title>
+        </v-list-item>
+
+        <!--Gerenciar inspeção-->
+        <v-list-item to="/inspecao">
+          <v-icon class="mr-5" color="black">mdi-hospital-box-outline</v-icon>
+          <v-list-item-title>
+            Gerenciar Inspeção
+          </v-list-item-title>
+        </v-list-item>
+
+        <!--Gerenciar corte de Pagamento-->
+        <v-list-item to="/">
+          <v-icon class="mr-5" color="black">mdi-cash-remove</v-icon>
+          <v-list-item-title>
+            Gerenciar corte de pagamento
+          </v-list-item-title>
+        </v-list-item>
+
+        <!--Gerenciar retorno para OM-->
+        <v-list-item to="/">
+          <v-icon class="mr-5" color="black">mdi-map-marker-radius-outline</v-icon>
+          <v-list-item-title>
+            Gerenciar Retorno para OM
           </v-list-item-title>
         </v-list-item>
       </v-list>
@@ -153,18 +147,8 @@ export default {
     ...mapGetters(['usuarioResetado', 'usuarioLogado'])
 
   },
-  data: () => ({
-    checaPermissaoAdmin: true,
-    checaPermissaoChamador: true
-  }),
+  data: () => ({}),
   mounted () {
-    if (this.usuarioLogado.tipo === 'Chamador') {
-      this.checaPermissaoAdmin = false
-      this.checaPermissaoChamador = true
-    } else {
-      this.checaPermissaoAdmin = true
-      this.checaPermissaoChamador = false
-    }
   }
 }
 </script>

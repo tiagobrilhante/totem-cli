@@ -77,7 +77,14 @@ module.exports = {
   devServer: {
     historyApiFallback: true,
     noInfo: true,
-    overlay: true
+    overlay: true,
+    proxy: {
+      '^/api': {
+        target: 'localhost:8000',
+        ws: true,
+        changeOrigin: true
+      }
+    }
   },
   performance: {
     hints: false
@@ -93,7 +100,8 @@ if (process.env.NODE_ENV === 'production') {
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: '"production"',
-        API_URL: '"http://pachaapi.12rm.eb.mil.br/api"' // aqui é pra colocar o endereço da API externa em produção
+        API_URL: '"http://totemapi3.cma.eb.mil.br/api"' // aqui é pra colocar o endereço da API externa em produção
+       //  API_URL: '"http://totemapi.12rm.eb.mil.br/api"' // aqui é pra colocar o endereço da API externa em produção
       }
     }),
     new webpack.optimize.UglifyJsPlugin({

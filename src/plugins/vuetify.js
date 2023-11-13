@@ -8,7 +8,6 @@ import pt from 'vuetify/src/locale/pt.ts'
 Vue.use(Vuetify)
 
 export default new Vuetify({
-  theme: { dark: false },
   lang: {
     locales: { pt },
     current: 'pt'

@@ -6,17 +6,19 @@ import vuetify from '@/plugins/vuetify'
 import Vuelidate from 'vuelidate'
 import http from './http'
 import VueMask from 'di-vue-mask'
-
+import moment from 'moment-timezone'
+import VueToastr from 'vue-toastr'
+import VueConfirmDialog from 'vue-confirm-dialog'
+import config from './http/config'
 import '@fortawesome/fontawesome-free/css/all.css'
 import '@fortawesome/fontawesome-free/js/all'
-
-import VueToastr from 'vue-toastr'
-
-import VueConfirmDialog from 'vue-confirm-dialog'
+import '@mdi/font/css/materialdesignicons.min.css'
+import 'roboto-fontface/css/roboto/roboto-fontface.css'
 
 Vue.use(VueConfirmDialog)
 Vue.component('vue-confirm-dialog', VueConfirmDialog.default)
 Vue.use(Vuelidate)
+Vue.prototype.moment = moment
 
 Vue.use(VueToastr, {
   defaultTimeout: 3000,
@@ -25,12 +27,11 @@ Vue.use(VueToastr, {
   clickClose: true
 })
 
-Vue.config.productionTip = false
-
 Vue.use(VueMask)
 
 Vue.config.productionTip = false
 Vue.prototype.$http = http
+Vue.prototype.$configSis = config
 new Vue({
   router,
   store,
