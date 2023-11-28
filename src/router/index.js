@@ -7,9 +7,7 @@ import erroToken from '../views/errors/erroToken.vue'
 // import Reset from '../views/Reset.vue'
 import Login from '../views/Login.vue'
 import store from '@/store'
-
 Vue.use(VueRouter)
-
 const routes = [
   {
     path: '/home',
@@ -80,5 +78,4 @@ router.beforeEach((routeTo, routeFrom, next) => {
 
   next()
 })
-
 export default router

@@ -14,10 +14,12 @@ import '@fortawesome/fontawesome-free/css/all.css'
 import '@fortawesome/fontawesome-free/js/all'
 import '@mdi/font/css/materialdesignicons.min.css'
 import 'roboto-fontface/css/roboto/roboto-fontface.css'
+import VueEditor from 'vue2-editor'
 
 Vue.use(VueConfirmDialog)
 Vue.component('vue-confirm-dialog', VueConfirmDialog.default)
 Vue.use(Vuelidate)
+
 Vue.prototype.moment = moment
 
 Vue.use(VueToastr, {
@@ -28,7 +30,7 @@ Vue.use(VueToastr, {
 })
 
 Vue.use(VueMask)
-
+Vue.use(VueEditor)
 Vue.config.productionTip = false
 Vue.prototype.$http = http
 Vue.prototype.$configSis = config

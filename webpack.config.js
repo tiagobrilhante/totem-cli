@@ -1,5 +1,5 @@
-var path = require('path')
-var webpack = require('webpack')
+let path = require('path')
+let webpack = require('webpack')
 
 module.exports = {
   entry: './src/main.js',
@@ -28,14 +28,7 @@ module.exports = {
             options: {
               implementation: require('sass'),
               indentedSyntax: true // optional
-            },
-            // Requires sass-loader@^8.0.0
-            options: {
-              implementation: require('sass'),
-              sassOptions: {
-                indentedSyntax: true // optional
-              },
-            },
+            }
           },
         ],
       },

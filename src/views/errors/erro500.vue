@@ -33,6 +33,8 @@
           <p>Muito provavelmente isso ocorreu por uma falha no servidor.</p>
           <p>Reporte o Bug para a equipe de desenvolvimento.</p>
 
+          <p>Erro: {{ mensagemErro }}</p>
+
         </v-alert>
 
       </v-col>
@@ -45,13 +47,13 @@ import {mapGetters} from 'vuex'
 import config from '../../http/config'
 
 export default {
-  name: 'home',
+  name: 'erro500',
   mixins: [logoutMixin],
   components: {},
   data: vm => ({
-    configSis: config
+    configSis: config,
+    mensagemErro: ''
   }),
-  mounted () {},
   methods: {
     retornaTotem () {
       this.$store.commit('DESLOGAR_USUARIO')
@@ -63,6 +65,9 @@ export default {
   },
   computed: {
     ...mapGetters(['usuarioLogado'])
+  },
+  mounted () {
+    this.mensagemErro = this.$route.params.error
   }
 }
 

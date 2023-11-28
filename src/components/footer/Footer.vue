@@ -9,9 +9,12 @@
     <v-row no-gutters>
       <v-col class="text-center">
         <span
-          class="caption">{{configSis.nomeSis}} <v-btn @click="dialogVersoes = true" class="pa-0 ma-0" link plain
-                                                       x-small>({{configSis.versaoSis}})</v-btn> - Todos os direitos reservados / {{ new Date().getFullYear() }} — <strong>Criado por: <v-btn
-          @click="dialogProgramador = true" class="pa-0 ma-0" link plain x-small>{{configSis.criador}}</v-btn></strong></span>
+          class="caption">{{ configSis.nomeSis }} <v-btn @click="dialogVersoes = true" class="pa-0 ma-0" link plain
+                                                         x-small>({{ configSis.versaoSis }})</v-btn> - Todos os direitos reservados / {{
+            new Date().getFullYear()
+          }} — <strong>Criado por: <v-btn
+            @click="dialogProgramador = true" class="pa-0 ma-0" link plain
+            x-small>{{ configSis.criador }}</v-btn></strong></span>
       </v-col>
     </v-row>
 
@@ -29,6 +32,17 @@
         <v-card-text>
 
           <ul>
+
+            <li class="mt-4">Versão 1.1 A r035 - 28/11/2023
+              <ul>
+                <li>Agora é possivel editar o texto de Legenda e Saiba Mias com um editor RTF.</li>
+                <li>Agora o dialog de consumo de informação começa com a letra maior</li>
+                <li>O alinhamento das imagens está posicionado no topo dos dialog de exibição</li>
+                <li>Correção de bugs</li>
+                <li>Melhoria da interface gráfica</li>
+              </ul>
+            </li>
+
             <li class="mt-4">Versão 1.0 A r022 - 01/11/2023
               <ul>
                 <li>É disponibilizado ao público em 01 de novembro de 2023.</li>
@@ -127,8 +141,8 @@ export default {
 </script>
 
 <style>
-  .thewhite {
-    color: white;
-  }
+.thewhite {
+  color: white;
+}
 
 </style>

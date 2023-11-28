@@ -252,10 +252,10 @@
         <v-card color="#7ca387" @contextmenu.prevent="disableRightClick" v-if="!objetoVazio(selectedAssunto)">
 
           <!--titulo e botão fechar-->
-          <v-card-title class="justify-center text-center" primary-title>
+          <v-card-title class="justify-center text-center">
             <v-row>
               <v-col cols="1"></v-col>
-              <v-col cols="10"><h1> {{ selectedAssunto.nome_assunto }} </h1></v-col>
+              <v-col cols="10"><h1>{{ selectedAssunto.nome_assunto }}</h1></v-col>
               <v-col cols="1">
                 <v-btn @click="dialogNavegaAssunto = false" color="grey lighten-1">X</v-btn>
               </v-col>
@@ -277,8 +277,8 @@
             </v-container>
 
             <!-- Área de exibição de imagem e conteúdo-->
-            <v-row class="mt-2" justify="center">
-              <v-col align-self="center" class="text-center">
+            <v-row class="mt-2">
+              <v-col align-self="start" class="text-center mt-12">
 
                 <v-img :height=totemConfigs.altura_detail :src="configSis.urlDownload + selectedImg.imagem"
                        :width=totemConfigs.largura_detail
@@ -299,25 +299,19 @@
                 <br>
 
                 <!-- Area do conteúdo-->
-                <v-alert class="text-justify" color="grey lighten-2" v-if="selectedImg.legenda !== ''">
+                <v-alert color="grey lighten-2" v-if="selectedImg.legenda !== ''">
 
                   <!-- texto da legenda -->
                   <v-row class="mb-1" v-if="!saibaMaisAreaVisibility">
                     <v-col :class=tamanhoTexto>
-
-                      <strong>
-                        {{ selectedImg.legenda }}
-                      </strong>
-
+                      <span v-html="selectedImg.legenda"> </span>
                     </v-col>
                   </v-row>
 
                   <!-- texto do saiba mais -->
                   <v-row v-if="saibaMaisAreaVisibility">
-                    <v-col class="text-justify">
-                          <span :class="tamanhoTexto">
-                            {{ selectedImg.saibamais }}
-                          </span>
+                    <v-col>
+                      <div :class="tamanhoTexto" v-html="selectedImg.saibamais"/>
                     </v-col>
                   </v-row>
 
@@ -357,10 +351,10 @@
       <!--Dialog para navegar pelo evento-->
       <v-dialog max-width="90%" v-model="dialogNavegaAno" scrollable>
         <v-card @contextmenu.prevent="disableRightClick" color="#7ca387">
-          <v-card-title class="justify-center" primary-title>
+          <v-card-title class="justify-center">
             <v-row>
               <v-col cols="1"></v-col>
-              <v-col cols="10" class="text-center"><h1> {{ selectedAnoEvento.ano }} </h1></v-col>
+              <v-col cols="10" class="text-center text-h1"><b>{{ selectedAnoEvento.ano }}</b></v-col>
               <v-col cols="1" class="text-right">
                 <v-btn @click="dialogNavegaAno = false" color="grey lighten-1">X</v-btn>
               </v-col>
@@ -380,9 +374,9 @@
               </v-col>
             </v-row>
 
-            <v-row class="mt-2" justify="center">
+            <v-row class="mt-2">
               <!-- espaço para a imagem-->
-              <v-col align-self="center" class="text-center"
+              <v-col align-self="start" class="text-center"
                      v-if="eventoVisivel.imagem !== 'null' && eventoVisivel.imagem !== null ">
 
                 <v-row class="mb-4">
@@ -430,11 +424,11 @@
                 <!--titulo e aumenta e di minui fonte-->
                 <v-row>
                   <v-col cols="10">
-                    <h2 class="font-preta"> {{ eventoVisivel.nome }} <span
+                    <h1 class="font-preta"> {{ eventoVisivel.nome }} <span
                       v-if="eventoVisivel.dia || eventoVisivel.mes">(</span> <span
                       v-if="eventoVisivel.dia"> {{ eventoVisivel.dia }} de </span> <span
                       v-if="eventoVisivel.mes">  {{ converteNumEmMes(eventoVisivel.mes) }} </span>
-                      <span v-if="eventoVisivel.dia || eventoVisivel.mes">)</span></h2>
+                      <span v-if="eventoVisivel.dia || eventoVisivel.mes">)</span></h1>
                   </v-col>
                   <v-col cols="2" class="text-right">
                     <v-btn @click="aumentaDimunuiFonte" color="#aeeb8a" small>{{ legendaBtnAumentaDiminui }}</v-btn>
@@ -446,16 +440,15 @@
                 <!--legenda, saiba mais e btn saiba mais-->
                 <v-row>
                   <v-col>
-                    <v-alert class="text-justify" color="grey lighten-2"
+                    <v-alert color="grey lighten-2"
                              v-if="eventoVisivel.legenda && eventoVisivel !== null">
 
                       <!-- texto da legenda -->
                       <v-row class="mb-1" v-if="!saibaMaisAreaVisibility">
                         <v-col :class=tamanhoTexto>
 
-                          <strong>
-                            {{ eventoVisivel.legenda }}
-                          </strong>
+                          <div v-html="eventoVisivel.legenda">
+                          </div>
 
                         </v-col>
                       </v-row>
@@ -463,9 +456,8 @@
                       <!-- texto do saiba mais -->
                       <v-row v-if="saibaMaisAreaVisibility">
                         <v-col class="text-justify">
-                          <span :class="tamanhoTexto">
-                            {{ eventoVisivel.saibamais }}
-                          </span>
+                          <div :class="tamanhoTexto" v-html="eventoVisivel.saibamais">
+                          </div>
                         </v-col>
                       </v-row>
 
@@ -532,8 +524,8 @@ export default {
       dialogNavegaAno: false,
       selectedAnoEvento: {},
       eventoVisivel: {},
-      tamanhoTexto: '',
-      legendaBtnAumentaDiminui: 'A++',
+      tamanhoTexto: 'text-h5',
+      legendaBtnAumentaDiminui: 'A--',
       saibamaisevent: '',
       saibaMaisAreaVisibility: false,
       saibaMaisTextButton: 'SAIBA MAIS...',
@@ -668,8 +660,8 @@ export default {
 
     abreAssunto (assuntoId) {
       this.dialogNavegaAssunto = true
-      this.tamanhoTexto = ''
-      this.legendaBtnAumentaDiminui = 'A++'
+      this.tamanhoTexto = 'text-h5'
+      this.legendaBtnAumentaDiminui = 'A--'
       this.saibamaisevent = ''
       this.saibaMaisAreaVisibility = false
       this.saibaMaisTextButton = 'SAIBA MAIS...'
@@ -682,7 +674,7 @@ export default {
     },
 
     objetoVazio (obj) {
-      for (var prop in obj) {
+      for (let prop in obj) {
         if (obj.hasOwnProperty(prop)) return false
       }
       return true
@@ -771,8 +763,8 @@ export default {
     },
 
     mostraEventoSelecionado (index) {
-      this.tamanhoTexto = ''
-      this.legendaBtnAumentaDiminui = 'A++'
+      this.tamanhoTexto = 'text-h5'
+      this.legendaBtnAumentaDiminui = 'A--'
       this.saibamaisevent = ''
       this.saibaMaisAreaVisibility = false
       this.saibaMaisTextButton = 'SAIBA MAIS...'
@@ -868,9 +860,7 @@ export default {
 }
 </script>
 <style>
-
 .font-preta {
   color: black !important;
 }
-
 </style>

@@ -32,7 +32,8 @@
 
             <!--btn admin config-->
             <v-col align-self="center" class="text-left" cols="3">
-              <v-btn @click="openSpaceConfig" class="pt-8 pb-8" v-if="!openFormConfig">Ajustar<br>Configurações</v-btn>
+              <v-btn rounded @click="openSpaceConfig" class="pt-8 pb-8" v-if="!openFormConfig">Ajustar<br>Configurações
+              </v-btn>
             </v-col>
 
             <!--Cabeçalho-->
@@ -42,7 +43,7 @@
 
             <!--btn admin user-->
             <v-col align-self="center" class="text-right" cols="3">
-              <v-btn @click="openDialogAdmUser" class="pt-8 pb-8">Administração<br>Usuários</v-btn>
+              <v-btn rounded @click="openDialogAdmUser" class="pt-8 pb-8">Administração<br>Usuários</v-btn>
             </v-col>
 
           </v-row>
@@ -297,7 +298,7 @@
           </v-form>
 
           <!--Configurações de conteúdo-->
-          <v-alert color="rgb(255,255,255,0.4)" v-if="!openFormConfig">
+          <v-alert color="rgb(255,255,255,0.4)" v-if="!openFormConfig" rounded="xl">
 
             <!--Cabeçalho, btn add evento SFC-->
             <v-row class="mb-3">
@@ -380,7 +381,7 @@
               <v-row v-if="myAssunto !== null && myAssunto !== undefined && myAssunto !== ''">
 
                 <!--Ajustes de imagens-->
-                <v-col align-self="center" cols="6"><span class="ml-0 textoBranco">Imagem</span>
+                <v-col align-self="top" cols="6"><span class="ml-0 textoBranco">Imagem</span>
 
                   <!--Alert de Imagem-->
                   <v-alert color="white" rounded="xl">
@@ -396,7 +397,7 @@
 
                       <!--Pagination-->
                       <v-col class="text-left">
-                        <v-btn :key="objImg.id" @click="recebeImagemSolicitada(objImg.ordem)" class="primary mr-1"
+                        <v-btn :key="objImg.id" @click="recebeImagemSolicitada(objImg.ordem)" class="primary mr-1 mb-2"
                                retain-focus-on-click rounded small v-for="objImg in arrayImages" v-if="qtdImg !== 0">
                           {{ objImg.ordem }}
                         </v-btn>
@@ -442,44 +443,30 @@
                 <!--exibição de Legendas e saiba mais-->
                 <v-col cols="6">
                   <span class="ml-0 textoBranco" v-if="qtdImg !== 0">Título e Legenda da Imagem</span>
-                  <v-alert align="center" class="mb-0 pb-0" color="white" dense rounded="xl" v-if="qtdImg !== 0">
-                    <h3>{{ imagemAtual.nome }} <span v-if="imagemAtual.banner"> ( Banner )</span></h3>
-                    <h4>Ordem de Exibição: {{ imagemAtual.ordem }}</h4>
+                  <v-alert class="mb-0 pb-0" color="white" dense rounded="xl" v-if="qtdImg !== 0">
+                    <v-row class="text-center">
+                      <v-col>
+                        <h3>{{ imagemAtual.nome }} <span v-if="imagemAtual.banner"> ( Banner )</span></h3>
+                        <h4>Ordem de Exibição: {{ imagemAtual.ordem }}</h4>
+                      </v-col>
+                    </v-row>
 
                     <!--Legenda e saiba mais-->
                     <v-row>
                       <v-col>
                         <!--legenda -->
-                        <v-textarea
-                          auto-grow
-                          class="mb-0 pb-0 mt-3"
-                          label="Legenda da Imagem"
-                          no-resize
-                          readonly
-                          rounded
-                          rows="5"
-                          v-if="imagemAtual.legenda"
-                          v-model="imagemAtual.legenda"
-                        ></v-textarea>
-                        <span v-else> Sem Legenda</span>
+                        <v-alert class="rounded-xl">
+                          <p><b>Legenda:</b></p>
+                          <div v-html="imagemAtual.legenda" v-if="imagemAtual.legenda"></div>
+                          <span v-else> Sem Legenda</span>
+                        </v-alert>
 
                         <!--saiba mais-->
-                        <v-textarea
-                          auto-grow
-                          class="mb-10 pb-0"
-                          label="Saiba Mais"
-                          no-resize
-                          readonly
-                          rounded
-                          rows="5"
-                          v-if="imagemAtual.saibamais"
-                          v-model="imagemAtual.saibamais"
-                        ></v-textarea>
-                        <v-row v-else class="mb-10">
-                          <v-col>
-                            <span> Sem Saiba Mais</span>
-                          </v-col>
-                        </v-row>
+                        <v-alert class="rounded-xl">
+                          <p><b>Saiba Mais:</b></p>
+                          <div v-html="imagemAtual.saibamais" v-if="imagemAtual.saibamais"></div>
+                          <span v-else> Sem Saiba Mais</span>
+                        </v-alert>
 
                       </v-col>
                     </v-row>
@@ -593,22 +580,18 @@
 
                     <!--legenda-->
                     <v-col>
-                      <v-textarea
-                        auto-grow
-                        class="mb-0 pb-0 mt-3"
-                        hint="Se deixado em branco, a não será mostrado nenhum texto como legenda."
-                        label="Legenda do Evento"
-                        no-resize
-                        persistent-hint
-                        rounded
-                        rows="5"
-                        solo
-                        v-model="legendaNewEvento"
-                      ></v-textarea>
 
-                      <v-alert color="warning">
+                      <v-alert class="rounded-xl">
+                        <span>Legenda do evento</span>
+                        <vue-editor v-model="legendaNewEvento"></vue-editor>
+                        <span
+                          class="caption">Se deixado em branco, a não será mostrado nenhum texto como legenda.</span>
+                      </v-alert>
+
+                      <v-alert color="warning" class="rounded-xl">
                         <p>Você pode cadastrar imagens adicionais para um evento, no entanto, é necessário que o evento
-                          seja criado primeiro, em seguida acesse a opção de editar evento para realizar a adição de outras imagens. (na tabela de eventos cadastrados)</p>
+                          seja criado primeiro, em seguida acesse a opção de editar evento para realizar a adição de
+                          outras imagens. (na tabela de eventos cadastrados)</p>
                         <p>A imagem principal, é aquela que aparecerá no card de abertura do evento.</p>
 
                       </v-alert>
@@ -657,18 +640,14 @@
                   <!--saiba mais-->
                   <v-row>
                     <v-col>
-                      <v-textarea
-                        auto-grow
-                        class="mb-0 pb-0 mt-3"
-                        hint="Se deixado em branco, a não será mostrado nenhum texto como saiba mais."
-                        label="Saiba Mais"
-                        no-resize
-                        persistent-hint
-                        rounded
-                        rows="5"
-                        solo
-                        v-model="saibaMaisNewEvento"
-                      ></v-textarea>
+
+                      <v-alert class="rounded-xl">
+                        <span>Saiba Mais</span>
+                        <vue-editor v-model="saibaMaisNewEvento"></vue-editor>
+                        <span
+                          class="caption">Se deixado em branco, a não será mostrado nenhum texto como Saiba Mais.</span>
+                      </v-alert>
+
                     </v-col>
                   </v-row>
 
@@ -734,9 +713,8 @@
                   <!--Template de datas -->
                   <template v-slot:item.ano="{ item }">
 
-                    <span v-if="item.dia"> {{ item.dia }} / </span> <span v-if="item.mes">  {{ item.mes }} / </span>
-
-                    <span v-if="item.ano">  {{ item.ano }} </span>
+                    <span v-if="item.dia"> {{ item.dia }}/</span><span v-if="item.mes">{{ item.mes }}/</span><span
+                    v-if="item.ano">{{ item.ano }}</span>
 
                   </template>
 
@@ -745,11 +723,14 @@
 
                     <span class="text-no-wrap warning" v-if="item.legenda === '' || item.legenda === null"> ---- SEM LEGENDA ----</span>
                     <span
-                      v-else class="text-justify">{{ item.legenda }}</span>
+                      v-else class="text-justify" v-html="item.legenda"></span>
+
+                    <hr>
+                    SAIBA MAIS:
 
                     <span class="text-no-wrap warning" v-if="item.saibamais === '' || item.saibamais === null"><br> ---- SEM SAIBA MAIS ----</span>
                     <span
-                      v-else class="text-justify"><br>{{ item.saibamais }}</span>
+                      v-else class="text-justify" v-html="item.saibamais"><br></span>
 
                   </template>
 
@@ -769,7 +750,7 @@
                       <template v-slot:activator="{ on, attrs }">
                         <v-icon
                           @click="editEvento(item)"
-                          class="mr-2"
+                          class=""
                           small
                           v-bind="attrs"
                           v-on="on"
@@ -779,13 +760,12 @@
                       </template>
                       <span>Editar Evento</span>
                     </v-tooltip>
-
                     <!--Excluir-->
                     <v-tooltip top>
                       <template v-slot:activator="{ on, attrs }">
                         <v-icon
                           @click="deleteEvento(item)"
-                          class="mr-2"
+                          class=""
                           small
                           v-bind="attrs"
                           v-on="on"
@@ -1480,18 +1460,14 @@
 
                 <!--Legenda-->
                 <v-col>
-                  <v-textarea
-                    auto-grow
-                    class="mb-0 pb-0 mt-3"
-                    hint="Se deixado em branco, a imagem não mostrará nenhum texto como legenda."
-                    label="Legenda da Imagem"
-                    no-resize
-                    persistent-hint
-                    rounded
-                    rows="5"
-                    solo
-                    v-model="legendaNewImg"
-                  ></v-textarea>
+
+                  <v-alert class="rounded-xl">
+                    <span>Legenda</span>
+                    <vue-editor v-model="legendaNewImg"></vue-editor>
+                    <span
+                      class="caption">Se deixado em branco, a não será mostrado nenhum texto como legenda.</span>
+                  </v-alert>
+
                 </v-col>
 
                 <!--preview-->
@@ -1508,18 +1484,14 @@
               <!--saibamais-->
               <v-row>
                 <v-col>
-                  <v-textarea
-                    auto-grow
-                    class="mb-0 pb-0 mt-3"
-                    hint="Se deixado em branco, a imagem não mostrará nenhum saiba mais."
-                    label="Saiba Mais"
-                    no-resize
-                    persistent-hint
-                    rounded
-                    rows="5"
-                    solo
-                    v-model="saibaMaisNewImg"
-                  ></v-textarea>
+
+                  <v-alert class="rounded-xl">
+                    <span>Saiba Mais</span>
+                    <vue-editor v-model="saibaMaisNewImg"></vue-editor>
+                    <span
+                      class="caption">Se deixado em branco, a não será mostrado nenhum texto como Saiba Mais.</span>
+                  </v-alert>
+
                 </v-col>
               </v-row>
 
@@ -1696,40 +1668,16 @@
               <!--legenda e preview-->
               <v-row>
 
-                <!--Legenda e saiba mais-->
+                <!--Legenda -->
                 <v-col>
 
                   <!--legenda-->
-                  <span class="ml-3">Legenda</span>
-                  <v-textarea
-                    auto-grow
-                    class="mb-0 pb-0"
-                    hint="Se deixado em branco, a imagem não mostrará nenhum texto como legenda."
-                    label="Legenda da Imagem"
-                    no-resize
-                    persistent-hint
-                    rounded
-                    rows="5"
-                    solo
-                    v-model="legendaEditImg"
-                  ></v-textarea>
-
-                  <br>
-
-                  <!-- saiba mais-->
-                  <span class="ml-3">Saiba Mais</span>
-                  <v-textarea
-                    auto-grow
-                    class="mb-0 pb-0"
-                    hint="Se deixado em branco, a imagem não mostrará nenhum Saiba Mais."
-                    label="Saiba Mais"
-                    no-resize
-                    persistent-hint
-                    rounded
-                    rows="5"
-                    solo
-                    v-model="saibaMaisEditImg"
-                  ></v-textarea>
+                  <v-alert class="rounded-xl">
+                    <span>Legenda</span>
+                    <vue-editor v-model="legendaEditImg"></vue-editor>
+                    <span
+                      class="caption">Se deixado em branco, a não será mostrado nenhum texto como legenda.</span>
+                  </v-alert>
 
                 </v-col>
 
@@ -1781,6 +1729,18 @@
 
                 </v-col>
 
+              </v-row>
+
+              <!-- saiba mais-->
+              <v-row>
+                <v-col>
+                  <v-alert class="rounded-xl">
+                    <span>Saiba Mais</span>
+                    <vue-editor v-model="saibaMaisEditImg"></vue-editor>
+                    <span
+                      class="caption">Se deixado em branco, a não será mostrado nenhum texto como Saiba Mais.</span>
+                  </v-alert>
+                </v-col>
               </v-row>
 
               <!--Botões-->
@@ -1977,18 +1937,13 @@
 
               <!--legenda-->
               <v-col cols="6">
-                <v-textarea
-                  auto-grow
-                  class="mb-0 pb-0 mt-3"
-                  hint="Se deixado em branco, a não será mostrado nenhum texto como legenda."
-                  label="Legenda do Evento"
-                  no-resize
-                  persistent-hint
-                  rounded
-                  rows="5"
-                  solo
-                  v-model="selectedEvento.legenda"
-                ></v-textarea>
+
+                <v-alert class="rounded-xl">
+                  <span>Legenda do evento</span>
+                  <vue-editor v-model="selectedEvento.legenda"></vue-editor>
+                  <span
+                    class="caption">Se deixado em branco, a não será mostrado nenhum texto como legenda.</span>
+                </v-alert>
               </v-col>
 
               <!--imagem-->
@@ -2020,7 +1975,7 @@
                     <!--preview-->
                     <v-alert elevation="10" rounded="xl">
                       <h3>Preview:</h3>
-                      <img :src="previewImageEvento" class="v-responsive my-3 rounded-xl"/>
+                      <img alt="img Preview" :src="previewImageEvento" class="v-responsive my-3 rounded-xl"/>
                     </v-alert>
                   </v-col>
 
@@ -2118,18 +2073,14 @@
             <!-- saiba mais-->
             <v-row>
               <v-col>
-                <v-textarea
-                  auto-grow
-                  class="mb-0 pb-0 mt-3"
-                  hint="Se deixado em branco, a não será mostrado nenhum saiba mais."
-                  label="Saiba Mais"
-                  no-resize
-                  persistent-hint
-                  rounded
-                  rows="5"
-                  solo
-                  v-model="selectedEvento.saibamais"
-                ></v-textarea>
+
+                <v-alert class="rounded-xl">
+                  <span>Saiba Mais</span>
+                  <vue-editor v-model="selectedEvento.saibamais"></vue-editor>
+                  <span
+                    class="caption">Se deixado em branco, a não será mostrado nenhum texto como Saiba Mais.</span>
+                </v-alert>
+
               </v-col>
             </v-row>
 
@@ -2958,6 +2909,7 @@ export default {
 
       this.isImgEditBanner = this.imagemAtual.banner
       this.legendaEditImg = this.imagemAtual.legenda
+      this.saibaMaisEditImg = this.imagemAtual.saibamais
       this.myAssuntoEdit = this.imagemAtual.assunto_id
     },
 
@@ -3514,23 +3466,5 @@ export default {
 
 .textoBranco {
   color: white;
-}
-
-.reduz_tamanho {
-  width: 200px;
-  margin: auto;
-}
-
-.reduz_tamanho_muito {
-  width: 100px;
-  margin: auto;
-}
-
-.ajustaDiv {
-  overflow: hidden;
-}
-
-.ajustaLocal {
-  width: 100%;
 }
 </style>

@@ -12,13 +12,13 @@
         </v-tabs>
       </template>
 
-      <v-toolbar-title>{{configSis.nomeSis}} <v-chip small class="ml-4"> {{configSis.labelSis}} </v-chip></v-toolbar-title>
+      <v-toolbar-title>{{ configSis.nomeSis }}
+        <v-chip small class="ml-4"> {{ configSis.labelSis }}</v-chip>
+      </v-toolbar-title>
 
       <v-spacer></v-spacer>
 
-
       <BarraNavegacaoQuandoDeslogado v-if="!usuarioEstaLogado"/>
-
 
       <BarraNavegacaoUsuarioLogado v-if="usuarioEstaLogado"/>
 
