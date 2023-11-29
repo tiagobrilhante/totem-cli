@@ -263,82 +263,85 @@
 
           </v-card-title>
           <v-card-text>
-            <hr>
 
-            <!--navegar pelas imagens internas-->
-            <v-container fluid>
-              <v-row>
-                <v-col>
-                  <v-btn :key="imgs.id" @click="changeSelectedImg(imgs.ordem)" class="mr-5" retain-focus-on-click
-                         v-for="imgs in selectedAssunto.imagens">{{ imgs.ordem }}
-                  </v-btn>
-                </v-col>
-              </v-row>
-            </v-container>
+            <div ref="dialogContent">
+              <hr>
 
-            <!-- Área de exibição de imagem e conteúdo-->
-            <v-row class="mt-2">
-              <v-col align-self="start" class="text-center mt-12">
-
-                <v-img :height=totemConfigs.altura_detail :src="configSis.urlDownload + selectedImg.imagem"
-                       :width=totemConfigs.largura_detail
-                       class="rounded-xl ml-auto mr-auto"/>
-              </v-col>
-              <v-col v-if="selectedImg.nome !=='' || selectedImg.legenda !== '' ">
-
-                <!-- Título da imagem e aumenta e diminui fonte-->
+              <!--navegar pelas imagens internas-->
+              <v-container fluid>
                 <v-row>
-                  <v-col cols="10">
-                    <h2 class="font-preta">{{ selectedImg.nome }}</h2>
-                  </v-col>
-                  <v-col cols="2" class="text-right">
-                    <v-btn @click="aumentaDimunuiFonte" color="#aeeb8a" small>{{ legendaBtnAumentaDiminui }}</v-btn>
+                  <v-col>
+                    <v-btn :key="imgs.id" @click="changeSelectedImg(imgs.ordem)" class="mr-5" retain-focus-on-click
+                           v-for="imgs in selectedAssunto.imagens">{{ imgs.ordem }}
+                    </v-btn>
                   </v-col>
                 </v-row>
+              </v-container>
 
-                <br>
+              <!-- Área de exibição de imagem e conteúdo-->
+              <v-row class="mt-2">
+                <v-col align-self="start" class="text-center mt-12">
 
-                <!-- Area do conteúdo-->
-                <v-alert color="grey lighten-2" v-if="selectedImg.legenda !== ''">
+                  <v-img :height=totemConfigs.altura_detail :src="configSis.urlDownload + selectedImg.imagem"
+                         :width=totemConfigs.largura_detail
+                         class="rounded-xl ml-auto mr-auto"/>
+                </v-col>
+                <v-col v-if="selectedImg.nome !=='' || selectedImg.legenda !== '' ">
 
-                  <!-- texto da legenda -->
-                  <v-row class="mb-1" v-if="!saibaMaisAreaVisibility">
-                    <v-col :class=tamanhoTexto>
-                      <span v-html="selectedImg.legenda"> </span>
+                  <!-- Título da imagem e aumenta e diminui fonte-->
+                  <v-row>
+                    <v-col cols="10">
+                      <h2 class="font-preta">{{ selectedImg.nome }}</h2>
+                    </v-col>
+                    <v-col cols="2" class="text-right">
+                      <v-btn @click="aumentaDimunuiFonte" color="#aeeb8a" small>{{ legendaBtnAumentaDiminui }}</v-btn>
                     </v-col>
                   </v-row>
 
-                  <!-- texto do saiba mais -->
-                  <v-row v-if="saibaMaisAreaVisibility">
-                    <v-col>
-                      <div :class="tamanhoTexto" v-html="selectedImg.saibamais"/>
-                    </v-col>
-                  </v-row>
+                  <br>
 
-                  <!-- botao saiba mais-->
-                  <hr v-if="selectedImg.saibamais">
-                  <v-row class="mt-1" v-if="selectedImg.saibamais">
-                    <v-col class="text-right">
-                      <v-btn @click="abreSaibaMais">{{ saibaMaisTextButton }}</v-btn>
-                    </v-col>
-                  </v-row>
+                  <!-- Area do conteúdo-->
+                  <v-alert color="grey lighten-2" v-if="selectedImg.legenda !== ''">
 
-                </v-alert>
-              </v-col>
-            </v-row>
+                    <!-- texto da legenda -->
+                    <v-row class="mb-1" v-if="!saibaMaisAreaVisibility">
+                      <v-col :class=tamanhoTexto>
+                        <span v-html="selectedImg.legenda"> </span>
+                      </v-col>
+                    </v-row>
 
-            <br><br>
+                    <!-- texto do saiba mais -->
+                    <v-row v-if="saibaMaisAreaVisibility">
+                      <v-col>
+                        <div :class="tamanhoTexto" v-html="selectedImg.saibamais"/>
+                      </v-col>
+                    </v-row>
 
-            <!--navegar pelas imagens internas-->
-            <v-container fluid>
-              <v-row>
-                <v-col>
-                  <v-btn :key="imgs.id" @click="changeSelectedImg(imgs.ordem)" class="mr-5" retain-focus-on-click
-                         v-for="imgs in selectedAssunto.imagens">{{ imgs.ordem }}
-                  </v-btn>
+                    <!-- botao saiba mais-->
+                    <hr v-if="selectedImg.saibamais">
+                    <v-row class="mt-1" v-if="selectedImg.saibamais">
+                      <v-col class="text-right">
+                        <v-btn @click="abreSaibaMais">{{ saibaMaisTextButton }}</v-btn>
+                      </v-col>
+                    </v-row>
+
+                  </v-alert>
                 </v-col>
               </v-row>
-            </v-container>
+
+              <br><br>
+
+              <!--navegar pelas imagens internas-->
+              <v-container fluid>
+                <v-row>
+                  <v-col>
+                    <v-btn :key="imgs.id" @click="changeSelectedImg(imgs.ordem)" class="mr-5" retain-focus-on-click
+                           v-for="imgs in selectedAssunto.imagens">{{ imgs.ordem }}
+                    </v-btn>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </div>
 
           </v-card-text>
           <v-card-actions class="pb-5">
@@ -535,6 +538,7 @@ export default {
       soTemUmaImagem: true
     }
   },
+  watch: {},
 
   computed: {},
 
@@ -665,6 +669,8 @@ export default {
       this.saibamaisevent = ''
       this.saibaMaisAreaVisibility = false
       this.saibaMaisTextButton = 'SAIBA MAIS...'
+      this.selectedAssunto = {}
+      this.selectedImg = {}
       for (let i = 0; i < this.assuntos.data.length; i++) {
         if (this.assuntos.data[i].id === assuntoId) {
           this.selectedAssunto = this.assuntos.data[i]
