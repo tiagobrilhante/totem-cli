@@ -15,6 +15,7 @@ import '@fortawesome/fontawesome-free/js/all'
 import '@mdi/font/css/materialdesignicons.min.css'
 import 'roboto-fontface/css/roboto/roboto-fontface.css'
 import VueEditor from 'vue2-editor'
+import './registerServiceWorker'
 
 Vue.use(VueConfirmDialog)
 Vue.component('vue-confirm-dialog', VueConfirmDialog.default)

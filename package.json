@@ -1,17 +1,17 @@
 {
   "name": "ebtotem",
   "version": "1.1.0",
+  "private": true,
   "description": "Sistema de Totens",
   "author": "tiagobrilhante <codebrilhante>",
-  "private": true,
   "scripts": {
-    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
-    "start": "npm run dev",
-    "unit": "jest --config test/unit/jest.conf.js --coverage",
-    "e2e": "node test/e2e/runner.js",
-    "test": "npm run unit && npm run e2e",
+    "build": "node build/build.js",
     "lint": "eslint --ext .js,.vue src test/unit test/e2e/specs",
-    "build": "node build/build.js"
+    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "e2e": "node test/e2e/runner.js",
+    "start": "npm run dev",
+    "test": "npm run unit && npm run e2e",
+    "unit": "jest --config test/unit/jest.conf.js --coverage"
   },
   "dependencies": {
     "@deveodk/vue-toastr": "^1.1.0",
@@ -29,6 +29,7 @@
     "moment-timezone": "^0.5.33",
     "quill-image-drop-module": "^1.0.3",
     "quill-image-resize-module": "^3.0.0",
+    "register-service-worker": "^1.7.2",
     "roboto-fontface": "^0.10.0",
     "sass": "^1.42.1",
     "tone": "^14.7.77",
@@ -48,6 +49,7 @@
   },
   "devDependencies": {
     "@mdi/font": "^7.2.96",
+    "@vue/cli-plugin-pwa": "~5.0.0",
     "autoprefixer": "^7.1.2",
     "babel-core": "^6.22.1",
     "babel-eslint": "^8.2.1",
@@ -106,13 +108,13 @@
     "webpack-dev-server": "^2.9.1",
     "webpack-merge": "^4.1.0"
   },
-  "engines": {
-    "node": ">= 6.0.0",
-    "npm": ">= 3.0.0"
-  },
   "browserslist": [
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "engines": {
+    "node": ">= 6.0.0",
+    "npm": ">= 3.0.0"
+  }
 }

@@ -2,7 +2,7 @@
 
   <v-main>
 
-    <!--app bar-->
+    <!--app bar / NOME DO TOTEM-->
     <v-app-bar
       @contextmenu.prevent="disableRightClick"
       app
@@ -354,6 +354,8 @@
       <!--Dialog para navegar pelo evento-->
       <v-dialog max-width="90%" v-model="dialogNavegaAno" scrollable>
         <v-card @contextmenu.prevent="disableRightClick" color="#7ca387">
+
+          <!--Card Title (ANO)-->
           <v-card-title class="justify-center">
             <v-row>
               <v-col cols="1"></v-col>
@@ -363,9 +365,12 @@
               </v-col>
             </v-row>
           </v-card-title>
+
+          <!--Card Text-->
           <v-card-text>
             <hr>
 
+            <!-- Navegação por ano-->
             <v-row class="mt-1"
                    v-if="Object.keys(selectedAnoEvento).length !== 0 && selectedAnoEvento.eventos.length > 1">
               <v-col>
@@ -382,9 +387,9 @@
               <v-col align-self="start" class="text-center"
                      v-if="eventoVisivel.imagem !== 'null' && eventoVisivel.imagem !== null ">
 
-                <v-row class="mb-4">
+                <v-row>
                   <v-col class="text-left">
-                    <v-btn class="mx-2" v-if="!soTemUmaImagem"
+                    <v-btn v-if="!soTemUmaImagem"
                            @click="mostraImagemAdicional(eventoVisivel,'default')">1
                     </v-btn>
                     <v-btn class="mx-2" :key="imgaddadd.id"
@@ -426,14 +431,18 @@
 
                 <!--titulo e aumenta e di minui fonte-->
                 <v-row>
-                  <v-col cols="10">
-                    <h1 class="font-preta"> {{ eventoVisivel.nome }} <span
+                  <v-col cols="10" class="text-justify text-h3">
+                    <b><span class="font-preta"> {{ eventoVisivel.nome }} <span
                       v-if="eventoVisivel.dia || eventoVisivel.mes">(</span> <span
                       v-if="eventoVisivel.dia"> {{ eventoVisivel.dia }} de </span> <span
                       v-if="eventoVisivel.mes">  {{ converteNumEmMes(eventoVisivel.mes) }} </span>
-                      <span v-if="eventoVisivel.dia || eventoVisivel.mes">)</span></h1>
+                      <span v-if="eventoVisivel.dia || eventoVisivel.mes">)</span></span></b>
                   </v-col>
-                  <v-col cols="2" class="text-right">
+
+                </v-row>
+
+                <v-row>
+                  <v-col class="text-right">
                     <v-btn @click="aumentaDimunuiFonte" color="#aeeb8a" small>{{ legendaBtnAumentaDiminui }}</v-btn>
                   </v-col>
                 </v-row>
@@ -448,9 +457,9 @@
 
                       <!-- texto da legenda -->
                       <v-row class="mb-1" v-if="!saibaMaisAreaVisibility">
-                        <v-col :class=tamanhoTexto>
+                        <v-col :class=tamanhoTexto class="text-justify">
 
-                          <div v-html="eventoVisivel.legenda">
+                          <div v-scroll.self v-html="eventoVisivel.legenda">
                           </div>
 
                         </v-col>
@@ -480,6 +489,8 @@
             </v-row>
 
           </v-card-text>
+
+          <!-- Actions-->
           <v-card-actions class="pb-5">
             <v-spacer></v-spacer>
             <v-btn @click="dialogNavegaAno = false" color="grey lighten-1">Voltar</v-btn>

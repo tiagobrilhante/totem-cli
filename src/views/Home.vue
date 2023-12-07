@@ -32,8 +32,10 @@
 
             <!--btn admin config-->
             <v-col align-self="center" class="text-left" cols="3">
-              <v-btn rounded @click="openSpaceConfig" class="pt-8 pb-8" v-if="!openFormConfig">Ajustar<br>Configurações
+
+              <v-btn rounded @click="openDialogAdmConfig" class="pt-8 pb-8">Ajustar<br>Configurações
               </v-btn>
+
             </v-col>
 
             <!--Cabeçalho-->
@@ -68,237 +70,8 @@
         <!--configurações do Totem e Configurações de conteúdo-->
         <v-col>
 
-          <!--Configurações do Totem-->
-          <v-form @submit.prevent="doUpdateTotemConfig" v-if="openFormConfig">
-            <v-alert color="rgb(255,255,255,0.4)">
-              <h3>Configurações do TOTEM</h3>
-              <v-divider></v-divider>
-
-              <!--nome do totem, cod acesso , larguras e alturas de imagem-->
-              <v-row class="mt-1">
-
-                <!--nome do totem e cod acesso-->
-                <v-col>
-
-                  <!--nome totem-->
-                  <v-row no-gutters>
-                    <v-col>
-                      <span class="ml-0 textoBranco">Nome do Totem</span>
-                      <v-text-field
-                        dense
-                        label="Nome do Totem"
-                        rounded
-                        solo
-                        v-model="totemConfigs.nome_totem"
-                      ></v-text-field>
-                    </v-col>
-                  </v-row>
-
-                  <!--cod acesso-->
-                  <v-row no-gutters>
-                    <v-col>
-                      <span class="ml-0 textoBranco">Código de Acesso a Área Administrativa</span>
-                      <v-text-field
-                        dense
-                        label="Código do Totem"
-                        rounded
-                        solo
-                        v-model="totemConfigs.access_code"
-                      ></v-text-field>
-                    </v-col>
-                  </v-row>
-
-                </v-col>
-
-                <!--medidas das imagens-->
-                <v-col>
-
-                  <!--Altura e Largura Imagem INDEX-->
-                  <v-row no-gutters>
-
-                    <!--Altura Imagem Index-->
-                    <v-col>
-                      <span class="ml-0 textoBranco">Altura Imagem (Index)</span>
-                      <v-text-field
-                        class="mr-3"
-                        dense
-                        label="Altura Imagem"
-                        rounded
-                        solo
-                        type="number"
-                        v-model="totemConfigs.altura_index"
-                      ></v-text-field>
-                    </v-col>
-
-                    <!--Largura Imagem Index-->
-                    <v-col>
-                      <span class="ml-3 textoBranco">Largura Imagem (Index)</span>
-                      <v-text-field
-                        class="ml-3"
-                        dense
-                        label="Largura Imagem"
-                        rounded
-                        solo
-                        type="number"
-                        v-model="totemConfigs.largura_index"
-                      ></v-text-field>
-                    </v-col>
-
-                  </v-row>
-
-                  <!--Altura e Largura Imagem DETALHE-->
-                  <v-row no-gutters>
-
-                    <!--Altura Imagem DETALHE-->
-                    <v-col>
-                      <span class="ml-0 textoBranco">Altura Imagem (Detalhe)</span>
-                      <v-text-field
-                        class="mr-3"
-                        dense
-                        label="Altura Imagem"
-                        rounded
-                        solo
-                        type="number"
-                        v-model="totemConfigs.altura_detail"
-                      ></v-text-field>
-                    </v-col>
-
-                    <!--Largura imagem DETALHE-->
-                    <v-col>
-                      <span class="ml-3 textoBranco">Largura Imagem (Detalhe)</span>
-                      <v-text-field
-                        class="ml-3"
-                        dense
-                        label="Largura Imagem"
-                        rounded
-                        solo
-                        type="number"
-                        v-model="totemConfigs.largura_detail"
-                      ></v-text-field>
-                    </v-col>
-
-                  </v-row>
-
-                </v-col>
-
-              </v-row>
-
-              <!--tipo de totem / ajustar e cancelar / imagem de fundo-->
-              <v-row>
-                <!--tipo de totem / cor de fundo / ajustar e cancelar-->
-                <v-col cols="6">
-
-                  <!--tipo totem-->
-                  <v-row>
-                    <v-col>
-                      <span class="ml-0 textoBranco">Tipo de Totem</span>
-                      <v-alert class="mt-0 mb-0" color="white" dense>
-                        <v-radio-group class="mt-0 mb-0"
-                                       hide-details
-                                       mandatory
-                                       row
-                                       v-model="totemConfigs.tipo_totem"
-                        >
-                          <v-radio
-                            label="Conteúdo Normal"
-                            value="normal"
-                          ></v-radio>
-                          <v-radio
-                            label="Datas Históricas"
-                            value="data"
-                          ></v-radio>
-                        </v-radio-group>
-                      </v-alert>
-                    </v-col>
-                  </v-row>
-
-                  <!--cor de fundo-->
-                  <v-row>
-                    <v-col align-self="center" class="text-center">
-                      <span class="textoBranco">Cor de Fundo</span>
-                      <v-color-picker
-                        class="ml-auto mr-auto"
-                        dot-size="20"
-                        hide-mode-switch
-                        mode="hexa"
-                        v-model="totemConfigs.bg_color"
-                        width="400"
-                      ></v-color-picker>
-                    </v-col>
-                  </v-row>
-
-                  <!--ajustar ou cancelar-->
-                  <v-row class="mt-16">
-                    <v-col cols="6">
-                      <v-btn @click="cancelConfigTotem" block color="warning">Cancelar</v-btn>
-                    </v-col>
-                    <v-col cols="6">
-                      <v-btn block type="submit">Ajustar Parâmetros do Totem</v-btn>
-                    </v-col>
-                  </v-row>
-
-                </v-col>
-
-                <!--imagem de fundo-->
-                <v-col cols="6" align-self="stretch" class="text-right">
-                  <span class="ml-0 textoBranco">Imagem de fundo</span>
-                  <v-img :src="this.$configSis.urlDownload + this.totemConfigs.bg_img"
-                         class="rounded-xl ml-auto" aspect-ratio="1.5"
-                         v-if="this.totemConfigs.bg_img !== null"/>
-
-                  <v-img :src="require('../assets/img/noimage.png')"
-                         v-else class="rounded-xl" aspect-ratio="1.5"/>
-
-                  <!--editar e excluir BG-->
-                  <v-row v-if="this.totemConfigs.bg_img !== null">
-                    <v-col class="text-right">
-                      <!--editar-->
-                      <v-tooltip top>
-                        <template v-slot:activator="{ on, attrs }">
-                          <v-btn @click="editBG()" class="ajusteBtn warning">
-                            <v-icon
-                              small
-                              v-bind="attrs"
-                              v-on="on"
-                            >
-                              mdi-pen
-                            </v-icon>
-                          </v-btn>
-                        </template>
-                        <span>Editar Background</span>
-                      </v-tooltip>
-
-                      <!--excluir-->
-                      <v-tooltip top>
-                        <template v-slot:activator="{ on, attrs }">
-                          <v-btn @click="excluiBG()" class="ajusteBtn error mr-10">
-                            <v-icon
-                              small
-                              v-bind="attrs"
-                              v-on="on"
-                            >
-                              mdi-delete
-                            </v-icon>
-                          </v-btn>
-                        </template>
-                        <span>Excluir Background</span>
-                      </v-tooltip>
-                    </v-col>
-                  </v-row>
-
-                  <!--TEM QUE FAZER-->
-                  <v-row class="mt-5" v-else>
-                    <v-col>
-                      <v-btn @click="addNewBG" block rounded>Adicionar Imagem de Background</v-btn>
-                    </v-col>
-                  </v-row>
-                </v-col>
-              </v-row>
-            </v-alert>
-          </v-form>
-
           <!--Configurações de conteúdo-->
-          <v-alert color="rgb(255,255,255,0.4)" v-if="!openFormConfig" rounded="xl">
+          <v-alert color="rgb(255,255,255,0.4)" rounded="xl">
 
             <!--Cabeçalho, btn add evento SFC-->
             <v-row class="mb-3">
@@ -795,306 +568,15 @@
 
     </v-container>
 
-    <!--Dialog para adm usuario-->
-    <v-dialog max-width="70%" v-model="dialogUser">
-      <v-card>
-        <v-card-title class="justify-center" primary-title> Administração de Usuários</v-card-title>
+    <!--Dialog para Conteúdos-->
+    <v-dialog max-width="70%" v-model="dialogGeneric70">
 
-        <v-card-text>
+      <AdmUser v-if="selectedTypeOfContent ==='AdmUser'" @ajustarVisibilidade="dialogGeneric70 = $event"
+               @adjustSelectedTypeOfContent="selectedTypeOfContent = $event"/>
 
-          <v-container class="pt-5" fluid>
+      <AdmConfig v-if="selectedTypeOfContent ==='AdmConfig'" @ajustarVisibilidade="dialogGeneric70 = $event"
+                 @adjustSelectedTypeOfContent="selectedTypeOfContent = $event" @ajustaTipoContent="getConfigs"/>
 
-            <!--Banner-->
-            <v-alert
-              class="p-5"
-              elevation="21"
-            >
-              <v-row>
-                <v-col cols="9">
-                  <h2>
-                    <v-icon
-                      class="mr-4"
-                      size="36">
-                      fa fa-user
-                    </v-icon>
-                    Gerenciamento de Usuários
-                  </h2>
-
-                </v-col>
-                <v-col class="text-right" cols="3">
-                  <v-btn @click="openDialogAddUser" class="primary">Adicionar Novo</v-btn>
-                </v-col>
-              </v-row>
-
-            </v-alert>
-
-            <!--DataTable-->
-            <v-data-table
-              :headers="headers"
-              :items="usuarios"
-              :search="search"
-              class="elevation-21 mt-4"
-              sort-by="nome"
-            >
-              <template v-slot:top>
-                <v-toolbar
-                  flat
-                >
-                  <v-toolbar-title>Tabela de Usuários Cadastrados</v-toolbar-title>
-
-                  <v-divider
-                    class="mx-4"
-                    inset
-                    vertical
-                  ></v-divider>
-
-                  <v-spacer></v-spacer>
-
-                  <!--Pesquisar-->
-                  <v-text-field
-                    append-icon="mdi-magnify"
-                    hide-details
-                    label="Pesquisar"
-                    placeholder="Pesquisar"
-                    single-line
-                    v-model="search"
-                  ></v-text-field>
-
-                  <!--Dialog para deletar usuário-->
-                  <v-dialog max-width="800px" v-model="dialogDelete">
-                    <v-card>
-                      <v-card-title class="justify-center" primary-title>
-                        <v-icon
-                          class="mr-4">
-                          fa fa-exclamation-triangle
-                        </v-icon>
-                        Você tem certeza que quer deletar o usuário {{ editedUser.email }}?
-                        <v-icon
-                          class="ml-4">
-                          fa fa-exclamation-triangle
-                        </v-icon>
-
-                      </v-card-title>
-                      <v-card-text>
-                        <div class="text-center">Essa ação é irreversível. Tenha certeza do que está fazendo.</div>
-                      </v-card-text>
-                      <v-card-actions class="pb-5">
-                        <v-spacer></v-spacer>
-                        <v-btn @click="closeDelete" color="grey lighten-1">Cancelar</v-btn>
-                        <span class="pl-5 pr-5"></span>
-                        <v-btn @click="deleteUserConfirm" color="red lighten-1">Excluir</v-btn>
-                        <v-spacer></v-spacer>
-                      </v-card-actions>
-                    </v-card>
-                  </v-dialog>
-
-                  <!--Dialog para editar usuário-->
-                  <v-dialog max-width="800px" v-model="dialogEditUser">
-                    <v-card>
-                      <v-form @submit.prevent="editUserConfirm">
-                        <v-card-title class="justify-center" primary-title>
-                          Editar usuário
-                        </v-card-title>
-                        <v-card-text>
-
-                          <!--nome completo-->
-                          <v-row no-gutters>
-                            <v-col>
-                              <span class="pl-3">Nome Completo</span>
-                              <v-text-field
-                                class="ml-3"
-                                dense
-                                label="Nome Completo"
-                                rounded
-                                solo
-                                v-model="nomeEditUser"
-                              ></v-text-field>
-                            </v-col>
-                          </v-row>
-
-                          <!--email-->
-                          <v-row no-gutters>
-                            <v-col>
-                              <span class="pl-3">Email</span>
-                              <v-text-field
-                                class="ml-3"
-                                dense
-                                label="Email"
-                                rounded
-                                solo
-                                type="email"
-                                v-model="emailEditUser"
-                              ></v-text-field>
-                            </v-col>
-                          </v-row>
-
-                          <!--alterar a senha-->
-                          <v-row no-gutters>
-                            <v-col>
-                              <v-checkbox
-                                class="pl-3"
-                                label="Alterar a Senha"
-                                v-model="editarSenha"
-                              ></v-checkbox>
-                            </v-col>
-                          </v-row>
-
-                          <!--senha-->
-                          <v-row no-gutters v-if="editarSenha">
-
-                            <v-col><span class="pl-3">Nova Senha</span>
-                              <v-text-field
-                                class="ml-3"
-                                dense
-                                label="Senha"
-                                rounded
-                                solo
-                                type="password"
-                                v-model="passwordEditUser"
-                              ></v-text-field>
-                            </v-col>
-                          </v-row>
-
-                        </v-card-text>
-                        <v-card-actions class="pb-5">
-                          <v-spacer></v-spacer>
-                          <v-btn @click="dialogEditUser = false" color="warning lighten-1">Cancelar</v-btn>
-                          <span class="pl-5 pr-5"></span>
-                          <v-btn color="success" type="submit">Editar</v-btn>
-                          <v-spacer></v-spacer>
-                        </v-card-actions>
-
-                      </v-form>
-                    </v-card>
-
-                  </v-dialog>
-
-                </v-toolbar>
-
-              </template>
-
-              <!--Template de botões para editar, excluir -->
-              <template v-slot:item.actions="{ item }">
-
-                <!--editar-->
-                <v-tooltip top>
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-icon
-                      @click="editUser(item)"
-                      class="mr-2"
-                      small
-                      v-bind="attrs"
-                      v-on="on"
-                    >
-                      mdi-pen
-                    </v-icon>
-                  </template>
-                  <span>Editar Usuário</span>
-                </v-tooltip>
-
-                <!--Excluir-->
-                <v-tooltip top>
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-icon
-                      @click="deleteUser(item)"
-                      class="mr-2"
-                      small
-                      v-bind="attrs"
-                      v-on="on"
-                    >
-                      mdi-delete
-                    </v-icon>
-                  </template>
-                  <span>Excluir Usuário</span>
-                </v-tooltip>
-
-              </template>
-
-            </v-data-table>
-
-          </v-container>
-
-          <!--Dialog para add usuário-->
-          <v-dialog max-width="800px" v-model="dialogAddUser">
-            <v-card>
-              <v-form @submit.prevent="efetuarCadastroUsuario">
-                <v-card-title class="justify-center" primary-title>
-                  Adicionar novo usuário
-                </v-card-title>
-                <v-card-text>
-
-                  <!--nome completo-->
-                  <v-row no-gutters>
-                    <v-col>
-                      <span class="pl-3">Nome Completo</span>
-                      <v-text-field
-                        class="ml-3"
-                        dense
-                        label="Nome Completo"
-                        rounded
-                        solo
-                        v-model="nomeNewUser"
-                      ></v-text-field>
-                    </v-col>
-                  </v-row>
-
-                  <!--email-->
-                  <v-row no-gutters>
-                    <v-col>
-                      <span class="pl-3">Email</span>
-                      <v-text-field
-                        class="ml-3"
-                        dense
-                        label="Email"
-                        rounded
-                        solo
-                        type="email"
-                        v-model="emailNewUser"
-                      ></v-text-field>
-                    </v-col>
-                  </v-row>
-
-                  <!--senha-->
-                  <v-row no-gutters>
-
-                    <v-col><span class="pl-3">Senha</span>
-                      <v-text-field
-                        class="ml-3"
-                        dense
-                        label="Senha"
-                        rounded
-                        solo
-                        type="password"
-                        v-model="passwordNewUser"
-                      ></v-text-field>
-                    </v-col>
-                  </v-row>
-
-                </v-card-text>
-                <v-card-actions class="pb-5">
-                  <v-spacer></v-spacer>
-                  <v-btn @click="dialogAddUser = false" color="warning lighten-1">Cancelar</v-btn>
-                  <span class="pl-5 pr-5"></span>
-                  <v-btn color="success" type="submit">Cadastrar</v-btn>
-                  <v-spacer></v-spacer>
-                </v-card-actions>
-
-              </v-form>
-            </v-card>
-
-          </v-dialog>
-
-        </v-card-text>
-        <v-card-actions class="pb-5 mr-5">
-          <v-spacer></v-spacer>
-          <v-btn
-            @click="dialogUser=false"
-            color="error"
-            elevation="2">Fechar
-          </v-btn>
-        </v-card-actions>
-
-      </v-card>
     </v-dialog>
 
     <!--Dialog para administrar assunto-->
@@ -2173,53 +1655,6 @@
       </v-card>
     </v-dialog>
 
-    <!--Dialog para alterar o bg-->
-    <v-dialog max-width="800px" v-model="dialogUpdateBG">
-      <v-card>
-        <v-card-title class="justify-center" primary-title>
-          Alteração de Imagem de Fundo (Background)
-        </v-card-title>
-        <v-card-text>
-          <div class="text-center">
-            <v-row>
-              <!--preview-->
-              <v-col>
-
-                <span class="ml-3">Imagem * (Campo Obrigatório)</span>
-                <v-file-input @change="selectEditBG"
-                              accept="image/*"
-                              dense
-                              hint="Escolha uma nova imagem no formato .png ou .jpg (a anterior será excluída)"
-                              label="Escolha uma imagem"
-                              persistent-hint
-                              placeholder="Insira uma imagem"
-                              rounded
-                              show-size
-                              solo
-                              v-model="inputEditBG"
-
-                ></v-file-input>
-
-                <!--preview Img-->
-                <v-alert elevation="10" rounded="xl" v-if="previewEditBG">
-                  <h3>Preview:</h3>
-                  <img :src="previewEditBG" alt="" class="v-responsive my-3 rounded-xl"/>
-                </v-alert>
-
-              </v-col>
-            </v-row>
-          </div>
-        </v-card-text>
-        <v-card-actions class="pb-5">
-          <v-spacer></v-spacer>
-          <v-btn @click="dialogUpdateBG= false" color="grey lighten-1">Cancelar</v-btn>
-          <span class="pl-5 pr-5"></span>
-          <v-btn @click="updateBgConfirm" color="primary lighten-1">Alterar</v-btn>
-          <v-spacer></v-spacer>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-
     <!--Dialog para add imagem adicional de evento-->
     <v-dialog max-width="80%" v-model="dialogAddImagemAdicionalEvento">
 
@@ -2389,48 +1824,19 @@
 <script>import {logoutMixin} from '@/mixins'
 import {mapGetters} from 'vuex'
 import config from '../http/config'
+import AdmUser from '../components/areaAdministrativa/AdmUser'
+import AdmConfig from '../components/areaAdministrativa/AdmConfig'
 
 export default {
   name: 'home',
   mixins: [logoutMixin],
-  components: {},
+  components: {AdmUser, AdmConfig},
   data: vm => ({
     configSis: config,
-    dialogUser: false,
+    dialogGeneric70: false,
     assuntoSelect: [],
     editedIndex: -1,
-    editedUser: {},
-    dialogDelete: false,
-    dialogAddUser: false,
-    nomeNewUser: '',
-    emailNewUser: '',
-    passwordNewUser: '',
-    nomeEditUser: '',
-    emailEditUser: '',
-    passwordEditUser: '',
-    dialogEditUser: false,
-    editarSenha: false,
-    usuarios: [],
-    search: '',
     searchAssuntos: '',
-    headers: [
-      {
-        text: 'Nome',
-        align: 'start',
-        value: 'nome'
-      },
-      {
-        text: 'Email',
-        align: 'start',
-        value: 'email'
-      },
-      {
-        text: 'Actions',
-        value: 'actions',
-        align: 'center',
-        sortable: false
-      }
-    ],
     headersAssuntos: [
       {
         text: 'Ordem Exibição',
@@ -2455,7 +1861,8 @@ export default {
       largura_index: '',
       altura_detail: '',
       largura_detail: '',
-      access_code: ''
+      access_code: '',
+      tipo_totem: ''
     },
     dialogAdmAssunto: false,
     dialogDeleteAssunto: false,
@@ -2496,7 +1903,6 @@ export default {
     inputEditImagem: undefined,
     showHideEditInputImage: false,
     textoBtnAlteraCancela: 'Alterar a Imagem Atual',
-    openFormConfig: false,
     diaNewEvento: '',
     mesNewEvento: '',
     anoNewEvento: '',
@@ -2564,7 +1970,8 @@ export default {
     objetoEventoNewImgAdicional: [],
     dialogAddImagemAdicionalEvento: false,
     dialogDeleteImagemAdicionalEvento: false,
-    imagemAdicionalParaDeletar: {}
+    imagemAdicionalParaDeletar: {},
+    selectedTypeOfContent: ''
   }),
   computed: {
     formTitle () {
@@ -2632,65 +2039,13 @@ export default {
     },
 
     openDialogAdmUser () {
-      this.dialogUser = true
-
-      try {
-        this.$http.get('users')
-          .then(response => {
-            this.usuarios = response.data
-          })
-          .catch(erro => console.log(erro))
-      } catch (e) {
-        console.log(e)
-      }
+      this.dialogGeneric70 = true
+      this.selectedTypeOfContent = 'AdmUser'
     },
 
-    efetuarCadastroUsuario () {
-      if (this.nomeNewUser === '' || this.emailNewUser === '' || this.passwordNewUser === '') {
-        this.$toastr.e(
-          'Não foi possível realizar o cadastro! Todos os capos devem ser preenchidos.', 'Erro!'
-        )
-      } else {
-        let objetoParaEnvio = {}
-        objetoParaEnvio['nome'] = this.nomeNewUser
-        objetoParaEnvio['email'] = this.emailNewUser
-        objetoParaEnvio['password'] = this.passwordNewUser
-
-        try {
-          this.$http.post('users', objetoParaEnvio)
-            .then(response => {
-              this.usuarios.push(response.data)
-              this.dialogAddUser = false
-            })
-            .catch(erro => console.log(erro))
-        } catch (e) {
-          console.log(e)
-        }
-      }
-    },
-
-    openDialogAddUser () {
-      this.dialogAddUser = true
-      this.nomeNewUser = ''
-      this.emailNewUser = ''
-      this.passwordNewUser = ''
-    },
-
-    deleteUser (item) {
-      this.editedIndex = this.usuarios.indexOf(item)
-      this.editedUser = Object.assign({}, item)
-      this.nomeEditUser = this.editedUser.nome
-      this.dialogDelete = true
-    },
-
-    editUser (item) {
-      this.editedIndex = this.usuarios.indexOf(item)
-      this.editedUser = Object.assign({}, item)
-      this.nomeEditUser = this.editedUser.nome
-      this.emailEditUser = this.editedUser.email
-      this.passwordEditUser = ''
-      this.editarSenha = false
-      this.dialogEditUser = true
+    openDialogAdmConfig () {
+      this.dialogGeneric70 = true
+      this.selectedTypeOfContent = 'AdmConfig'
     },
 
     editAssunto (item) {
@@ -2701,103 +2056,12 @@ export default {
       this.dialogEditAssunto = true
     },
 
-    deleteUserConfirm () {
-      this.$http.delete('users/' + this.editedUser.id)
-        // eslint-disable-next-line no-return-assign
-        .then(() => {
-          this.usuarios.splice(this.editedIndex, 1)
-          this.closeDelete()
-          this.$toastr.s(
-            'Usuário removido com sucesso', 'Sucesso!'
-          )
-        }, err => {
-          console.log(err)
-          this.$toastr.e(
-            'Não foi possível remover o Usuário', 'Erro!'
-          )
-        })
-    },
-
-    sendEditToApi (objetoParaEnvio) {
-      this.$http.put('users/' + this.editedUser.id, objetoParaEnvio)
-        .then(response => {
-          Object.assign(this.usuarios[this.editedIndex], response.data)
-          this.$toastr.s(
-            'Usuário alterado com sucesso', 'Sucesso!'
-          )
-          this.dialogEditUser = false
-        }, err => {
-          console.log(err)
-          this.$toastr.e(
-            'Não foi possível alterar o usuário.', 'Erro!'
-          )
-        })
-    },
-
-    editUserConfirm () {
-      let objetoParaEnvio = {}
-      if (this.editarSenha) {
-        if (this.nomeEditUser === '' || this.emailEditUser === '' || this.passwordEditUser === '') {
-          this.$toastr.e(
-            'Não foi possível realizar a alteração do Usuário! Todos os capos devem ser preenchidos.', 'Erro!'
-          )
-        } else {
-          objetoParaEnvio['nome'] = this.nomeEditUser
-          objetoParaEnvio['email'] = this.emailEditUser
-          objetoParaEnvio['password'] = this.passwordEditUser
-          objetoParaEnvio['editSenha'] = this.editarSenha
-          this.sendEditToApi(objetoParaEnvio)
-        }
-      } else {
-        if (this.nomeEditUser === '' || this.emailEditUser === '') {
-          this.$toastr.e(
-            'Não foi possível realizar a alteração do Usuário! Todos os capos devem ser preenchidos.', 'Erro!'
-          )
-        } else {
-          objetoParaEnvio['nome'] = this.nomeEditUser
-          objetoParaEnvio['email'] = this.emailEditUser
-          objetoParaEnvio['editSenha'] = this.editarSenha
-          this.sendEditToApi(objetoParaEnvio)
-        }
-      }
-    },
-
-    closeDelete () {
-      this.dialogDelete = false
-      this.$nextTick(() => {
-        this.editedUser = {}
-        this.editedIndex = -1
-      })
-    },
-
     closeDeleteAssunto () {
       this.dialogDeleteAssunto = false
       this.$nextTick(() => {
         this.editedAssunto = {}
         this.editedAssuntoIndex = -1
       })
-    },
-
-    doUpdateTotemConfig () {
-      if (this.totemConfigs.nome_totem === '' || this.totemConfigs.access_code === '' || this.totemConfigs.largura_detail === '' || this.totemConfigs.altura_detail === '' || this.totemConfigs.altura_index === '' || this.totemConfigs.largura_index === '') {
-        this.$toastr.e(
-          'Revise todos os campos! Não podem existir camos Vazios.', 'Erro!'
-        )
-      } else {
-        try {
-          this.$http.post('totemconfig', this.totemConfigs)
-            .then(() => {
-              this.getConfigs()
-              this.openFormConfig = false
-              this.$toastr.s(
-                'Alterações efetuadas.', 'Sucesso!'
-              )
-            })
-            .catch(erro => console.log(erro))
-        } catch (e) {
-          console.log(e)
-        }
-      }
     },
 
     openDialogAdmAssunto () {
@@ -2950,7 +2214,7 @@ export default {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
-        }).then((response) => {
+        }).then(() => {
           this.getAtualAssunto()
           this.$toastr.s(
             'Imagem cadastrada com sucesso', 'Sucesso!'
@@ -3085,14 +2349,6 @@ export default {
       }
     },
 
-    openSpaceConfig () {
-      this.openFormConfig = true
-    },
-
-    cancelConfigTotem () {
-      this.openFormConfig = false
-    },
-
     resetCamposEvento () {
       this.diaNewEvento = ''
       this.mesNewEvento = ''
@@ -3135,7 +2391,7 @@ export default {
             headers: {
               'Content-Type': 'multipart/form-data'
             }
-          }).then((response) => {
+          }).then(() => {
             this.resetCamposEvento()
             this.getConfigs()
             this.$toastr.s(
@@ -3304,77 +2560,6 @@ export default {
       }
     },
 
-    editBG () {
-      this.dialogUpdateBG = true
-      this.currentEditBG = undefined
-      this.previewEditBG = undefined
-      this.inputEditBG = undefined
-    },
-
-    selectEditBG (image) {
-      if (image === null || image === undefined) {
-        this.currentEditBG = undefined
-        this.previewEditBG = undefined
-        this.inputEditBG = undefined
-      } else {
-        this.currentEditBG = image
-        this.previewEditBG = URL.createObjectURL(this.currentEditBG)
-      }
-    },
-
-    updateBgConfirm () {
-      if (this.inputEditBG === undefined) {
-        this.$toastr.e(
-          'É necessário o envio de uma imagem.', 'Erro!'
-        )
-      } else {
-        let formData = new FormData()
-        formData.append('imagem', this.inputEditBG)
-        return this.$http.post('totemconfig/updatebg', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        }).then(() => {
-          this.currentEditBG = undefined
-          this.previewEditBG = undefined
-          this.inputEditBG = undefined
-          this.dialogUpdateBG = false
-          this.getConfigs()
-          this.$toastr.s(
-            'Background Alterado com sucesso.', 'Sucesso!'
-          )
-        })
-          .catch(() => {
-            this.$toastr.e(
-              'Não foi possível Alterar o Background.', 'Erro!'
-            )
-          })
-      }
-    },
-
-    excluiBG () {
-      try {
-        this.$http.get('totemconfig/removebg')
-          .then(() => {
-            this.totemConfigs.bg_img = null
-            this.$toastr.s(
-              'Background removido com sucesso', 'Sucesso!'
-            )
-          })
-          .catch(erro => console.log(erro))
-      } catch (e) {
-        console.log(e)
-      }
-      console.log('delete')
-    },
-
-    addNewBG () {
-      this.dialogUpdateBG = true
-      this.currentEditBG = undefined
-      this.previewEditBG = undefined
-      this.inputEditBG = undefined
-    },
-
     selectImageAdicionalEvento (image) {
       if (image === null || image === undefined) {
         this.currentImageAdicionalEvento = undefined
@@ -3456,8 +2641,6 @@ export default {
   margin-top: -70px;
   margin-bottom: 10px;
 }
-
-@import url('https://fonts.cdnfonts.com/css/impact');
 
 .textlConfig {
   font-family: 'Impact', sans-serif;
