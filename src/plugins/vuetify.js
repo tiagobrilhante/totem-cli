@@ -11,5 +11,21 @@ export default new Vuetify({
   lang: {
     locales: { pt },
     current: 'pt'
+  },
+  pwa: {
+    name: 'EBTotem',
+    themeColor: '#4DBA87',
+    msTileColor: '#000000',
+    appleMobileWebAppCapable: 'yes',
+    appleMobileWebAppStatusBarStyle: 'black',
+    manifestOptions: {
+      icons: [
+        {
+          src: './img/icons/maskable_icon.png',
+          sizes: '196x196',
+          purpose: 'maskable'
+        }
+      ]
+    }
   }
 })
