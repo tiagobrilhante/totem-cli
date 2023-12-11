@@ -33,7 +33,16 @@
 
           <ul>
 
-            <li class="mt-4">Versão 1.1 A r035 - 28/11/2023
+            <li class="mt-4">Versão 1.2 r043 - 11/12/2023
+              <ul>
+                <li>Foi ajustado o tamanho dp título de um evento.</li>
+                <li>Correção de bugs</li>
+                <li>Saneamento de código</li>
+                <li>Melhoria da interface gráfica</li>
+              </ul>
+            </li>
+
+            <li class="mt-4">Versão 1.1 r035 - 28/11/2023
               <ul>
                 <li>Agora é possivel editar o texto de Legenda e Saiba Mias com um editor RTF.</li>
                 <li>Agora o dialog de consumo de informação começa com a letra maior</li>
@@ -43,7 +52,7 @@
               </ul>
             </li>
 
-            <li class="mt-4">Versão 1.0 A r022 - 01/11/2023
+            <li class="mt-4">Versão 1.0 r022 - 01/11/2023
               <ul>
                 <li>É disponibilizado ao público em 01 de novembro de 2023.</li>
               </ul>
