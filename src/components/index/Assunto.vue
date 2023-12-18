@@ -113,7 +113,7 @@
         <v-card-title class="justify-center text-center">
           <v-row>
             <v-col cols="1"></v-col>
-            <v-col cols="10" class="text-h1"><b>{{ selectedAssunto.nome_assunto }}</b></v-col>
+            <v-col cols="10" class="text-h2"><b>{{ selectedAssunto.nome_assunto }}</b></v-col>
             <v-col cols="1">
               <v-btn @click="dialogNavegaAssunto = false" color="grey lighten-1">X</v-btn>
             </v-col>
@@ -141,37 +141,51 @@
             <!-- Área de exibição de imagem e conteúdo-->
             <v-row class="mt-2">
 
-              <!--imagem-->
-              <v-col align-self="start" class="text-center mt-12">
+              <!--imagem e fonte-->
+              <v-col align-self="start" class="text-center">
 
-                <v-img :height=totemConfigs.altura_detail :src="configSis.urlDownload + selectedImg.imagem"
-                       :width=totemConfigs.largura_detail
-                       class="rounded-xl ml-auto mr-auto"/>
+                <v-alert rounded="xl">
+
+                  <v-img :height=totemConfigs.altura_detail :src="configSis.urlDownload + selectedImg.imagem"
+                         :width=totemConfigs.largura_detail
+                         class="rounded-xl ml-auto mr-auto"/>
+
+                </v-alert>
+
+                <v-alert v-if="selectedImg.fonte" rounded="xl"><b>Fonte: </b> {{ selectedImg.fonte }}</v-alert>
               </v-col>
 
-              <!--Se tem nome ou se tem legenda-->
+              <!--Se tem nome (titulo da imagem) ou se tem legenda-->
               <v-col v-if="selectedImg.nome !=='' || selectedImg.legenda !== '' ">
 
                 <!-- Título da imagem e aumenta e diminui fonte-->
                 <v-row>
-                  <v-col cols="10">
-                    <span class="text-h3 font-preta">{{ selectedImg.nome }}</span>
+                  <v-col class="text-center">
+                    <v-alert color="grey lighten-2" rounded="xl">
+                      <span class="text-h3 font-preta">{{ selectedImg.nome }}</span>
+                    </v-alert>
+
                   </v-col>
-                  <v-col cols="2" class="text-right">
-                    <v-btn @click="aumentaDimunuiFonte" color="#aeeb8a" small>{{ legendaBtnAumentaDiminui }}</v-btn>
-                  </v-col>
+
                 </v-row>
 
-                <br>
-
                 <!-- Area do conteúdo-->
-                <v-alert color="grey lighten-2" v-if="selectedImg.legenda !== ''">
+                <v-alert rounded="xl" color="grey lighten-2" v-if="selectedImg.legenda !== ''" class="text-justify">
+
+                  <v-row class="mt-2 mr-1">
+                    <v-col class="text-right">
+                      <v-btn @click="aumentaDimunuiFonte" color="#aeeb8a" small>{{ legendaBtnAumentaDiminui }}</v-btn>
+                    </v-col>
+                  </v-row>
 
                   <!-- texto da legenda -->
                   <v-row class="mb-1" v-if="!saibaMaisAreaVisibility">
-                    <v-col :class=tamanhoTexto>
-                      <span v-html="selectedImg.legenda"> </span>
-                    </v-col>
+
+                    <v-row class="ml-2 mr-2">
+                      <v-col :class=tamanhoTexto>
+                        <span v-html="selectedImg.legenda"> </span>
+                      </v-col>
+                    </v-row>
                   </v-row>
 
                   <!-- texto do saiba mais -->
@@ -191,13 +205,12 @@
 
                 </v-alert>
               </v-col>
+
             </v-row>
 
-            <br><br>
-
             <!--navegar pelas imagens internas-->
-            <v-container fluid>
-              <v-row>
+            <v-container fluid class="">
+              <v-row no-gutters>
                 <v-col>
                   <v-btn :key="imgs.id" @click="changeSelectedImg(imgs.ordem)" class="mr-5" retain-focus-on-click
                          v-for="imgs in selectedAssunto.imagens">{{ imgs.ordem }}
