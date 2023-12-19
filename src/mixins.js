@@ -1,4 +1,4 @@
-export const logoutMixin = {
+const logoutMixin = {
   methods: {
     efetuarLogout () {
       this.$store.commit('DESLOGAR_USUARIO')
@@ -6,3 +6,5 @@ export const logoutMixin = {
     }
   }
 }
+
+export {logoutMixin}

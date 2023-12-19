@@ -15,7 +15,8 @@
             <v-card-text>
               <v-row>
                 <v-col>
-                  <b>Email: </b>{{ usuarioLogado.email}}<br>
+                  <b>Nome: </b> {{ usuarioLogado.nome }}<br>
+                  <b>Email: </b>{{ usuarioLogado.email }}
                 </v-col>
               </v-row>
             </v-card-text>
@@ -23,6 +24,7 @@
         </v-col>
       </v-row>
 
+      <!-- Botão de ajustes de usuário - First Name-->
       <template v-slot:activator="{ on, attrs }">
         <v-btn block
                color="secondary"
@@ -30,30 +32,28 @@
                v-bind="attrs"
                v-on="on"
         >
-          <i class="fa fa-user mr-5"></i> {{ usuarioLogado.apelido }}
+          <i class="fa fa-user mr-5"></i> {{ usuarioLogado.firstName }}
         </v-btn>
       </template>
+
       <!--list-->
       <v-list color="cyan lighten-4">
         <!--alterar senha-->
         <v-list-item @click.prevent="mudarSenhaAbrir">
-          <v-list-item-title><v-icon small class="mr-3">mdi-lock</v-icon>
+          <v-list-item-title>
+            <v-icon small class="mr-3">mdi-lock</v-icon>
             Alterar Senha
           </v-list-item-title>
         </v-list-item>
-        <!--Gerenciar Perfil-->
-        <v-list-item to="/perfil">
-          <v-icon small class="mr-3">mdi-clipboard-account</v-icon>
-          <v-list-item-title>
-            Gerenciar Perfil
-          </v-list-item-title>
-        </v-list-item>
+
         <!--Efetuar logout-->
-        <v-list-item @click.prevent="efetuarLogout">
-          <v-list-item-title> <v-icon small class="mr-3">mdi-logout</v-icon>
+        <v-list-item @click.prevent="retornaTotem">
+          <v-list-item-title>
+            <v-icon small class="mr-3">mdi-logout</v-icon>
             Sair do Sistema
           </v-list-item-title>
         </v-list-item>
+
       </v-list>
     </v-menu>
 
@@ -67,7 +67,7 @@
             <v-alert border="left"
                      dense
                      type="warning">
-              Ao alterar a sua senha, você será desconectado do RevRef para realizar um novo login.
+              Ao alterar a sua senha, você será desconectado do {{ configSis.nomeSis }} para realizar um novo login.
             </v-alert>
             <v-divider></v-divider>
             <br>
@@ -100,7 +100,7 @@
             >Alterar senha
             </v-btn>
             <v-btn
-              @click="fecharDialogAlterarSenha"
+              @click="dialogSenha = false"
               color="error"
               elevation="2">Cancelar
             </v-btn>
@@ -108,32 +108,47 @@
         </v-form>
       </v-card>
     </v-dialog>
-  </div>
 
+  </div>
 </template>
 
 <script>import {logoutMixin} from '@/mixins'
 import {mapGetters} from 'vuex'
 import {validationMixin} from 'vuelidate'
 import {required} from 'vuelidate/lib/validators'
+import config from '../../http/config'
 
 export default {
   data: () => ({
     dialogSenha: false,
     show1: false,
-    password: ''
+    password: '',
+    configSis: config
   }),
   validations: {
     password: {required}
   },
   mixins: [logoutMixin, validationMixin],
+
+  computed: {
+    passwordErrors () {
+      const errors = []
+      if (!this.$v.password.$dirty) return errors
+      !this.$v.password.required && errors.push('O Campo "Senha" não pode ficar em branco! ')
+      return errors
+    },
+    ...mapGetters(['usuarioResetado', 'usuarioLogado'])
+
+  },
   methods: {
+    retornaTotem () {
+      this.$store.commit('DESLOGAR_USUARIO')
+      this.$router.push({name: 'index'})
+    },
     mudarSenhaAbrir () {
       this.dialogSenha = true
     },
-    fecharDialogAlterarSenha () {
-      this.dialogSenha = false
-    },
+
     alterarSenha () {
       this.$v.$touch()
       if (!this.$v.$invalid) {
@@ -155,16 +170,6 @@ export default {
           })
       }
     }
-  },
-  computed: {
-    passwordErrors () {
-      const errors = []
-      if (!this.$v.password.$dirty) return errors
-      !this.$v.password.required && errors.push('O Campo "Senha" não pode ficar em branco! ')
-      return errors
-    },
-    ...mapGetters(['usuarioResetado', 'usuarioLogado'])
-
   }
 }
 </script>

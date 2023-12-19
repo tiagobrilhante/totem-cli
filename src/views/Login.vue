@@ -1,6 +1,7 @@
 <template>
   <v-main class="bgLogin">
 
+    <!--
     <v-app-bar
       app
       color="red darken-3"
@@ -15,6 +16,9 @@
       <v-btn @click="retornaTotem()">Sair</v-btn>
 
     </v-app-bar>
+    -->
+
+    <BarraNavegacao></BarraNavegacao>
 
     <v-container fluid>
 
@@ -125,11 +129,12 @@
 <script>import config from '../http/config'
 import {mapGetters} from 'vuex'
 import AcessoAdmPanel from '.././components/areaAdministrativa/AcessoAdmPanel'
+import BarraNavegacao from '../components/barra-navegacao/BarraNavegacao'
 
 export default {
 
   components: {
-    AcessoAdmPanel
+    AcessoAdmPanel, BarraNavegacao
   },
   data () {
     return {

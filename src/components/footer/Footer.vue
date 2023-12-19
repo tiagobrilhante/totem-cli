@@ -33,6 +33,17 @@
 
           <ul>
 
+            <li class="mt-4"><b>Versão 2.1 r110 - 20/12/2023 (LATEST)</b>
+              <ul>
+                <li>Liberado o acesso ao histórico de alterações</li>
+                <li>Correção de bugs</li>
+                <li>Refatoração dos componentes, permitindo maior legibilidade para desenvolvedores</li>
+                <li>Melhoria da interface gráfica</li>
+                <li>Implementado o menu administrativo separado do conteúdo da landpage</li>
+                <li>Agora o administrador pode alterar a própria senha</li>
+              </ul>
+            </li>
+
             <li class="mt-4">Versão 2.0 r071 - 18/12/2023
               <ul>
                 <li>Agora é possível listar as fontes de imagens presentes em assuntos.</li>

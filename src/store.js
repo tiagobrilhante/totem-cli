@@ -7,17 +7,26 @@ Vue.use(Vuex)
 
 const estado = {
   token: null,
-  usuarioLogado: {}
+  usuarioLogado: {},
+  emAtualizacao: false
 }
 
 const mutations = {
   DEFINIR_USUARIO_LOGADO (state, {token, usuarioLogado}) {
     state.token = token
     state.usuarioLogado = usuarioLogado
+    state.emAtualizacao = false
   },
   DESLOGAR_USUARIO (state) {
     state.token = null
     state.usuarioLogado = {}
+    state.emAtualizacao = false
+  },
+  ATUALIZAR_CONTEUDO (state) {
+    state.emAtualizacao = true
+  },
+  PARA_ATUALIZAR_CONTEUDO (state) {
+    state.emAtualizacao = false
   }
 }
 
@@ -51,7 +60,8 @@ const getters = {
   },
   usuarioLogado: state => {
     return state.usuarioLogado
-  }
+  },
+  paginaEmAtulizacao: state => Boolean(state.emAtualizacao)
 }
 
 const vuexLocal = new VuexPersistence({

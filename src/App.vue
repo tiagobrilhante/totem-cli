@@ -1,6 +1,5 @@
 <template>
   <v-app :style="estilosDiv" class="bgApp" id="inspire">
-    <vue-confirm-dialog></vue-confirm-dialog>
     <router-view/>
     <Footer/>
   </v-app>

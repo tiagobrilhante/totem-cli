@@ -7,12 +7,21 @@ import erroToken from '../views/errors/erroToken.vue'
 // import Reset from '../views/Reset.vue'
 import Login from '../views/Login.vue'
 import store from '@/store'
+import Historico from '../views/Historico'
 Vue.use(VueRouter)
 const routes = [
   {
     path: '/home',
     name: 'home',
     component: Home,
+    meta: {
+      logado: true
+    }
+  },
+  {
+    path: '/historico',
+    name: 'historico',
+    component: Historico,
     meta: {
       logado: true
     }
