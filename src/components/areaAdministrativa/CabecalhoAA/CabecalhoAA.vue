@@ -21,3 +21,10 @@
 </template>
 <script>
 </script>
+
+<style>
+.textlConfig {
+  font-family: 'Impact', sans-serif;
+  color: white;
+}
+</style>

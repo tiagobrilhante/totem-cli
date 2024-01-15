@@ -175,6 +175,7 @@
                          color="rgb(0,0,0,0)" class="mt-2">fonte: {{ eventoVisivel.fonteimagempcp }}
                 </v-alert>
 
+                <!-- explicação sobre im agem adicional-->
                 <v-alert v-if="!essaEImgEventoPcp" color="green lighten-3">
                   <h3>{{ explicacaoImgAddEvevntox }}</h3>
                 </v-alert>
@@ -427,6 +428,8 @@ export default {
     },
 
     mostraEventoSelecionado (index) {
+      console.log('oi')
+      console.log(index)
       this.tamanhoTexto = 'text-h5'
       this.legendaBtnAumentaDiminui = 'A--'
       this.saibamaisevent = ''
@@ -441,6 +444,7 @@ export default {
       } else {
         this.soTemUmaImagem = false
       }
+      this.incrementaContadorEvento(this.eventoVisivel)
     },
 
     converteNumEmMes (num) {
@@ -515,6 +519,15 @@ export default {
 
     disableRightClick (event) {
       event.preventDefault() // Impede o comportamento padrão do clique com o botão direito
+    },
+
+    incrementaContadorEvento (qualEvento) {
+      try {
+        this.$http.post('incrementaacessoevento', qualEvento)
+          .catch(erro => console.log(erro))
+      } catch (e) {
+        console.log(e)
+      }
     }
   }
 }

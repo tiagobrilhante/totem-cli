@@ -17,11 +17,11 @@
 
 <script>import {logoutMixin} from '@/mixins'
 import {mapGetters} from 'vuex'
-import config from '../http/config'
-import AdmEventos from '../components/areaAdministrativa/eventos/AdmEventos'
-import AdmAssuntos from '../components/areaAdministrativa/assuntos/AdmAssuntos'
-import BarraNavegacao from '../components/barra-navegacao/BarraNavegacao'
-import CabecalhoAA from '../components/areaAdministrativa/CabecalhoAA/CabecalhoAA'
+import config from '../../http/config'
+import AdmEventos from '../../components/areaAdministrativa/eventos/AdmEventos.vue'
+import AdmAssuntos from '../../components/areaAdministrativa/assuntos/AdmAssuntos.vue'
+import BarraNavegacao from '../../components/barra-navegacao/BarraNavegacao.vue'
+import CabecalhoAA from '../../components/areaAdministrativa/CabecalhoAA/CabecalhoAA.vue'
 
 export default {
   name: 'home',

@@ -16,7 +16,7 @@
   "dependencies": {
     "@deveodk/vue-toastr": "^1.1.0",
     "@fortawesome/fontawesome-free": "^5.15.2",
-    "apexcharts": "^3.35.3",
+    "apexcharts": "^3.45.0",
     "axios": "^0.21.1",
     "cors": "^2.8.5",
     "cpf-cnpj-validator": "^1.0.3",

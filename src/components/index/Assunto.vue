@@ -332,7 +332,27 @@ export default {
         if (this.assuntos.data[i].id === assuntoId) {
           this.selectedAssunto = this.assuntos.data[i]
           this.selectedImg = this.assuntos.data[i].imagens[0]
+          this.incrementaContadorAssunto(this.selectedAssunto)
+          this.incrementaContadorImagem(this.selectedImg)
         }
+      }
+    },
+
+    incrementaContadorAssunto (qualAssunto) {
+      try {
+        this.$http.post('incrementaacessoassunto', qualAssunto)
+          .catch(erro => console.log(erro))
+      } catch (e) {
+        console.log(e)
+      }
+    },
+
+    incrementaContadorImagem (qualImagem) {
+      try {
+        this.$http.post('incrementaacessoimagem', qualImagem)
+          .catch(erro => console.log(erro))
+      } catch (e) {
+        console.log(e)
       }
     },
 
@@ -350,6 +370,7 @@ export default {
       for (let i = 0; i < this.selectedAssunto.imagens.length; i++) {
         if (this.selectedAssunto.imagens[i].ordem === ordem) {
           this.selectedImg = this.selectedAssunto.imagens[i]
+          this.incrementaContadorImagem(this.selectedImg)
         }
       }
     },

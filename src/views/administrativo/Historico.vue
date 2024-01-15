@@ -98,9 +98,9 @@
   </v-main>
 </template>
 
-<script>import config from '../http/config'
-import BarraNavegacao from '../components/barra-navegacao/BarraNavegacao'
-import CabecalhoAA from '../components/areaAdministrativa/CabecalhoAA/CabecalhoAA'
+<script>import config from '../../http/config'
+import BarraNavegacao from '../../components/barra-navegacao/BarraNavegacao.vue'
+import CabecalhoAA from '../../components/areaAdministrativa/CabecalhoAA/CabecalhoAA.vue'
 import {mapGetters} from 'vuex'
 
 export default {
@@ -110,11 +110,6 @@ export default {
     configSis: config,
     historicos: [],
     headers: [
-      {
-        text: 'id',
-        align: 'start',
-        value: 'id'
-      },
       {
         text: 'Evento',
         align: 'start',
@@ -169,10 +164,5 @@ export default {
 <style>
 .bgConfig {
   background-color: #6b5252 !important;
-}
-
-.textlConfig {
-  font-family: 'Impact', sans-serif;
-  color: white;
 }
 </style>

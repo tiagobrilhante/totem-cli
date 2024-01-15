@@ -98,8 +98,8 @@
               </v-list-item>
 
               <!-- edstatísticas de uso-->
-              <v-list-item>
-                <v-list-item-title>Estatísticas</v-list-item-title>
+              <v-list-item to="/estatisticas">
+                <v-list-item-title><v-icon small class="pr-3">mdi-chart-bar-stacked</v-icon> Estatísticas</v-list-item-title>
               </v-list-item>
 
             </v-list>

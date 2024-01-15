@@ -1,13 +1,14 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Home from '../views/administrativo/Home.vue'
 import Index from '../views/Index.vue'
 import erro500 from '../views/errors/erro500.vue'
 import erroToken from '../views/errors/erroToken.vue'
 // import Reset from '../views/Reset.vue'
 import Login from '../views/Login.vue'
 import store from '@/store'
-import Historico from '../views/Historico'
+import Historico from '../views/administrativo/Historico.vue'
+import Estatisticas from '../views/administrativo/Estatisticas.vue'
 Vue.use(VueRouter)
 const routes = [
   {
@@ -22,6 +23,14 @@ const routes = [
     path: '/historico',
     name: 'historico',
     component: Historico,
+    meta: {
+      logado: true
+    }
+  },
+  {
+    path: '/estatisticas',
+    name: 'estatisticas',
+    component: Estatisticas,
     meta: {
       logado: true
     }
@@ -61,7 +70,7 @@ const routes = [
       logado: true
     },
     // component: Reset
-    component: () => import(/* webpackChunkName: "Reset" */ '../views/Reset.vue')
+    component: () => import(/* webpackChunkName: "Reset" */ '../views/administrativo/Reset.vue')
   },
   {
     path: '/login',
