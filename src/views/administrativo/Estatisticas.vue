@@ -254,18 +254,16 @@
               <hr>
               <v-divider class="pb-15"></v-divider>
 
-
               <!--- btn para abrir/fechar tabela -->
-              <v-btn small v-if="!showTotalContent2 && totemConfigs.tipo_totem ==='normal'" @click="showHideTable2" class="rounded-xl" color="secondary"> Exibir
+              <v-btn small v-if="!showTotalContent2 && totemConfigs.tipo_totem ==='normal'" @click="showHideTable2"
+                     class="rounded-xl" color="secondary"> Exibir
                 Tabela de Dados
               </v-btn>
-
 
               <!-- chart-->
               <apexchart v-if="!carregandoDados && totemConfigs.tipo_totem ==='normal'" width="100%" type="bar"
                          :options="options2"
                          :series="series2"></apexchart>
-
 
               <!--- tabela de dados-->
               <v-alert v-if="showTotalContent2" color="cyan lighten-4" rounded="xl"
