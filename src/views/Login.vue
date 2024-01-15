@@ -1,23 +1,6 @@
 <template>
   <v-main class="bgLogin">
 
-    <!--
-    <v-app-bar
-      app
-      color="red darken-3"
-    >
-
-      <v-toolbar-title>{{configSis.nomeSis}}
-        <v-chip class="ml-4" small> {{configSis.labelSis}}</v-chip>
-      </v-toolbar-title>
-
-      <v-spacer></v-spacer>
-
-      <v-btn @click="retornaTotem()">Sair</v-btn>
-
-    </v-app-bar>
-    -->
-
     <BarraNavegacao></BarraNavegacao>
 
     <v-container fluid>
@@ -29,15 +12,22 @@
 
           <!--cabeçalho-->
           <v-row>
-            <v-col cols="8"
-                   offset="2">
+
+            <v-col cols="8" offset="2">
               <v-card class="ma-0" rounded>
-                <v-row class="text-center">
-                  <v-col cols="2"></v-col>
-                  <v-col cols="8"><h1>{{configSis.nomeSis}}</h1><br>
-                    <h3>{{configSis.labelSis}}</h3>
+                <v-row >
+                  <v-col cols="2" class="text-left">
+
+                    <v-img class="ml-12" width="50%" :src="require('@/assets/img/logoEb.png')"></v-img>
+
                   </v-col>
-                  <v-col cols="2"></v-col>
+                  <v-col cols="8" class="text-center"><h1>{{ configSis.nomeSis }}</h1><br>
+                    <h3>{{ configSis.labelSis }}</h3>
+                  </v-col>
+                  <v-col cols="2" class="text-right">
+
+                    <v-img width="50%" :src="require('@/assets/img/logoEb.png')"></v-img>
+                  </v-col>
                 </v-row>
               </v-card>
             </v-col>
@@ -183,8 +173,8 @@ export default {
 </script>
 <style>
 
-  .bgLogin {
-    background-color: #67b4ba !important;
-  }
+.bgLogin {
+  background-color: #67b4ba !important;
+}
 </style>
 x

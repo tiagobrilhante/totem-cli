@@ -36,6 +36,7 @@
             <li class="mt-4"><b>Versão 2.1 r110 - 20/12/2023 (LATEST)</b>
               <ul>
                 <li>Liberado o acesso ao histórico de alterações</li>
+                <li>Liberado o acesso para a área de estatísticas</li>
                 <li>Correção de bugs</li>
                 <li>Refatoração dos componentes, permitindo maior legibilidade para desenvolvedores</li>
                 <li>Melhoria da interface gráfica</li>
