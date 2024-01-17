@@ -9,6 +9,8 @@ import Login from '../views/Login.vue'
 import store from '@/store'
 import Historico from '../views/administrativo/Historico.vue'
 import Estatisticas from '../views/administrativo/Estatisticas.vue'
+import BkupBanco from '../views/administrativo/BkupBanco.vue'
+
 Vue.use(VueRouter)
 const routes = [
   {
@@ -78,6 +80,14 @@ const routes = [
     component: Login,
     meta: {
       publica: true
+    }
+  },
+  {
+    path: '/bkupbanco',
+    name: 'BkupBanco',
+    component: BkupBanco,
+    meta: {
+      logado: true
     }
   }
 ]

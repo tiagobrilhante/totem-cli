@@ -102,6 +102,11 @@
                 <v-list-item-title><v-icon small class="pr-3">mdi-chart-bar-stacked</v-icon> Estatísticas</v-list-item-title>
               </v-list-item>
 
+              <!-- Backup-->
+              <v-list-item to="/bkupbanco">
+                <v-list-item-title><v-icon small class="pr-3">mdi-database</v-icon> Backup</v-list-item-title>
+              </v-list-item>
+
             </v-list>
           </v-menu>
         </div>

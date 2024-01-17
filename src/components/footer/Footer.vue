@@ -31,59 +31,29 @@
 
         <v-card-text>
 
+          <v-alert color="cyan" class="text-justify">
+            <p>O Sistema EBTotem, foi criado a pedido do Comando do CMA, para compor uma experiência visual interativa
+              oferecida aos visitantes do espaço cultural Cap Mor Pedro Teixeira.</p>
+            <p>Trata-se de um sistema que foi projetado para propiciar o consumo de conteúdo cultural, usando como base,
+              uma TV e um frame infravermelho que capta a posição do dedo do usuário em relação a tela, simulando o
+              mesmo comportamento de celulares e tablets.</p>
+            <p>O conteúdo cultural é inserido pelos administradores cadastrados no sistema, e vários aspectos do totem,
+              são configuráveis, podendo ser usado para disponibilizar qualquer tipo de conteúdo.</p>
+            <p><b>Abaixo é possivel acompanhar o histórico de alterações das versões lançadas ao longo do tempo.</b></p>
+          </v-alert>
+
           <ul>
-
-            <li class="mt-4"><b>Versão 2.1 r110 - 20/12/2023 (LATEST)</b>
-              <ul>
-                <li>Liberado o acesso ao histórico de alterações</li>
-                <li>Liberado o acesso para a área de estatísticas</li>
-                <li>Correção de bugs</li>
-                <li>Refatoração dos componentes, permitindo maior legibilidade para desenvolvedores</li>
-                <li>Melhoria da interface gráfica</li>
-                <li>Implementado o menu administrativo separado do conteúdo da landpage</li>
-                <li>Agora o administrador pode alterar a própria senha</li>
+            <li v-for="versao in versoes" :key="versao.id" class="mt-4">
+              Versão: {{ versao.id }} r{{ versao.release }} - {{ versao.data }} <span v-if="versao.latest"> ( LATEST ) </span>
+              <v-chip x-small class="ml-6" @click="toggleDetalhes(versao.id)" v-if="!versao.latest">Ver Detalhes</v-chip>
+              <ul v-if="versao.detalhesVisiveis && !versao.latest">
+                <li v-for="detalhe in versao.detalhes" :key="detalhe">{{ detalhe }}</li>
               </ul>
-            </li>
 
-            <li class="mt-4">Versão 2.0 r071 - 18/12/2023
-              <ul>
-                <li>Agora é possível listar as fontes de imagens presentes em assuntos.</li>
-                <li>Correção de bugs</li>
-                <li>Refatoração dos componentes, permitindo maior legibilidade para desenvolvedores</li>
-                <li>Melhoria da interface gráfica</li>
+              <ul v-if="versao.latest">
+                <li v-for="detalhe in versao.detalhes" :key="detalhe">{{ detalhe }}</li>
               </ul>
-            </li>
 
-            <li class="mt-4">Versão 1.2 r043 - 11/12/2023
-              <ul>
-                <li>Foi ajustado o tamanho dp título de um evento.</li>
-                <li>Correção de bugs</li>
-                <li>Saneamento de código</li>
-                <li>Melhoria da interface gráfica</li>
-              </ul>
-            </li>
-
-            <li class="mt-4">Versão 1.1 r035 - 28/11/2023
-              <ul>
-                <li>Agora é possivel editar o texto de Legenda e Saiba Mias com um editor RTF.</li>
-                <li>Agora o dialog de consumo de informação começa com a letra maior</li>
-                <li>O alinhamento das imagens está posicionado no topo dos dialog de exibição</li>
-                <li>Correção de bugs</li>
-                <li>Melhoria da interface gráfica</li>
-              </ul>
-            </li>
-
-            <li class="mt-4">Versão 1.0 r022 - 01/11/2023
-              <ul>
-                <li>É disponibilizado ao público em 01 de novembro de 2023.</li>
-              </ul>
-            </li>
-
-            <li class="mt-4">Versão 1.0 A r001 (alpha) - 24/07/2023
-              <ul>
-                <li>É iniciado o processo de desenvolvimento do {{ configSis.labelSis }} em 24 de julho de 2023.</li>
-                <li>Utiliza Vue no front e Lumen no back.</li>
-              </ul>
             </li>
           </ul>
 
@@ -163,10 +133,114 @@ export default {
   data: () => ({
     configSis: config,
     dialogVersoes: false,
-    dialogProgramador: false
+    dialogProgramador: false,
+    qualIcone: 'mdi-arrow-down-thick',
+    versoes: [
+      {
+        id: '2.2',
+        release: '123',
+        latest: true,
+        data: '17/01/2024',
+        detalhesVisiveis: false,
+        detalhes: [
+          'Agora é possível gerar backup de todo o conteúdo do Totem (Banco de Dados e arquivos)',
+          'Foi remodelado o detalhamento de versões no footer',
+          'Correção de bugs',
+          'Saneamento de código'
+        ]
+      },
+      {
+        id: '2.1',
+        release: '110',
+        latest: false,
+        data: '20/12/2023',
+        detalhesVisiveis: false,
+        detalhes: [
+          'Liberado o acesso ao histórico de alterações',
+          'Liberado o acesso para a área de estatísticas',
+          'Correção de bugs',
+          'Refatoração dos componentes, permitindo maior legibilidade para desenvolvedores',
+          'Melhoria da interface gráfica',
+          'Implementado o menu administrativo separado do conteúdo da landpage',
+          'Agora o administrador pode alterar a própria senha'
+        ]
+      },
+      {
+        id: '2.0',
+        release: '071',
+        latest: false,
+        data: '18/12/2023',
+        detalhesVisiveis: false,
+        detalhes: [
+          'Agora é possível listar as fontes de imagens presentes em assuntos.',
+          'Correção de bugs',
+          'Refatoração dos componentes, permitindo maior legibilidade para desenvolvedores',
+          'Melhoria da interface gráfica'
+        ]
+      },
+      {
+        id: '1.2',
+        release: '043',
+        latest: false,
+        data: '11/12/2023',
+        detalhesVisiveis: false,
+        detalhes: [
+          'Foi ajustado o tamanho do título de um evento.',
+          'Correção de bugs',
+          'Saneamento de código',
+          'Melhoria da interface gráfica'
+        ]
+      },
+      {
+        id: '1.1',
+        release: '035',
+        latest: false,
+        data: '28/11/2023',
+        detalhesVisiveis: false,
+        detalhes: [
+          'Agora é possivel editar o texto de Legenda e Saiba Mias com um editor RTF.',
+          'Agora o dialog de consumo de informação começa com a letra maior',
+          'O alinhamento das imagens está posicionado no topo dos dialog de exibição',
+          'Correção de bugs',
+          'Melhoria da interface gráfica'
+        ]
+      },
+      {
+        id: '1.0',
+        release: '022',
+        latest: false,
+        data: '01/11/2023',
+        detalhesVisiveis: false,
+        detalhes: [
+          'É disponibilizado ao público em 01 de novembro de 2023.'
+        ]
+      },
+      {
+        id: '1.0 A',
+        release: '001 (alpha)',
+        latest: false,
+        data: '24/07/2023',
+        detalhesVisiveis: false,
+        detalhes: [
+          'É iniciado o processo de desenvolvimento do EBTotem em 24 de julho de 2023',
+          'Utiliza Vue no front e Lumen no back'
+        ]
+      }
+    ]
   }),
   computed: {},
-  methods: {}
+  methods: {
+    mostraDetalhesVersao (versao) {
+      console.log(versao)
+    },
+
+    toggleDetalhes (id) {
+      const versao = this.versoes.find(v => v.id === id)
+      if (versao) {
+        versao.detalhesVisiveis = !versao.detalhesVisiveis
+      }
+    }
+  }
 }
 </script>
 
