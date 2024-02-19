@@ -1,9 +1,6 @@
 <template>
   <!--container para eventos-->
-  <v-container class="mt-3 pt-16" fill-height fluid>
-    <v-row class="">
-      <v-col></v-col>
-    </v-row>
+  <v-container class="mt-3 pt-10" fill-height fluid>
 
     <!--caso não haja itens-->
     <v-row v-if="eventos.length === 0">
@@ -19,7 +16,7 @@
 
       <!--espaçador + btn voltar-->
       <v-col align-self="center" class="text-center" cols="1">
-        <v-btn color="#eb9234" @click="changeEventPage(pagAtualEvento - 1)" v-if="pagAtualEvento > 1">Voltar</v-btn>
+        <v-btn v-if="pagAtualEvento > 1" color="#eb9234" @click="changeEventPage(pagAtualEvento - 1)">Voltar</v-btn>
       </v-col>
 
       <v-col align-self="center">
@@ -27,14 +24,14 @@
         <!--linha 1 de eventos-->
         <v-row class="mb-10">
 
-          <v-col :key="le1.id" align-self="center" cols="3" v-for="le1 in linha1eventos">
+          <v-col v-for="le1 in linha1eventos" :key="le1.id" align-self="center" cols="3">
 
             <v-card :hover="clicable"
-                    @click="openAnoEventoLista(le1)"
-                    color="#7ca387"
                     class="ml-3 mr-3 align-content-center"
+                    color="#7ca387"
                     elevation="21"
-                    rounded="xl">
+                    rounded="xl"
+                    @click="openAnoEventoLista(le1)">
               <br>
 
               <v-img :height=totemConfigs.altura_index :src="configSis.urlDownload + le1.imagem"
@@ -49,11 +46,11 @@
                 </v-col>
               </v-row>
               <hr>
-              <v-card color="#7ca387" class="mt-2" elevation="21">
+              <v-card class="mt-2" color="#7ca387" elevation="21">
                 <v-row>
                   <v-col>
                     <ul>
-                      <li :key="ev.id" v-for="ev in le1.eventos"><strong>{{ ev.nome }}</strong></li>
+                      <li v-for="ev in le1.eventos" :key="ev.id"><strong>{{ ev.nome }}</strong></li>
                     </ul>
                   </v-col>
                 </v-row>
@@ -65,14 +62,14 @@
 
         <!--linha 2 de eventos-->
         <v-row>
-          <v-col :key="le2.id" align-self="center" cols="3" v-for="le2 in linha2eventos" v-if="le2 !== undefined">
+          <v-col v-for="le2 in linha2eventos" v-if="le2 !== undefined" :key="le2.id" align-self="center" cols="3">
 
             <v-card :hover="clicable"
-                    @click="openAnoEventoLista(le2)"
                     class="ml-3 mr-3"
                     color="#7ca387"
                     elevation="21"
-                    rounded="xl">
+                    rounded="xl"
+                    @click="openAnoEventoLista(le2)">
 
               <br>
 
@@ -87,11 +84,11 @@
                 </v-col>
               </v-row>
               <hr>
-              <v-card color="#7ca387" class="mt-2" elevation="21">
+              <v-card class="mt-2" color="#7ca387" elevation="21">
                 <v-row>
                   <v-col>
                     <ul>
-                      <li :key="ev2.id" v-for="ev2 in le2.eventos"><strong>{{ ev2.nome }}</strong></li>
+                      <li v-for="ev2 in le2.eventos" :key="ev2.id"><strong>{{ ev2.nome }}</strong></li>
                     </ul>
                   </v-col>
                 </v-row>
@@ -105,22 +102,39 @@
 
       <!--espaçador + btn avançar-->
       <v-col align-self="center" class="text-center" cols="1">
-        <v-btn color="#eb9234" @click="changeEventPage(pagAtualEvento + 1)" v-if="temProxPag">Avançar</v-btn>
+        <v-btn v-if="temProxPag" color="#eb9234" @click="changeEventPage(pagAtualEvento + 1)">Avançar</v-btn>
       </v-col>
 
     </v-row>
 
+    <!-- espaço btn quiz-->
+    <v-row class="mt-6">
+      <v-col cols="1"></v-col>
+      <v-col>
+        <v-row>
+          <v-col cols="3"></v-col>
+          <v-col class="text-center">
+            <v-btn v-if="totemConfigs.quiz === 'Sim'" block class="pt-8 pb-8" color="warning" elevation="21"
+                   rounded x-large @click="openDialogQuiz"><h2
+              class="black--text">Teste o seu conhecimento!</h2></v-btn>
+          </v-col>
+          <v-col cols="3"></v-col>
+        </v-row>
+      </v-col>
+      <v-col cols="1"></v-col>
+    </v-row>
+
     <!--Dialog para navegar pelo evento-->
-    <v-dialog max-width="90%" v-model="dialogNavegaAno" scrollable>
-      <v-card @contextmenu.prevent="disableRightClick" color="#7ca387">
+    <v-dialog v-model="dialogNavegaAno" max-width="90%" scrollable>
+      <v-card color="#7ca387" @contextmenu.prevent="disableRightClick">
 
         <!--Card Title (ANO)-->
         <v-card-title class="justify-center">
           <v-row>
             <v-col cols="1"></v-col>
-            <v-col cols="10" class="text-center text-h1"><b>{{ selectedAnoEvento.ano }}</b></v-col>
-            <v-col cols="1" class="text-right">
-              <v-btn @click="dialogNavegaAno = false" color="grey lighten-1">X</v-btn>
+            <v-col class="text-center text-h1" cols="10"><b>{{ selectedAnoEvento.ano }}</b></v-col>
+            <v-col class="text-right" cols="1">
+              <v-btn color="grey lighten-1" @click="dialogNavegaAno = false">X</v-btn>
             </v-col>
           </v-row>
         </v-card-title>
@@ -130,11 +144,11 @@
           <hr>
 
           <!-- Navegação  dentre eventos dentro do  ano-->
-          <v-row class="mt-1"
-                 v-if="Object.keys(selectedAnoEvento).length !== 0 && selectedAnoEvento.eventos.length > 1">
+          <v-row v-if="Object.keys(selectedAnoEvento).length !== 0 && selectedAnoEvento.eventos.length > 1"
+                 class="mt-1">
             <v-col>
-              <v-btn :key="evento.id" @click="mostraEventoSelecionado(index)" class="mr-5 mb-3" color="primary"
-                     v-for="(evento, index) in selectedAnoEvento.eventos"> {{
+              <v-btn v-for="(evento, index) in selectedAnoEvento.eventos" :key="evento.id" class="mr-5 mb-3" color="primary"
+                     @click="mostraEventoSelecionado(index)"> {{
                   evento.nome
                 }}
               </v-btn>
@@ -143,8 +157,8 @@
 
           <v-row class="mt-0">
             <!-- espaço para a imagem-->
-            <v-col align-self="start" class="text-center"
-                   v-if="eventoVisivel.imagem !== 'null' && eventoVisivel.imagem !== null ">
+            <v-col v-if="eventoVisivel.imagem !== 'null' && eventoVisivel.imagem !== null " align-self="start"
+                   class="text-center">
 
               <v-alert rounded="xl">
 
@@ -153,13 +167,13 @@
                   <v-col class="text-center">
 
                     <!-- btaaompara img padrao-->
-                    <v-btn retain-focus-on-click v-if="!soTemUmaImagem" color="secondary" class="mb-4 mr-1"
+                    <v-btn v-if="!soTemUmaImagem" class="mb-4 mr-1" color="secondary" retain-focus-on-click
                            @click="mostraImagemAdicional(eventoVisivel,'default')">1
                     </v-btn>
 
                     <!--imagens adicionais-->
-                    <v-btn retain-focus-on-click color="secondary" class="mx-2 mb-4" :key="imgaddadd.id"
-                           v-for="(imgaddadd, index) in eventoVisivel.imagens_adicionais"
+                    <v-btn v-for="(imgaddadd, index) in eventoVisivel.imagens_adicionais" :key="imgaddadd.id" class="mx-2 mb-4" color="secondary"
+                           retain-focus-on-click
                            @click="mostraImagemAdicional(imgaddadd, 'adicional')">
                       {{ index + 2 }}
                     </v-btn>
@@ -172,7 +186,7 @@
 
                 <!-- espaço para a fonte-->
                 <v-alert v-if="eventoVisivel.fonteimagempcp !== '' && eventoVisivel.fonteimagempcp !== null"
-                         color="rgb(0,0,0,0)" class="mt-2">fonte: {{ eventoVisivel.fonteimagempcp }}
+                         class="mt-2" color="rgb(0,0,0,0)">fonte: {{ eventoVisivel.fonteimagempcp }}
                 </v-alert>
 
                 <!-- explicação sobre im agem adicional-->
@@ -185,13 +199,13 @@
                   <v-col class="text-center">
 
                     <!-- btaaompara img padrao-->
-                    <v-btn retain-focus-on-click v-if="!soTemUmaImagem" color="secondary" class="mt-4 mr-1"
+                    <v-btn v-if="!soTemUmaImagem" class="mt-4 mr-1" color="secondary" retain-focus-on-click
                            @click="mostraImagemAdicional(eventoVisivel,'default')">1
                     </v-btn>
 
                     <!--imagens adicionais-->
-                    <v-btn retain-focus-on-click color="secondary" class="mx-2 mt-4" :key="imgaddadd.id"
-                           v-for="(imgaddadd, index) in eventoVisivel.imagens_adicionais"
+                    <v-btn v-for="(imgaddadd, index) in eventoVisivel.imagens_adicionais" :key="imgaddadd.id" class="mx-2 mt-4" color="secondary"
+                           retain-focus-on-click
                            @click="mostraImagemAdicional(imgaddadd, 'adicional')">
                       {{ index + 2 }}
                     </v-btn>
@@ -208,7 +222,7 @@
               <!--titulo e aumenta e di minui fonte-->
               <v-row>
                 <v-col>
-                  <v-alert rounded="xl" class="text-center text-h3">
+                  <v-alert class="text-center text-h3" rounded="xl">
                     <b><span class="font-preta"> {{ eventoVisivel.nome }} <span
                       v-if="eventoVisivel.dia || eventoVisivel.mes">(</span> <span
                       v-if="eventoVisivel.dia"> {{ eventoVisivel.dia }} de </span> <span
@@ -224,17 +238,17 @@
               <!--legenda, saiba mais e btn saiba mais-->
               <v-row>
                 <v-col>
-                  <v-alert color="grey lighten-2" rounded="xl"
-                           v-if="eventoVisivel.legenda && eventoVisivel !== null">
+                  <v-alert v-if="eventoVisivel.legenda && eventoVisivel !== null" color="grey lighten-2"
+                           rounded="xl">
 
                     <v-row>
                       <v-col class="text-right">
-                        <v-btn @click="aumentaDimunuiFonte" color="#aeeb8a" small>{{ legendaBtnAumentaDiminui }}</v-btn>
+                        <v-btn color="#aeeb8a" small @click="aumentaDimunuiFonte">{{ legendaBtnAumentaDiminui }}</v-btn>
                       </v-col>
                     </v-row>
 
                     <!-- texto da legenda -->
-                    <v-row class="mb-1" v-if="!saibaMaisAreaVisibility">
+                    <v-row v-if="!saibaMaisAreaVisibility" class="mb-1">
                       <v-col :class=tamanhoTexto class="text-justify">
 
                         <div v-html="eventoVisivel.legenda">
@@ -253,7 +267,7 @@
 
                     <!-- botao saiba mais-->
                     <hr v-if="eventoVisivel.saibamais">
-                    <v-row class="mt-1" v-if="eventoVisivel.saibamais">
+                    <v-row v-if="eventoVisivel.saibamais" class="mt-1">
                       <v-col class="text-right">
                         <v-btn @click="abreSaibaMais">{{ saibaMaisTextButton }}</v-btn>
                       </v-col>
@@ -272,7 +286,36 @@
         <!-- Actions-->
         <v-card-actions class="pb-5">
           <v-spacer></v-spacer>
-          <v-btn @click="dialogNavegaAno = false" color="grey lighten-1">Voltar</v-btn>
+          <v-btn color="grey lighten-1" @click="dialogNavegaAno = false">Voltar</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <!--Dialog para navegar pelos quiz-->
+    <v-dialog v-model="dialogQuiz" max-width="90%" scrollable>
+      <v-card color="#7ca387" @contextmenu.prevent="disableRightClick">
+
+        <!--titulo e botão fechar-->
+        <v-card-title class="justify-center text-center">
+          <v-row>
+            <v-col cols="1"></v-col>
+            <v-col class="text-h4" cols="10"><b>Teste o seu conhecimento!</b></v-col>
+            <v-col cols="1">
+              <v-btn color="grey lighten-1" @click="dialogQuiz = false">X</v-btn>
+            </v-col>
+          </v-row>
+
+        </v-card-title>
+
+        <!-- card Text-->
+        <v-card-text>
+
+          <Quiz v-if="dialogQuiz"/>
+
+        </v-card-text>
+        <v-card-actions class="pb-5">
+          <v-spacer></v-spacer>
+          <v-btn color="grey lighten-1" @click="dialogQuiz = false">Sair</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -281,10 +324,11 @@
 
 </template>
 <script>import config from '../../http/config'
+import Quiz from './Quiz.vue'
 
 export default {
 
-  components: {},
+  components: {Quiz},
   data () {
     return {
       configSis: config,
@@ -308,7 +352,8 @@ export default {
       objPcpEventoParaImagemAdicional: {},
       essaEImgEventoPcp: true,
       explicacaoImgAddEvevntox: '',
-      soTemUmaImagem: true
+      soTemUmaImagem: true,
+      dialogQuiz: false
     }
   },
   watch: {},
@@ -528,6 +573,10 @@ export default {
       } catch (e) {
         console.log(e)
       }
+    },
+
+    openDialogQuiz () {
+      this.dialogQuiz = true
     }
   }
 }

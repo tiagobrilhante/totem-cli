@@ -9,16 +9,16 @@
           <h3>Configurações do TOTEM</h3>
           <v-divider></v-divider>
 
-          <!--nome do totem, cod acesso , larguras e alturas de imagem-->
+          <!--nome do totem, cod acesso , possui quiz, larguras e alturas de imagem-->
           <v-row class="mt-1">
 
-            <!--nome do totem e cod acesso-->
+            <!--nome do totem, cod acesso e possui quiz-->
             <v-col>
 
               <!--nome totem-->
               <v-row no-gutters>
                 <v-col>
-                  <span class="ml-0 textoBranco">Nome do Totem</span>
+                  <span class="ml-3">Nome do Totem</span>
                   <v-text-field
                     dense
                     label="Nome do Totem"
@@ -32,7 +32,7 @@
               <!--cod acesso-->
               <v-row no-gutters>
                 <v-col>
-                  <span class="ml-0 textoBranco">Código de Acesso a Área Administrativa</span>
+                  <span class="ml-3">Código de Acesso a Área Administrativa</span>
                   <v-text-field
                     dense
                     label="Código do Totem"
@@ -40,6 +40,30 @@
                     solo
                     v-model="totemConfigs.access_code"
                   ></v-text-field>
+                </v-col>
+              </v-row>
+
+              <!--Possui Quiz-->
+              <v-row no-gutters>
+                <v-col>
+                  <span class="ml-3">Esse totem possui QUIZ?</span>
+                  <v-alert class="mt-0 mb-0" color="white" dense>
+                    <v-radio-group class="mt-0 mb-0"
+                                   hide-details
+                                   mandatory
+                                   row
+                                   v-model="totemConfigs.quiz"
+                    >
+                      <v-radio
+                        label="Sim"
+                        value="Sim"
+                      ></v-radio>
+                      <v-radio
+                        label="Não"
+                        value="Não"
+                      ></v-radio>
+                    </v-radio-group>
+                  </v-alert>
                 </v-col>
               </v-row>
 
@@ -53,7 +77,7 @@
 
                 <!--Altura Imagem Index-->
                 <v-col>
-                  <span class="ml-0 textoBranco">Altura Imagem (Index)</span>
+                  <span class="ml-3">Altura Imagem (Index)</span>
                   <v-text-field
                     class="mr-3"
                     dense
@@ -67,7 +91,7 @@
 
                 <!--Largura Imagem Index-->
                 <v-col>
-                  <span class="ml-3 textoBranco">Largura Imagem (Index)</span>
+                  <span class="ml-6">Largura Imagem (Index)</span>
                   <v-text-field
                     class="ml-3"
                     dense
@@ -86,7 +110,7 @@
 
                 <!--Altura Imagem DETALHE-->
                 <v-col>
-                  <span class="ml-0 textoBranco">Altura Imagem (Detalhe)</span>
+                  <span class="ml-3">Altura Imagem (Detalhe)</span>
                   <v-text-field
                     class="mr-3"
                     dense
@@ -100,7 +124,7 @@
 
                 <!--Largura imagem DETALHE-->
                 <v-col>
-                  <span class="ml-3 textoBranco">Largura Imagem (Detalhe)</span>
+                  <span class="ml-6">Largura Imagem (Detalhe)</span>
                   <v-text-field
                     class="ml-3"
                     dense
@@ -126,7 +150,7 @@
               <!--tipo totem-->
               <v-row>
                 <v-col>
-                  <span class="ml-0 textoBranco">Tipo de Totem</span>
+                  <span class="ml-3">Tipo de Totem</span>
                   <v-alert class="mt-0 mb-0" color="white" dense>
                     <v-radio-group class="mt-0 mb-0"
                                    hide-details
@@ -150,7 +174,7 @@
               <!--cor de fundo-->
               <v-row>
                 <v-col align-self="center" class="text-center">
-                  <span class="textoBranco">Cor de Fundo</span>
+                  <span class="">Cor de Fundo</span>
                   <v-color-picker
                     class="ml-auto mr-auto"
                     dot-size="20"
@@ -175,8 +199,8 @@
             </v-col>
 
             <!--imagem de fundo-->
-            <v-col cols="6" align-self="stretch" class="text-right">
-              <span class="ml-0 textoBranco">Imagem de fundo</span>
+            <v-col cols="6" align-self="stretch" class="text-left">
+              <span class="ml-3">Imagem de fundo</span>
               <v-img :src="this.$configSis.urlDownload + this.totemConfigs.bg_img"
                      class="rounded-xl ml-auto" aspect-ratio="1.5"
                      v-if="this.totemConfigs.bg_img !== null"/>
@@ -315,7 +339,8 @@ export default {
       largura_index: '',
       altura_detail: '',
       largura_detail: '',
-      access_code: ''
+      access_code: '',
+      quiz: ''
     },
     dialogUpdateBG: false,
     currentEditBG: undefined,
@@ -332,6 +357,7 @@ export default {
   methods: {
 
     async getConfigs () {
+      this.totemConfigs = {}
       try {
         this.$http.get('totemconfig/plus')
           .then(response => {
@@ -449,5 +475,8 @@ export default {
 
 </script>
 <style>
-
+.ajusteBtn {
+  margin-top: -70px;
+  margin-bottom: 10px;
+}
 </style>

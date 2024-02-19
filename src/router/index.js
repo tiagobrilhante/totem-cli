@@ -10,6 +10,7 @@ import store from '@/store'
 import Historico from '../views/administrativo/Historico.vue'
 import Estatisticas from '../views/administrativo/Estatisticas.vue'
 import BkupBanco from '../views/administrativo/BkupBanco.vue'
+import AdmQuiz from '../views/administrativo/AdmQuiz.vue'
 
 Vue.use(VueRouter)
 const routes = [
@@ -86,6 +87,14 @@ const routes = [
     path: '/bkupbanco',
     name: 'BkupBanco',
     component: BkupBanco,
+    meta: {
+      logado: true
+    }
+  },
+  {
+    path: '/admquiz',
+    name: 'AdmQuiz',
+    component: AdmQuiz,
     meta: {
       logado: true
     }

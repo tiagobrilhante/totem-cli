@@ -92,6 +92,11 @@
                 <v-list-item-title><v-icon small class="pr-3">mdi-account</v-icon> Gerenciamento de Usuários</v-list-item-title>
               </v-list-item>
 
+              <!-- Gerenciamento de Quiz-->
+              <v-list-item to="/admquiz">
+                <v-list-item-title><v-icon small class="pr-3">mdi-format-list-checks</v-icon> Gerenciamento de Quiz</v-list-item-title>
+              </v-list-item>
+
               <!-- acompanhamento de histórico-->
               <v-list-item to="/historico">
                 <v-list-item-title><v-icon small class="pr-3">mdi-list-box</v-icon> Acompanhamento de Histórico</v-list-item-title>

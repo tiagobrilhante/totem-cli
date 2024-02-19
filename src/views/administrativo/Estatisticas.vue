@@ -40,7 +40,7 @@
 
                 <!-- versão da API-->
                 <v-col>
-                  <b>Versão da API: </b> 1.1
+                  <b>Versão da API: </b> 1.2
                 </v-col>
 
               </v-row>

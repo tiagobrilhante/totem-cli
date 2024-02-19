@@ -13,10 +13,9 @@
 
     <!--area de navegação-->
     <v-row v-else>
-
       <!--espaçador com botão voltar-->
       <v-col align-self="center" class="text-center" cols="1">
-        <v-btn elevation="21" color="#eb9234" @click="ajustaPagVoltar" v-if="assuntos.current_page > 1">Voltar
+        <v-btn v-if="assuntos.current_page > 1" color="#eb9234" elevation="21" @click="ajustaPagVoltar">Voltar
         </v-btn>
       </v-col>
 
@@ -26,14 +25,14 @@
         <!--linha 1-->
         <v-row>
 
-          <v-col :key="la1.id" align-self="center" cols="4" v-for="la1 in linha1assuntos" v-if="la1 !== undefined">
+          <v-col v-for="la1 in linha1assuntos" v-if="la1 !== undefined" :key="la1.id" align-self="center" cols="4">
             <v-card
               :hover=clicable
-              color="#7ca387"
-              @click="abreAssunto(la1.id)"
               class="ml-3 mr-3"
+              color="#7ca387"
               elevation="21"
               rounded="xl"
+              @click="abreAssunto(la1.id)"
             >
 
               <v-card-text class="text-center pa-2">
@@ -46,21 +45,21 @@
             </v-card>
           </v-col>
 
-          <v-col :key="n" align-self="center" cols="4" v-for="n in countUndefined1">
+          <v-col v-for="n in countUndefined1" :key="n" align-self="center" cols="4">
           </v-col>
 
         </v-row>
 
         <!--linha 2-->
         <v-row>
-          <v-col :key="la2.id" align-self="center" cols="4" v-for="la2 in linha2assuntos" v-if="la2 !== undefined">
+          <v-col v-for="la2 in linha2assuntos" v-if="la2 !== undefined" :key="la2.id" align-self="center" cols="4">
             <v-card
               :hover=clicable
-              @click="abreAssunto(la2.id)"
               class="ml-3 mr-3"
+              color="#7ca387"
               elevation="21"
               rounded="xl"
-              color="#7ca387"
+              @click="abreAssunto(la2.id)"
             >
               <v-card-text class="text-center pa-2">
 
@@ -73,8 +72,8 @@
             </v-card>
           </v-col>
 
-          <v-col :key="n" align-self="center" cols="4" v-for="n in 3-countUndefined2"
-                 v-if="linha2assuntos.length === 0">
+          <v-col v-for="n in 3-countUndefined2" v-if="linha2assuntos.length === 0" :key="n" align-self="center"
+                 cols="4">
             <v-alert :height=totemConfigs.altura_index :width=totemConfigs.largura_index
                      color="rgb(0,0,0,0)"></v-alert>
           </v-col>
@@ -85,37 +84,58 @@
 
       <!--espaçador com botão avançar-->
       <v-col align-self="center" class="text-center" cols="1">
-        <v-btn elevation="21" color="#eb9234" @click="ajustaPagAvanca"
-               v-if="assuntos.current_page !== assuntos.last_page">Avançar
+        <v-btn v-if="assuntos.current_page !== assuntos.last_page" color="#eb9234" elevation="21"
+               @click="ajustaPagAvanca">Avançar
         </v-btn>
       </v-col>
 
       <!--pagination-->
-      <v-container fluid v-if="assuntos.last_page > 1">
 
-        <v-pagination
-          :length="assuntos.last_page"
-          @input="onPageChange"
-          class="pl-5 pr-5 ml-5 mr-5"
-          color="success"
-          v-model="assuntos.current_page"
-        ></v-pagination>
+      <v-container fluid>
+
+        <v-row>
+          <v-col cols="1"></v-col>
+          <v-col>
+            <v-container fluid>
+              <v-row>
+                <v-col class="text-center">
+                  <v-btn @click="openDialogQuiz" v-if="totemConfigs.quiz === 'Sim'" block class="pt-8 pb-8" color="warning" elevation="21" rounded x-large><h2
+                    class="black--text">Teste o seu conhecimento!</h2></v-btn>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-col>
+          <v-col>
+            <v-container v-if="assuntos.last_page > 1" fluid>
+              <v-pagination
+                v-model="assuntos.current_page"
+                :length="assuntos.last_page"
+                class="pl-5 pr-5 ml-5 mr-5"
+                color="success"
+                @input="onPageChange"
+              ></v-pagination>
+
+            </v-container>
+          </v-col>
+          <v-col></v-col>
+          <v-col cols="1"></v-col>
+        </v-row>
 
       </v-container>
 
     </v-row>
 
     <!--Dialog para navegar pelo assunto-->
-    <v-dialog max-width="90%" v-model="dialogNavegaAssunto" scrollable>
-      <v-card color="#7ca387" @contextmenu.prevent="disableRightClick" v-if="!objetoVazio(selectedAssunto)">
+    <v-dialog v-model="dialogNavegaAssunto" max-width="90%" scrollable>
+      <v-card v-if="!objetoVazio(selectedAssunto)" color="#7ca387" @contextmenu.prevent="disableRightClick">
 
         <!--titulo e botão fechar-->
         <v-card-title class="justify-center text-center">
           <v-row>
             <v-col cols="1"></v-col>
-            <v-col cols="10" class="text-h2"><b>{{ selectedAssunto.nome_assunto }}</b></v-col>
+            <v-col class="text-h2" cols="10"><b>{{ selectedAssunto.nome_assunto }}</b></v-col>
             <v-col cols="1">
-              <v-btn @click="dialogNavegaAssunto = false" color="grey lighten-1">X</v-btn>
+              <v-btn color="grey lighten-1" @click="dialogNavegaAssunto = false">X</v-btn>
             </v-col>
           </v-row>
 
@@ -131,8 +151,8 @@
             <v-container fluid>
               <v-row>
                 <v-col>
-                  <v-btn :key="imgs.id" @click="changeSelectedImg(imgs.ordem)" class="mr-5" retain-focus-on-click
-                         v-for="imgs in selectedAssunto.imagens">{{ imgs.ordem }}
+                  <v-btn v-for="imgs in selectedAssunto.imagens" :key="imgs.id" class="mr-5" retain-focus-on-click
+                         @click="changeSelectedImg(imgs.ordem)">{{ imgs.ordem }}
                   </v-btn>
                 </v-col>
               </v-row>
@@ -170,16 +190,16 @@
                 </v-row>
 
                 <!-- Area do conteúdo-->
-                <v-alert rounded="xl" color="grey lighten-2" v-if="selectedImg.legenda !== ''" class="text-justify">
+                <v-alert v-if="selectedImg.legenda !== ''" class="text-justify" color="grey lighten-2" rounded="xl">
 
                   <v-row class="mt-2 mr-1">
                     <v-col class="text-right">
-                      <v-btn @click="aumentaDimunuiFonte" color="#aeeb8a" small>{{ legendaBtnAumentaDiminui }}</v-btn>
+                      <v-btn color="#aeeb8a" small @click="aumentaDimunuiFonte">{{ legendaBtnAumentaDiminui }}</v-btn>
                     </v-col>
                   </v-row>
 
                   <!-- texto da legenda -->
-                  <v-row class="mb-1" v-if="!saibaMaisAreaVisibility">
+                  <v-row v-if="!saibaMaisAreaVisibility" class="mb-1">
 
                     <v-row class="ml-2 mr-2">
                       <v-col :class=tamanhoTexto>
@@ -197,7 +217,7 @@
 
                   <!-- botao saiba mais-->
                   <hr v-if="selectedImg.saibamais">
-                  <v-row class="mt-1" v-if="selectedImg.saibamais">
+                  <v-row v-if="selectedImg.saibamais" class="mt-1">
                     <v-col class="text-right">
                       <v-btn @click="abreSaibaMais">{{ saibaMaisTextButton }}</v-btn>
                     </v-col>
@@ -209,11 +229,11 @@
             </v-row>
 
             <!--navegar pelas imagens internas-->
-            <v-container fluid class="">
+            <v-container class="" fluid>
               <v-row no-gutters>
                 <v-col>
-                  <v-btn :key="imgs.id" @click="changeSelectedImg(imgs.ordem)" class="mr-5" retain-focus-on-click
-                         v-for="imgs in selectedAssunto.imagens">{{ imgs.ordem }}
+                  <v-btn v-for="imgs in selectedAssunto.imagens" :key="imgs.id" class="mr-5" retain-focus-on-click
+                         @click="changeSelectedImg(imgs.ordem)">{{ imgs.ordem }}
                   </v-btn>
                 </v-col>
               </v-row>
@@ -223,7 +243,36 @@
         </v-card-text>
         <v-card-actions class="pb-5">
           <v-spacer></v-spacer>
-          <v-btn @click="dialogNavegaAssunto = false" color="grey lighten-1">Voltar</v-btn>
+          <v-btn color="grey lighten-1" @click="dialogNavegaAssunto = false">Voltar</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <!--Dialog para navegar pelos quiz-->
+    <v-dialog v-model="dialogQuiz" max-width="90%" scrollable>
+      <v-card color="#7ca387" @contextmenu.prevent="disableRightClick">
+
+        <!--titulo e botão fechar-->
+        <v-card-title class="justify-center text-center">
+          <v-row>
+            <v-col cols="1"></v-col>
+            <v-col class="text-h4" cols="10"><b>Teste o seu conhecimento!</b></v-col>
+            <v-col cols="1">
+              <v-btn color="grey lighten-1" @click="dialogQuiz = false">X</v-btn>
+            </v-col>
+          </v-row>
+
+        </v-card-title>
+
+        <!-- card Text-->
+        <v-card-text>
+
+          <Quiz v-if="dialogQuiz"/>
+
+        </v-card-text>
+        <v-card-actions class="pb-5">
+          <v-spacer></v-spacer>
+          <v-btn color="grey lighten-1" @click="dialogQuiz = false">Sair</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -232,10 +281,13 @@
 </template>
 
 <script>import config from '../../http/config'
+import Quiz from './Quiz'
 
 export default {
 
-  components: {},
+  components: {
+    Quiz
+  },
   data () {
     return {
       configSis: config,
@@ -255,7 +307,8 @@ export default {
       saibamais: '',
       saibaMaisAreaVisibility: false,
       saibaMaisTextButton: 'SAIBA MAIS...',
-      essaEImgEventoPcp: true
+      essaEImgEventoPcp: true,
+      dialogQuiz: false
     }
   },
   props: {
@@ -270,6 +323,8 @@ export default {
   },
   methods: {
     async getAssuntos () {
+      // pega os assuntos e divide de acordo com o grid (3 em cima e 3 em baixo)
+      // se ajusta conforme a quantidade de assuntos
       this.linha1assuntos = []
       this.linha2assuntos = []
       try {
@@ -277,23 +332,34 @@ export default {
           .then(response => {
             this.assuntos = response.data
             this.qtdAssuntos = this.assuntos.data.length
+
+            // para a primeira linha, caso seja diferente de 0 e menor ou igual a 3
             if (this.assuntos.data.length !== 0 && this.assuntos.data.length <= 3 > 0) {
               for (let i = 0; i < 3; i++) {
                 if (this.assuntos.data[i].imagens.length !== 0) {
                   this.linha1assuntos.push(this.assuntos.data[i])
                 }
               }
+              // isso significa que não vai existir a linha 2
               this.linha2assuntos = []
             } else {
+              // nesse caso, a quantidade de assuntos vai ocupar a segunda linha
+              // primeira linha a ser ocupada
               for (let i = 0; i < 3; i++) {
                 this.linha1assuntos.push(this.assuntos.data[i])
               }
+              // segunda linha a ser ocupada
               for (let i = 3; i < 6; i++) {
                 if (this.assuntos.data[i].imagens.length !== 0) {
                   this.linha2assuntos.push(this.assuntos.data[i])
                 }
               }
             }
+            /*
+             * agora preciso ajustar as cols para que sejam inseridas vazias
+             * com a finalidade de ocupar os claros e manter o design da tela
+             */
+
             let ajuste1 = 0
             let ajuste2 = 0
             for (let i = 0; i < this.linha1assuntos.length; i++) {
@@ -415,6 +481,10 @@ export default {
 
     disableRightClick (event) {
       event.preventDefault() // Impede o comportamento padrão do clique com o botão direito
+    },
+
+    openDialogQuiz () {
+      this.dialogQuiz = true
     }
   }
 }
