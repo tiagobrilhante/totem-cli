@@ -1,5 +1,5 @@
 const urlDownload = 'http://localhost:8000/'
-// const urlDownload = 'http://totemapi1.cma.eb.mil.br/'
+// const urlDownload = 'http://totemapi2.cma.eb.mil.br/'
 // const urlDownload = 'http://totemapi.12rm.eb.mil.br/'
 
 const baseURL = urlDownload + 'api/'
@@ -12,9 +12,20 @@ const criador = 'TC Brilhante'
 const revisarForm = 'Revise os campos do formulário.'
 const versoes = [
   {
+    id: '2.4',
+    release: '170',
+    latest: true,
+    data: '19/02/2024',
+    detalhesVisiveis: false,
+    detalhes: [
+      'Correção de bugs',
+      'Saneamento de código'
+    ]
+  },
+  {
     id: '2.3',
     release: '155',
-    latest: true,
+    latest: false,
     data: '19/02/2024',
     detalhesVisiveis: false,
     detalhes: [

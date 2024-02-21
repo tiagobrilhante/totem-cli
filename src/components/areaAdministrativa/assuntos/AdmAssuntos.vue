@@ -1075,7 +1075,7 @@ export default {
     deleteAssuntoConfirm () {
       this.$http.delete('assunto/' + this.editedAssunto.id)
         .then(() => {
-          this.getConfigs()
+          this.getAssuntos()
           this.closeDeleteAssunto()
           this.$toastr.s(
             'Assunto removido com sucesso', 'Sucesso!'
@@ -1101,7 +1101,7 @@ export default {
         try {
           this.$http.post('assunto', objetoParaEnvio)
             .then(() => {
-              this.getConfigs()
+              this.getAssuntos()
               this.dialogAddAssunto = false
             })
             .catch(erro => console.log(erro))
@@ -1129,7 +1129,7 @@ export default {
 
         this.$http.put('assunto/' + this.editedAssunto.id, objetoParaEnvio)
           .then(() => {
-            this.getConfigs()
+            this.getAssuntos()
             this.$toastr.s(
               'Assunto alterado com sucesso', 'Sucesso!'
             )
@@ -1157,6 +1157,7 @@ export default {
       this.isImgNewBanner = false
       this.legendaNewImg = ''
       this.saibaMaisNewImg = ''
+      this.fonteNewImagem = ''
     },
 
     openDialogEditImg () {
