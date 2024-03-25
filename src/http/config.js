@@ -5,7 +5,7 @@ const urlDownload = 'http://localhost:8000/'
 const baseURL = urlDownload + 'api/'
 
 const nomeSis = 'EBTotem'
-const versaoSis = '2.3'
+const versaoSis = '2.4'
 const labelSis = 'Sistema de Totens'
 const criador = 'TC Brilhante'
 // info geral

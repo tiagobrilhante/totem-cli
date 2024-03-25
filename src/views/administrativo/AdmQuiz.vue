@@ -427,6 +427,12 @@
 
           </v-container>
 
+          <v-alert v-if="allErrorsMsg.length > 0" type="error">
+            <ul>
+              <li v-for="(erro, index) in allErrorsMsg" :key="index">{{ erro }}</li>
+            </ul>
+          </v-alert>
+
         </v-card-text>
 
         <!--actions-->
@@ -484,12 +490,12 @@
 
     <!--Dialog mostrar as estatísticas de um quiz-->
     <v-dialog v-model="dialogShowEstatistica" width="70%">
-      <v-card >
+      <v-card>
         <v-card-title>
           Estatísticas do Quiz
         </v-card-title>
         <v-card-text class="text-center">
-          <Estatisticas :estatisticas="selectedQuizEstatisticas" v-if="dialogShowEstatistica"></Estatisticas>
+          <Estatisticas v-if="dialogShowEstatistica" :estatisticas="selectedQuizEstatisticas"></Estatisticas>
         </v-card-text>
         <v-card-actions class="pb-5">
           <v-spacer></v-spacer>
@@ -542,7 +548,8 @@ export default {
     dialogDeleteQuiz: false,
     textoDialogCadastroEdicao: '',
     dialogShowEstatistica: false,
-    selectedQuizEstatisticas: []
+    selectedQuizEstatisticas: [],
+    allErrorsMsg: ''
   }),
   computed: {
     ...mapGetters(['usuarioLogado', 'paginaEmAtulizacao'])
@@ -590,6 +597,7 @@ export default {
     },
 
     openDialogCadastraEditaQuiz (acao, objeto) {
+      this.allErrorsMsg = ''
       if (acao === 'Cadastro') {
         this.selectedQuiz = JSON.parse(JSON.stringify(this.quizDefault))
       } else {
@@ -652,41 +660,80 @@ export default {
 
     saveQuiz (acao) {
       // tenho que fazer as checagens de validação do front
+      let errorMsg = []
 
-      if (acao === 'Cadastro') {
-        try {
-          this.$http.post('admquiz', this.selectedQuiz)
-            .then(() => {
-              this.dialogCadastroEdicaoQuiz = false
-              this.$toastr.s(
-                'Quiz cadastrado com sucesso', 'Sucesso!'
-              )
-              this.getQuizzes()
-            })
-            .catch(erro => console.log(erro))
-        } catch (e) {
-          console.log(e)
-          this.$toastr.e(
-            'Não foi possível cadastrar o Quiz', 'Erro!'
-          )
+      if (this.selectedQuiz.maxscore === '' || this.selectedQuiz.cabecalho === '') {
+        if (this.selectedQuiz.maxscore === '') {
+          errorMsg.push('O quiz precisa ter um score máximo.')
+        }
+        if (this.selectedQuiz.cabecalho === '') {
+          errorMsg.push('O quiz precisa ter um cabeçalho.')
         }
       } else {
-        try {
-          this.$http.put('admquiz/' + this.selectedQuiz.id, this.selectedQuiz)
-            .then(() => {
-              this.dialogCadastroEdicaoQuiz = false
-              this.$toastr.s(
-                'Quiz editado com sucesso', 'Sucesso!'
-              )
-              this.getQuizzes()
-            })
-            .catch(erro => console.log(erro))
-        } catch (e) {
-          console.log(e)
-          this.$toastr.e(
-            'Não foi possível editar o Quiz', 'Erro!'
-          )
+        if (this.selectedQuiz.perguntas.length === 0) {
+          errorMsg.push('O quiz precisa ter no mínimo uma pergunta para ser cadastrado.')
+        } else {
+          for (let i = 0; i < this.selectedQuiz.perguntas.length; i++) {
+            // cada pergunta precisa ter no mínimo 2 respostas e uma deslas tem que ser verdadeira (apenas uma)
+            if (this.selectedQuiz.perguntas[i].respostas.length < 2) {
+              errorMsg.push('Existem perguntas que não possuem 2 respostas possíveis.')
+            }
+
+            let contaVerdade = 0
+            for (let j = 0; j < this.selectedQuiz.perguntas[i].respostas.length; j++) {
+              if (this.selectedQuiz.perguntas[i].respostas[j].correta === true) {
+                contaVerdade++
+              }
+            }
+            if (contaVerdade !== 1) {
+              errorMsg.push('Existem perguntas com respostas sem existir uma marcado como verdadeira.')
+            }
+          }
         }
+      }
+
+      this.allErrorsMsg = errorMsg
+
+      if (errorMsg.length === 0) {
+        if (acao === 'Cadastro') {
+          try {
+            this.$http.post('admquiz', this.selectedQuiz)
+              .then(() => {
+                this.dialogCadastroEdicaoQuiz = false
+                this.$toastr.s(
+                  'Quiz cadastrado com sucesso', 'Sucesso!'
+                )
+                this.getQuizzes()
+              })
+              .catch(erro => console.log(erro))
+          } catch (e) {
+            console.log(e)
+            this.$toastr.e(
+              'Não foi possível cadastrar o Quiz', 'Erro!'
+            )
+          }
+        } else {
+          try {
+            this.$http.put('admquiz/' + this.selectedQuiz.id, this.selectedQuiz)
+              .then(() => {
+                this.dialogCadastroEdicaoQuiz = false
+                this.$toastr.s(
+                  'Quiz editado com sucesso', 'Sucesso!'
+                )
+                this.getQuizzes()
+              })
+              .catch(erro => console.log(erro))
+          } catch (e) {
+            console.log(e)
+            this.$toastr.e(
+              'Não foi possível editar o Quiz', 'Erro!'
+            )
+          }
+        }
+      } else {
+        this.$toastr.e(
+          `Não foi possível realizar a ação de ${acao} do Quiz', 'Erro!`
+        )
       }
     },
 
