@@ -101,6 +101,8 @@ export default {
         this.$http.post('totemconfig/admarea', objetoEnvio)
           .then(response => {
             if (response.data) {
+              this.dialogSenha = false
+              this.$emit('ajustarVisibilidade', false)
               this.$router.push({name: 'login'})
             } else {
               this.password = ''

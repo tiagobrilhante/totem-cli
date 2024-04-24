@@ -3,11 +3,11 @@
     <!-- imagens adicionais -->
     <v-row>
       <v-col>
-        <v-alert rounded="xl" color="red lighten-4">
+        <v-alert color="red lighten-4" rounded="xl">
           <!--titulo e btn add imagens-->
           <v-row>
             <v-col cols="10"><h3>Imagens Adicionais</h3></v-col>
-            <v-col cols="2" class="text-right">
+            <v-col class="text-right" cols="2">
               <v-btn class="primary" small
                      @click="openDialogAddImgAdicionalEvento">
                 Adicionar Imagem
@@ -17,16 +17,20 @@
 
           <v-row v-if="selectedEvento.imagens_adicionais && selectedEvento.imagens_adicionais.length > 0">
             <v-col>
-              <v-alert :key="imgadicional.id" v-for="imgadicional in selectedEvento.imagens_adicionais">
+              <v-alert v-for="imgadicional in selectedEvento.imagens_adicionais" :key="imgadicional.id">
                 <v-row>
                   <v-col>
                     <v-img :src="configSis.urlDownload + '/' +  imgadicional.imagem"
-                           class="rounded-xl" aspect-ratio="1.5"/>
+                           aspect-ratio="1.5" class="rounded-xl"/>
                   </v-col>
                   <v-col><strong>Fonte: </strong>{{ imgadicional.fonte }}</v-col>
-                  <v-col><strong>Descrição: </strong>{{ imgadicional.descricao }}</v-col>
+                  <v-col>
+                    <strong>Descrição: </strong>{{ imgadicional.descricao }}<br>
+                    <strong>Descrição (Inglês): </strong>{{ imgadicional.descricao_en }}<br>
+                    <strong>Descrição (Espanhol): </strong>{{ imgadicional.descricao_es }}
+                  </v-col>
                   <v-col class="text-right">
-                    <v-btn @click="openDeleteImagem(imgadicional)" color="error">
+                    <v-btn color="error" @click="openDeleteImagem(imgadicional)">
                       <v-icon class="pr-3">mdi-delete</v-icon>
                       Excluir Imagem
                     </v-btn>
@@ -42,7 +46,7 @@
     </v-row>
 
     <!--Dialog para add imagem adicional de evento-->
-    <v-dialog max-width="80%" v-model="dialogAddImagemAdicionalEvento">
+    <v-dialog v-model="dialogAddImagemAdicionalEvento" max-width="80%">
 
       <!--Card de cadastro edição-->
       <v-card>
@@ -64,13 +68,13 @@
 
             <v-form @submit.prevent="saveImageAdicionalEvento">
 
-              <!-- imagem , fonte e descricao-->
+              <!-- imagem , fonte -->
               <v-row dense>
 
                 <!--imagem-->
                 <v-col>
                   <span class="ml-3">Imagem * (Campo Obrigatório)</span>
-                  <v-file-input @change="selectImageAdicionalEvento"
+                  <v-file-input v-model="inputImagemEventoAdicional"
                                 accept="image/*"
                                 dense
                                 hint="Escolha uma imagem no formato .png ou .jpg"
@@ -80,7 +84,7 @@
                                 rounded
                                 show-size
                                 solo
-                                v-model="inputImagemEventoAdicional"
+                                @change="selectImageAdicionalEvento"
                   ></v-file-input>
 
                 </v-col>
@@ -89,6 +93,7 @@
                 <v-col>
                   <span class="ml-3">Fonte da Imagem</span>
                   <v-text-field
+                    v-model="fonteImagemPcpNewEventoAdicional"
                     dense
                     hint="Por exemplo: http://eb.mil.br/art24445"
                     label="Fonte da Imagem"
@@ -96,26 +101,7 @@
                     placeholder="Insira a fonte da imagem"
                     required
                     rounded
-                    solo
-                    v-model="fonteImagemPcpNewEventoAdicional">
-
-                  </v-text-field>
-
-                </v-col>
-
-                <!--descrição-->
-                <v-col>
-                  <span class="ml-3">Descrição da Imagem</span>
-                  <v-text-field
-                    dense
-                    hint="Por exemplo: Foto de Pedro teixeira desembarcando de navio."
-                    label="Descrição da imagem"
-                    persistent-hint
-                    placeholder="Insira a descrição da imagem"
-                    required
-                    rounded
-                    solo
-                    v-model="descricaoNewImgAdicionalEvento">
+                    solo>
 
                   </v-text-field>
 
@@ -123,11 +109,72 @@
 
               </v-row>
 
+              <!--Descricao en ptbr e ingles-->
+              <v-row dense>
+                <!--descrição-->
+                <v-col>
+                  <span class="ml-3">Descrição da Imagem</span>
+                  <v-text-field
+                    v-model="descricaoNewImgAdicionalEvento"
+                    dense
+                    hint="Por exemplo: Foto de Pedro teixeira desembarcando de navio."
+                    label="Descrição da imagem"
+                    persistent-hint
+                    placeholder="Insira a descrição da imagem"
+                    required
+                    rounded
+                    solo>
+
+                  </v-text-field>
+
+                </v-col>
+
+                <!--descrição (ingles)-->
+                <v-col>
+                  <span class="ml-3">Descrição da Imagem (Inglês)</span>
+                  <v-text-field
+                    v-model="descricaoNewImgAdicionalEventoEng"
+                    dense
+                    hint="Use o mesmo conteúdo traduzido para inglês."
+                    label="Descrição da imagem (Inglês)"
+                    persistent-hint
+                    placeholder="Insira a descrição da imagem em Inglês"
+                    required
+                    rounded
+                    solo>
+
+                  </v-text-field>
+
+                </v-col>
+              </v-row>
+
+              <!--Descricao espanhol-->
+              <v-row dense>
+                <!--descrição es-->
+                <v-col>
+                  <span class="ml-3">Descrição da Imagem (Espanhol)</span>
+                  <v-text-field
+                    v-model="descricaoNewImgAdicionalEventoSpa"
+                    dense
+                    hint="Insira o conteúdo da descrição em espanhol."
+                    label="Descrição da imagem (Espanhol)"
+                    persistent-hint
+                    placeholder="Insira a descrição da imagem (Espanhol)"
+                    required
+                    rounded
+                    solo>
+
+                  </v-text-field>
+
+                </v-col>
+                <v-col></v-col>
+              </v-row>
+
               <!--preview-->
               <v-row>
                 <v-col>
 
-                  <v-alert elevation="10" rounded="xl" v-if="previewImageEventoAdicional">
+                  <v-alert v-if="previewImageEventoAdicional" elevation="10" rounded="xl">
                     <h3>Preview:</h3>
                     <img :src="previewImageEventoAdicional" alt=""
                          class="v-responsive my-3 ml-auto mr-auto rounded-xl"/>
@@ -149,9 +196,9 @@
 
                   <!--Cancelar-->
                   <v-btn
-                    @click="dialogAddImagemAdicionalEvento = false"
                     class="ml-6"
-                    color="red darken-1">
+                    color="red darken-1"
+                    @click="dialogAddImagemAdicionalEvento = false">
                     Cancelar
                   </v-btn>
 
@@ -170,7 +217,7 @@
     </v-dialog>
 
     <!--Dialog para deletar imagem Adicional de um evento-->
-    <v-dialog max-width="800px" v-model="dialogDeleteImagemAdicionalEvento">
+    <v-dialog v-model="dialogDeleteImagemAdicionalEvento" max-width="800px">
       <v-card>
         <v-card-title class="justify-center" primary-title>
           <v-icon
@@ -187,7 +234,7 @@
         <v-card-text>
 
           <v-img :src="configSis.urlDownload + '/' + imagemAdicionalParaDeletar.imagem"
-                 class="rounded-xl" aspect-ratio="1.5"/>
+                 aspect-ratio="1.5" class="rounded-xl"/>
           <v-row class="mt-4">
             <v-col class="text-center">
               <h2>Essa ação é irreversível. Tenha certeza do que está fazendo.</h2>
@@ -196,9 +243,9 @@
         </v-card-text>
         <v-card-actions class="pb-5">
           <v-spacer></v-spacer>
-          <v-btn @click="dialogDeleteImagemAdicionalEvento = false" color="grey lighten-1">Cancelar</v-btn>
+          <v-btn color="grey lighten-1" @click="dialogDeleteImagemAdicionalEvento = false">Cancelar</v-btn>
           <span class="pl-5 pr-5"></span>
-          <v-btn @click="deleteImagemAdicionalConfirm" color="red lighten-1">Excluir</v-btn>
+          <v-btn color="red lighten-1" @click="deleteImagemAdicionalConfirm">Excluir</v-btn>
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
@@ -217,6 +264,8 @@ export default {
     inputImagemEventoAdicional: undefined,
     fonteImagemPcpNewEventoAdicional: '',
     descricaoNewImgAdicionalEvento: '',
+    descricaoNewImgAdicionalEventoEng: '',
+    descricaoNewImgAdicionalEventoSpa: '',
     dialogAddImagemAdicionalEvento: false,
     dialogDeleteImagemAdicionalEvento: false,
     imagemAdicionalParaDeletar: {}
@@ -233,6 +282,8 @@ export default {
       this.inputImagemEventoAdicional = undefined
       this.fonteImagemPcpNewEventoAdicional = ''
       this.descricaoNewImgAdicionalEvento = ''
+      this.descricaoNewImgAdicionalEventoEng = ''
+      this.descricaoNewImgAdicionalEventoSpa = ''
       this.dialogAddImagemAdicionalEvento = true
     },
 
@@ -253,6 +304,8 @@ export default {
         formData.append('imagem', this.currentImageAdicionalEvento)
         formData.append('fonte', this.fonteImagemPcpNewEventoAdicional)
         formData.append('descricao', this.descricaoNewImgAdicionalEvento)
+        formData.append('descricao_en', this.descricaoNewImgAdicionalEventoEng)
+        formData.append('descricao_es', this.descricaoNewImgAdicionalEventoSpa)
         formData.append('evento_id', this.selectedEvento.id)
         return this.$http.post('eventos/adicionaimgadicional', formData, {
           headers: {

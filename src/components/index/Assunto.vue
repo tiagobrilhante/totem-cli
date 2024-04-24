@@ -15,7 +15,10 @@
     <v-row v-else>
       <!--espaçador com botão voltar-->
       <v-col align-self="center" class="text-center" cols="1">
-        <v-btn v-if="assuntos.current_page > 1" color="#eb9234" elevation="21" @click="ajustaPagVoltar">Voltar
+        <v-btn v-if="assuntos.current_page > 1" color="#eb9234" elevation="21" @click="ajustaPagVoltar">
+          <span v-if="this.selected_lang === 'pt_br'">Voltar</span>
+          <span v-else-if="this.selected_lang === 'en'"> Back</span>
+          <span v-else> Volver </span>
         </v-btn>
       </v-col>
 
@@ -40,7 +43,11 @@
                        :width=totemConfigs.largura_index
                        class="rounded-xl ml-auto mr-auto"/>
 
-                <v-alert class="" color="rgb(0,0,0,0)"><h2>{{ la1.nome_assunto }}</h2></v-alert>
+                <v-alert class="" color="rgb(0,0,0,0)">
+                  <h2 v-if="selected_lang === 'pt_br'">{{ la1.nome_assunto }}</h2>
+                  <h2 v-else-if="selected_lang === 'en'">{{ la1.nome_assunto_en }}</h2>
+                  <h2 v-else>{{ la1.nome_assunto_es }}</h2>
+                </v-alert>
               </v-card-text>
             </v-card>
           </v-col>
@@ -67,7 +74,11 @@
                        :width=totemConfigs.largura_index
                        class="rounded-xl ml-auto mr-auto"/>
 
-                <v-alert class="" color="rgb(0,0,0,0)"><h2>{{ la2.nome_assunto }}</h2></v-alert>
+                <v-alert class="" color="rgb(0,0,0,0)">
+                  <h2 v-if="selected_lang === 'pt_br'">{{ la2.nome_assunto }}</h2>
+                  <h2 v-else-if="selected_lang === 'en'">{{ la2.nome_assunto_en }}</h2>
+                  <h2 v-else>{{ la2.nome_assunto_es }}</h2>
+                </v-alert>
               </v-card-text>
             </v-card>
           </v-col>
@@ -85,7 +96,10 @@
       <!--espaçador com botão avançar-->
       <v-col align-self="center" class="text-center" cols="1">
         <v-btn v-if="assuntos.current_page !== assuntos.last_page" color="#eb9234" elevation="21"
-               @click="ajustaPagAvanca">Avançar
+               @click="ajustaPagAvanca">
+          <span v-if="this.selected_lang === 'pt_br'">Avançar</span>
+          <span v-else-if="this.selected_lang === 'en'"> Next</span>
+          <span v-else> Avance </span>
         </v-btn>
       </v-col>
 
@@ -99,8 +113,14 @@
             <v-container fluid>
               <v-row>
                 <v-col class="text-center">
-                  <v-btn @click="openDialogQuiz" v-if="totemConfigs.quiz === 'Sim'" block class="pt-8 pb-8" color="warning" elevation="21" rounded x-large><h2
-                    class="black--text">Teste o seu conhecimento!</h2></v-btn>
+                  <v-btn v-if="totemConfigs.quiz === 'Sim'" block class="pt-8 pb-8" color="warning"
+                         elevation="21" rounded x-large @click="openDialogQuiz">
+                    <h2 v-if="this.selected_lang === 'pt_br'" class="black--text"> Teste o seu
+                      conhecimento!</h2>
+                    <h2 v-else-if="this.selected_lang === 'en'" class="black--text"> Test your
+                      knowledge!</h2>
+                    <h2 v-else class="black--text"> ¡Prueba tus conocimientos! </h2>
+                  </v-btn>
                 </v-col>
               </v-row>
             </v-container>
@@ -133,7 +153,29 @@
         <v-card-title class="justify-center text-center">
           <v-row>
             <v-col cols="1"></v-col>
-            <v-col class="text-h2" cols="10"><b>{{ selectedAssunto.nome_assunto }}</b></v-col>
+            <v-col class="text-h2" cols="10">
+
+              <b v-if="selected_lang === 'pt_br'">{{ selectedAssunto.nome_assunto }}</b>
+              <b v-else-if="selected_lang === 'en'">
+                <span
+                  v-if="selectedAssunto.nome_assunto_en === '' || selectedAssunto.nome_assunto_en === 'null' || selectedAssunto.nome_assunto_en === null">
+                  {{ naoTraduzidoEn }}
+                </span>
+                <span v-else>
+                  {{ selectedAssunto.nome_assunto_en }}
+                </span>
+              </b>
+              <b v-else>
+              <span
+                v-if="selectedAssunto.nome_assunto_es === '' || selectedAssunto.nome_assunto_es === 'null' || selectedAssunto.nome_assunto_es === null">
+                  {{ naoTraduzidoEs }}
+                </span>
+                <span v-else>
+                  {{ selectedAssunto.nome_assunto_es }}
+                </span>
+              </b>
+
+            </v-col>
             <v-col cols="1">
               <v-btn color="grey lighten-1" @click="dialogNavegaAssunto = false">X</v-btn>
             </v-col>
@@ -182,11 +224,30 @@
                 <v-row>
                   <v-col class="text-center">
                     <v-alert color="grey lighten-2" rounded="xl">
-                      <span class="text-h3 font-preta">{{ selectedImg.nome }}</span>
+                      <span v-if="selected_lang === 'pt_br'" class="text-h3 font-preta">{{
+                          selectedImg.nome
+                        }}</span>
+                      <span v-else-if="selected_lang === 'en'"
+                            class="text-h3 font-preta">
+                      <span
+                        v-if="selectedImg.nome_en === '' || selectedImg.nome_en === 'null' || selectedImg.nome_en === null">
+                        {{ naoTraduzidoEn }}
+                      </span>
+                        <span v-else>
+                        {{ selectedImg.nome_en }}
+                        </span>
+                      </span>
+                      <span v-else class="text-h3 font-preta">
+                      <span
+                        v-if="selectedImg.nome_es === '' || selectedImg.nome_es === 'null' || selectedImg.nome_es === null">
+                        {{ naoTraduzidoEs }}
+                      </span>
+                        <span v-else>
+                        {{ selectedImg.nome_es }}
+                        </span>
+                      </span>
                     </v-alert>
-
                   </v-col>
-
                 </v-row>
 
                 <!-- Area do conteúdo-->
@@ -203,7 +264,28 @@
 
                     <v-row class="ml-2 mr-2">
                       <v-col :class=tamanhoTexto>
-                        <span v-html="selectedImg.legenda"> </span>
+                        <span v-if="selected_lang === 'pt_br'" v-html="selectedImg.legenda"> </span>
+
+                        <span v-else-if="selected_lang === 'en'">
+                            <span
+                              v-if="selectedImg.legenda_en === '' || selectedImg.legenda_en === 'null' || selectedImg.legenda_en === null">
+                                {{ naoTraduzidoEn }}
+                            </span>
+                            <span v-else>
+                              <span v-html="selectedImg.legenda_en"> </span>
+                            </span>
+
+                        </span>
+
+                        <span v-else>
+                        <span
+                          v-if="selectedImg.legenda_es === '' || selectedImg.legenda_es === 'null' || selectedImg.legenda_es === null">
+                                {{ naoTraduzidoEs }}
+                            </span>
+                            <span v-else>
+                              <span v-html="selectedImg.legenda_es"> </span>
+                            </span>
+                        </span>
                       </v-col>
                     </v-row>
                   </v-row>
@@ -211,7 +293,19 @@
                   <!-- texto do saiba mais -->
                   <v-row v-if="saibaMaisAreaVisibility">
                     <v-col>
-                      <div :class="tamanhoTexto" v-html="selectedImg.saibamais"/>
+                      <span v-if="selected_lang === 'pt_br'" :class="tamanhoTexto" v-html="selectedImg.saibamais"/>
+                      <span v-else-if="selected_lang === 'en'">
+                        <span :class="tamanhoTexto" v-if="selectedImg.saibamais_en === '' || selectedImg.saibamais_en === 'null' || selectedImg.saibamais_en === null">
+                          {{naoTraduzidoEn}}
+                        </span>
+                        <span v-else :class="tamanhoTexto" v-html="selectedImg.saibamais_en" />
+                      </span>
+                      <span v-else>
+                        <span  :class="tamanhoTexto" v-if="selectedImg.saibamais_es === '' || selectedImg.saibamais_es === 'null' || selectedImg.saibamais_es === null">
+                          {{naoTraduzidoEs}}
+                        </span>
+                        <span v-else :class="tamanhoTexto" v-html="selectedImg.saibamais_es" />
+                      </span>
                     </v-col>
                   </v-row>
 
@@ -243,7 +337,11 @@
         </v-card-text>
         <v-card-actions class="pb-5">
           <v-spacer></v-spacer>
-          <v-btn color="grey lighten-1" @click="dialogNavegaAssunto = false">Voltar</v-btn>
+          <v-btn color="grey lighten-1" @click="dialogNavegaAssunto = false">
+            <span v-if="selected_lang === 'pt_br'"> Voltar</span>
+            <span v-if="selected_lang === 'en'"> Close</span>
+            <span v-if="selected_lang === 'es'"> Cerrar</span>
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -305,14 +403,19 @@ export default {
       tamanhoTexto: 'text-h5',
       legendaBtnAumentaDiminui: 'A--',
       saibamais: '',
+      saibamais_en: '',
+      saibamais_es: '',
       saibaMaisAreaVisibility: false,
       saibaMaisTextButton: 'SAIBA MAIS...',
       essaEImgEventoPcp: true,
-      dialogQuiz: false
+      dialogQuiz: false,
+      naoTraduzidoEn: 'Not translated yet',
+      naoTraduzidoEs: 'Aún no traducido'
     }
   },
   props: {
-    totemConfigs: Object
+    totemConfigs: Object,
+    selected_lang: String
   },
   watch: {},
 
@@ -390,8 +493,16 @@ export default {
       this.tamanhoTexto = 'text-h5'
       this.legendaBtnAumentaDiminui = 'A--'
       this.saibamais = ''
+      this.saibamais_en = ''
+      this.saibamais_es = ''
       this.saibaMaisAreaVisibility = false
-      this.saibaMaisTextButton = 'SAIBA MAIS...'
+      if (this.selected_lang === 'pt_br') {
+        this.saibaMaisTextButton = 'SAIBA MAIS...'
+      } else if (this.selected_lang === 'en') {
+        this.saibaMaisTextButton = 'KNOW MORE...'
+      } else {
+        this.saibaMaisTextButton = 'SEPA MAS...'
+      }
       this.selectedAssunto = {}
       this.selectedImg = {}
       for (let i = 0; i < this.assuntos.data.length; i++) {
@@ -431,8 +542,16 @@ export default {
 
     changeSelectedImg (ordem) {
       this.saibamais = ''
+      this.saibamais_en = ''
+      this.saibamais_es = ''
       this.saibaMaisAreaVisibility = false
-      this.saibaMaisTextButton = 'SAIBA MAIS...'
+      if (this.selected_lang === 'pt_br') {
+        this.saibaMaisTextButton = 'SAIBA MAIS...'
+      } else if (this.selected_lang === 'en') {
+        this.saibaMaisTextButton = 'KNOW MORE...'
+      } else {
+        this.saibaMaisTextButton = 'SEPA MAS...'
+      }
       for (let i = 0; i < this.selectedAssunto.imagens.length; i++) {
         if (this.selectedAssunto.imagens[i].ordem === ordem) {
           this.selectedImg = this.selectedAssunto.imagens[i]
@@ -471,11 +590,25 @@ export default {
       if (this.saibaMaisAreaVisibility === false) {
         this.saibamais = this.selectedImg.saibamais
         this.saibaMaisAreaVisibility = true
-        this.saibaMaisTextButton = 'Ocultar informações adicionais.'
+
+        if (this.selected_lang === 'pt_br') {
+          this.saibaMaisTextButton = 'Ocultar informações adicionais.'
+        } else if (this.selected_lang === 'en') {
+          this.saibaMaisTextButton = 'Hide additional information.'
+        } else {
+          this.saibaMaisTextButton = 'Ocultar información adicional.'
+        }
       } else {
         this.saibamais = ''
         this.saibaMaisAreaVisibility = false
-        this.saibaMaisTextButton = 'SAIBA MAIS...'
+
+        if (this.selected_lang === 'pt_br') {
+          this.saibaMaisTextButton = 'SAIBA MAIS...'
+        } else if (this.selected_lang === 'en') {
+          this.saibaMaisTextButton = 'KNOW MORE...'
+        } else {
+          this.saibaMaisTextButton = 'SEPA MAS...'
+        }
       }
     },
 

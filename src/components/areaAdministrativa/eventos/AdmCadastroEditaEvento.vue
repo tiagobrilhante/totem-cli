@@ -34,6 +34,7 @@
                 <span class="pl-3">Dia</span>
 
                 <v-select
+                  v-model="diaEvento"
                   :items="optionsDia"
                   class="ml-3"
                   clearable
@@ -43,7 +44,6 @@
                   persistent-hint
                   rounded
                   solo
-                  v-model="diaEvento"
                 ></v-select>
               </v-col>
 
@@ -52,6 +52,7 @@
                 <span class="pl-3">Mês</span>
 
                 <v-select
+                  v-model="mesEvento"
                   :items="optionsMes"
                   class="ml-3"
                   clearable
@@ -61,7 +62,6 @@
                   persistent-hint
                   rounded
                   solo
-                  v-model="mesEvento"
                 ></v-select>
               </v-col>
 
@@ -69,8 +69,8 @@
               <v-col>
                 <span class="pl-3">Ano</span>
                 <v-text-field
+                  v-model="anoEvento"
                   :maxlength="4"
-                  @input="limitInput()"
                   class="ml-3"
                   dense
                   hint="Insira o ano do evento ( 4 dígitos ) * obrigatório"
@@ -81,7 +81,7 @@
                   rounded
                   solo
                   type="text"
-                  v-model="anoEvento"
+                  @input="limitInput()"
                 ></v-text-field>
               </v-col>
 
@@ -89,11 +89,15 @@
 
           </v-col>
 
+        </v-row>
+
+        <v-row>
           <!--titulo evento-->
           <v-col>
             <span class="pl-3">Título do evento</span>
 
             <v-text-field
+              v-model="tituloEvento"
               class="ml-3"
               dense
               hint="Exemplo: Batalha dos Guararapes"
@@ -101,11 +105,49 @@
               persistent-hint
               rounded
               solo
-              v-model="tituloEvento"
             ></v-text-field>
 
           </v-col>
 
+          <!--titulo evento ingles-->
+          <v-col>
+            <span class="pl-3">Título do evento (Inglês)</span>
+
+            <v-text-field
+              v-model="tituloEventoEng"
+              class="ml-3"
+              dense
+              hint="Exemplo: Guararape's battle"
+              label="Título do Evento (Inglês)"
+              persistent-hint
+              rounded
+              solo
+            ></v-text-field>
+
+          </v-col>
+
+        </v-row>
+
+        <v-row>
+          <v-col>
+            <!--titulo evento espanhol-->
+            <v-col>
+              <span class="pl-3">Título do evento (Espanhol)</span>
+
+              <v-text-field
+                v-model="tituloEventoSpa"
+                class="ml-3"
+                dense
+                hint="Exemplo: Batalla de Guararapes"
+                label="Título do Evento (Espanhos)"
+                persistent-hint
+                rounded
+                solo
+              ></v-text-field>
+
+            </v-col>
+          </v-col>
+          <v-col></v-col>
         </v-row>
 
         <!--legenda e imagem-->
@@ -121,7 +163,7 @@
                 class="caption">Se deixado em branco, a não será mostrado nenhum texto como legenda.</span>
             </v-alert>
 
-            <v-alert color="warning" class="rounded-xl" v-if="typeOfAction === 'Cadastro'">
+            <v-alert v-if="typeOfAction === 'Cadastro'" class="rounded-xl" color="warning">
               <p>Você pode cadastrar imagens adicionais para um evento, no entanto, é necessário que o evento principal
                 seja criado primeiro. Ao salvar um evento, um novo modal para cadastro de imagens adicionais lhe será
                 franqueado.</p>
@@ -134,7 +176,7 @@
           <v-col v-if="typeOfAction === 'Cadastro'">
 
             <span class="ml-3">Imagem</span>
-            <v-file-input @change="selectImageEvento"
+            <v-file-input v-model="inputImagemEvento"
                           accept="image/*"
                           dense
                           hint="Escolha uma imagem no formato .png ou .jpg"
@@ -144,17 +186,18 @@
                           rounded
                           show-size
                           solo
-                          v-model="inputImagemEvento"
+                          @change="selectImageEvento"
             ></v-file-input>
 
             <!--preview-->
-            <v-alert elevation="10" rounded="xl" v-if="previewImageEvento">
+            <v-alert v-if="previewImageEvento" elevation="10" rounded="xl">
               <h3>Preview:</h3>
               <img :src="previewImageEvento" alt="" class="v-responsive ml-auto mr-auto my-3 rounded-xl"/>
 
               <span class="pl-3">Fonte da imagem</span>
 
               <v-text-field
+                v-model="fonteImagemPcpEvento"
                 class="ml-3"
                 dense
                 hint="Exemplo: https://eb.mil.br/artigo233"
@@ -162,7 +205,6 @@
                 persistent-hint
                 rounded
                 solo
-                v-model="fonteImagemPcpEvento"
               ></v-text-field>
 
             </v-alert>
@@ -170,13 +212,13 @@
           </v-col>
 
           <!--imagem no caso de edição de um novo evento-->
-          <v-col cols="6" v-else-if="typeOfAction === 'Edição' && momentoEditImg">
+          <v-col v-else-if="typeOfAction === 'Edição' && momentoEditImg" cols="6">
 
             <!--input par selecionar imagem nova-->
             <v-row v-if="momentoEditImg">
               <v-col>
                 <span class="ml-3">Imagem</span>
-                <v-file-input @change="selectImageEvento"
+                <v-file-input v-model="inputImagemEvento"
                               accept="image/*"
                               dense
                               hint="Escolha uma imagem no formato .png ou .jpg"
@@ -186,7 +228,7 @@
                               rounded
                               show-size
                               solo
-                              v-model="inputImagemEvento"
+                              @change="selectImageEvento"
                 ></v-file-input>
 
               </v-col>
@@ -198,7 +240,7 @@
                 <!--preview-->
                 <v-alert elevation="10" rounded="xl">
                   <h3>Preview:</h3>
-                  <img alt="img Preview" :src="previewImageEvento" class="v-responsive my-3 rounded-xl"/>
+                  <img :src="previewImageEvento" alt="img Preview" class="v-responsive my-3 rounded-xl"/>
                 </v-alert>
               </v-col>
 
@@ -209,6 +251,7 @@
                 <span class="pl-3">Fonte da imagem</span>
 
                 <v-text-field
+                  v-model="fonteImagemPcpEvento"
                   class="ml-3"
                   dense
                   hint="Exemplo: https://eb.mil.br/artigo233"
@@ -216,14 +259,13 @@
                   persistent-hint
                   rounded
                   solo
-                  v-model="fonteImagemPcpEvento"
                 ></v-text-field>
               </v-col>
             </v-row>
 
             <!--btn cnacela altera img-->
             <v-row>
-              <v-col class="text-right" v-if="momentoEditImg">
+              <v-col v-if="momentoEditImg" class="text-right">
                 <v-btn @click="retomaImgAntiga"> Cancelar Alteração de Imagem</v-btn>
               </v-col>
             </v-row>
@@ -231,24 +273,24 @@
           </v-col>
 
           <!--botoes editar e excluir-->
-          <v-col class="text-right" cols="6" v-else>
+          <v-col v-else class="text-right" cols="6">
 
             <!--imagem existente-->
             <v-row>
               <v-col class="text-left">
                 <span class="text-h6"> Imagem Principal:</span>
-                <v-img :src="this.$configSis.urlDownload + evento.imagem" v-if="evento.imagem !== null"
+                <v-img v-if="evento.imagem !== null" :src="this.$configSis.urlDownload + evento.imagem"
                        class="rounded-xl v-responsive"/>
 
-                <v-img :src="require('../../../assets/img/noimage.png')"
-                       v-else class="rounded-xl" aspect-ratio="1.5"/>
+                <v-img v-else
+                       :src="require('../../../assets/img/noimage.png')" aspect-ratio="1.5" class="rounded-xl"/>
               </v-col>
             </v-row>
 
             <!--editar-->
             <v-tooltip top>
               <template v-slot:activator="{ on, attrs }">
-                <v-btn @click="editExistentImageEvento()" class="warning ajusteBtn">
+                <v-btn class="warning ajusteBtn" @click="editExistentImageEvento()">
                   <v-icon
                     small
                     v-bind="attrs"
@@ -264,7 +306,7 @@
             <!--excluir-->
             <v-tooltip top>
               <template v-slot:activator="{ on, attrs }">
-                <v-btn @click="excluiImgEditEvento()" class=" error mr-5 ajusteBtn">
+                <v-btn class=" error mr-5 ajusteBtn" @click="excluiImgEditEvento()">
                   <v-icon
                     small
                     v-bind="attrs"
@@ -283,6 +325,7 @@
                 <span class="pl-3">Fonte da imagem</span>
 
                 <v-text-field
+                  v-model="fonteImagemPcpEvento"
                   class="ml-3"
                   dense
                   hint="Exemplo: https://eb.mil.br/artigo233"
@@ -290,13 +333,35 @@
                   persistent-hint
                   rounded
                   solo
-                  v-model="fonteImagemPcpEvento"
                 ></v-text-field>
               </v-col>
             </v-row>
 
           </v-col>
 
+        </v-row>
+
+        <!-- legenda em ingles e espanhol-->
+        <v-row>
+          <!--ingles-->
+          <v-col>
+            <v-alert class="rounded-xl">
+              <span>Legenda do evento (Inglês)</span>
+              <vue-editor v-model="legendaEventoEng"></vue-editor>
+              <span
+                class="caption">Se deixado em branco, a não será mostrado nenhum texto como legenda.</span>
+            </v-alert>
+          </v-col>
+
+          <!-- espanhol-->
+          <v-col>
+            <v-alert class="rounded-xl">
+              <span>Legenda do evento (Espanhol)</span>
+              <vue-editor v-model="legendaEventoSpa"></vue-editor>
+              <span
+                class="caption">Se deixado em branco, a não será mostrado nenhum texto como legenda.</span>
+            </v-alert>
+          </v-col>
         </v-row>
 
         <!--saiba mais-->
@@ -312,6 +377,32 @@
           </v-col>
         </v-row>
 
+        <!--saiba mais ingles-->
+        <v-row>
+          <v-col>
+            <v-alert class="rounded-xl mb-0">
+              <span>Saiba Mais (Inglês)</span>
+              <vue-editor v-model="saibaMaisEventoEng"></vue-editor>
+              <span
+                class="caption">Se deixado em branco, a não será mostrado nenhum texto como Saiba Mais.</span>
+            </v-alert>
+
+          </v-col>
+        </v-row>
+
+        <!--saiba mais em espanhol-->
+        <v-row>
+          <v-col>
+            <v-alert class="rounded-xl mb-0">
+              <span>Saiba Mais (Espanhol)</span>
+              <vue-editor v-model="saibaMaisEventoSpa"></vue-editor>
+              <span
+                class="caption">Se deixado em branco, a não será mostrado nenhum texto como Saiba Mais.</span>
+            </v-alert>
+
+          </v-col>
+        </v-row>
+
         <AdmImagemAdicional v-if="typeOfAction==='Edição'" :selectedEvento="evento"></AdmImagemAdicional>
 
         <!--btn action salvar cancelar-->
@@ -319,7 +410,7 @@
           <v-col class="text-right">
 
             <!--cancelar-->
-            <v-btn @click="closeDialog" class="mr-5 warning">Cancelar</v-btn>
+            <v-btn class="mr-5 warning" @click="closeDialog">Cancelar</v-btn>
 
             <!--salvar-->
             <v-btn class="success" type="submit">Salvar</v-btn>
@@ -332,7 +423,7 @@
     </v-card-text>
 
     <!--Dialog para deletar imagem de evento-->
-    <v-dialog max-width="800px" v-model="dialogDeleteImagemEvento">
+    <v-dialog v-model="dialogDeleteImagemEvento" max-width="800px">
       <v-card>
         <v-card-title class="justify-center" primary-title>
           <v-icon
@@ -353,16 +444,16 @@
         </v-card-text>
         <v-card-actions class="pb-5">
           <v-spacer></v-spacer>
-          <v-btn @click="dialogDeleteImagemEvento= false" color="grey lighten-1">Cancelar</v-btn>
+          <v-btn color="grey lighten-1" @click="dialogDeleteImagemEvento= false">Cancelar</v-btn>
           <span class="pl-5 pr-5"></span>
-          <v-btn @click="deleteImagemEventoConfirm" color="red lighten-1">Excluir</v-btn>
+          <v-btn color="red lighten-1" @click="deleteImagemEventoConfirm">Excluir</v-btn>
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
     </v-dialog>
 
     <!--Dialog para perguntar se quer cadastrar imagem adicional no momento do cadastro de um novo evento-->
-    <v-dialog max-width="80%" v-model="dialogAddImagemAdicionalEventoPlus" persistent>
+    <v-dialog v-model="dialogAddImagemAdicionalEventoPlus" max-width="80%" persistent>
 
       <!--Card de cadastro edição-->
       <v-card>
@@ -373,8 +464,10 @@
           <v-icon class="mr-4">
             mdi-image-area
           </v-icon>
-          <span class="headline" v-if="!controladorExibicaoImgAdicional">
-                       Adicionar Imagem Extra em evento?</span> <span class="headline">Gerenciamento de Imagens Adicionais</span>
+          <span class="headline">Gerenciamento de Imagens Adicionais --- </span>
+          <br>
+          <span v-if="!controladorExibicaoImgAdicional" class="headline">
+                        Adicionar Imagem Extra em evento?</span>
 
         </v-card-title>
 
@@ -382,13 +475,14 @@
 
           <h2 v-if="!controladorExibicaoImgAdicional">Você deseja adicionar mais imagens para esse evento?</h2>
 
-          <v-alert v-if="!controladorExibicaoImgAdicional" class="mt-5" type="info">As imagens adicionais devem ter ligação com o evento adicionado, e servem
+          <v-alert v-if="!controladorExibicaoImgAdicional" class="mt-5" type="info">As imagens adicionais devem ter
+            ligação com o evento adicionado, e servem
             para complementar a imagem principal.
           </v-alert>
 
           <AdmImagemAdicional v-if="controladorExibicaoImgAdicional" :selectedEvento="evento"></AdmImagemAdicional>
 
-          <v-row class="mt-10" v-if="!controladorExibicaoImgAdicional">
+          <v-row v-if="!controladorExibicaoImgAdicional" class="mt-10">
             <v-col class="text-right">
               <v-btn color="primary" @click="opneSpaceForImgAdicional">Sim</v-btn>
             </v-col>
@@ -398,7 +492,9 @@
           </v-row>
 
           <v-row v-else>
-            <v-col class="text-center"> <v-btn color="error" @click="closeDialog">Encerrar Cadastramento de Imagens Adicionais</v-btn></v-col>
+            <v-col class="text-center">
+              <v-btn color="error" @click="closeDialog">Encerrar Cadastramento de Imagens Adicionais</v-btn>
+            </v-col>
           </v-row>
 
         </v-card-text>
@@ -426,8 +522,12 @@ export default {
     anoEvento: '',
     // titulo
     tituloEvento: '',
+    tituloEventoEng: '',
+    tituloEventoSpa: '',
     // legenda
     legendaEvento: '',
+    legendaEventoEng: '',
+    legendaEventoSpa: '',
     // imagem do evento
     inputImagemEvento: undefined,
     currentImageEvento: undefined,
@@ -436,6 +536,8 @@ export default {
     fonteImagemPcpEvento: '',
     // saiba mais
     saibaMaisEvento: '',
+    saibaMaisEventoEng: '',
+    saibaMaisEventoSpa: '',
     // para edição
     guardadorDeImg: null,
     momentoEditImg: false,
@@ -475,8 +577,14 @@ export default {
           formData.append('mes', this.mesEvento)
           formData.append('ano', this.anoEvento)
           formData.append('nome', this.tituloEvento)
+          formData.append('nome_en', this.tituloEventoEng)
+          formData.append('nome_es', this.tituloEventoSpa)
           formData.append('legenda', this.legendaEvento)
+          formData.append('legenda_en', this.legendaEventoEng)
+          formData.append('legenda_es', this.legendaEventoSpa)
           formData.append('saibamais', this.saibaMaisEvento)
+          formData.append('saibamais_en', this.saibaMaisEventoEng)
+          formData.append('saibamais_es', this.saibaMaisEventoSpa)
           formData.append('fonteimagempcp', this.fonteImagemPcpEvento)
           // aqui eu verifico se é cadastro ou edição
           if (this.typeOfAction === 'Cadastro') {
@@ -538,8 +646,14 @@ export default {
       this.mesEvento = this.evento.mes || ''
       this.anoEvento = this.evento.ano || ''
       this.tituloEvento = this.evento.nome || ''
+      this.tituloEventoEng = this.evento.nome_en || ''
+      this.tituloEventoSpa = this.evento.nome_es || ''
       this.legendaEvento = this.evento.legenda || ''
+      this.legendaEventoEng = this.evento.legenda_en || ''
+      this.legendaEventoSpa = this.evento.legenda_es || ''
       this.saibaMaisEvento = this.evento.saibamais || ''
+      this.saibaMaisEventoEng = this.evento.saibamais_en || ''
+      this.saibaMaisEventoSpa = this.evento.saibamais_es || ''
       this.fonteImagemPcpEvento = this.evento.fonteimagempcp || ''
 
       if (this.evento.image) {
@@ -576,8 +690,14 @@ export default {
       this.mesEvento = ''
       this.anoEvento = ''
       this.tituloEvento = ''
+      this.tituloEventoEng = ''
+      this.tituloEventoSpa = ''
       this.legendaEvento = ''
+      this.legendaEventoEng = ''
+      this.legendaEventoSpa = ''
       this.saibaMaisEvento = ''
+      this.saibaMaisEventoEng = ''
+      this.saibaMaisEventoSpa = ''
       this.currentImageEvento = undefined
       this.previewImageEvento = undefined
       this.inputImagemEvento = undefined

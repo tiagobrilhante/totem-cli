@@ -29,7 +29,7 @@
             <v-divider></v-divider>
 
             <!-- Estatísticas basicas-->
-            <v-alert rounded="xl" class="mt-3">
+            <v-alert class="mt-3" rounded="xl">
 
               <!-- versão do cliente e da API-->
               <v-row no-gutters>
@@ -40,7 +40,7 @@
 
                 <!-- versão da API-->
                 <v-col>
-                  <b>Versão da API: </b> 1.2
+                  <b>Versão da API: </b> {{ apiVersion }}
                 </v-col>
 
               </v-row>
@@ -54,7 +54,7 @@
               </v-row>
 
               <!-- quantidade de eventos cadastrados e quantidade total de acessos-->
-              <v-row no-gutters v-if="totemConfigs.tipo_totem != 'normal'">
+              <v-row v-if="totemConfigs.tipo_totem != 'normal'" no-gutters>
 
                 <!-- quantidade de eventoscadastrados-->
                 <v-col>
@@ -69,7 +69,7 @@
               </v-row>
 
               <!-- Aqui é para totem normal-->
-              <v-row no-gutters v-else>
+              <v-row v-else no-gutters>
 
                 <!-- quantidade de assuntos-->
                 <v-col>
@@ -84,7 +84,7 @@
               </v-row>
 
               <!-- Evento Mais acessado-->
-              <v-row no-gutters v-if="totemConfigs.tipo_totem != 'normal'">
+              <v-row v-if="totemConfigs.tipo_totem != 'normal'" no-gutters>
                 <v-col>
                   <b>Evento com maior quantidade de acessos: </b> {{ conteudoMaisAcessado.ano }} -
                   {{ conteudoMaisAcessado.nome }} ( {{ conteudoMaisAcessado.acessos }} acessos)
@@ -92,7 +92,7 @@
               </v-row>
 
               <!-- Assunto Mais acessada-->
-              <v-row no-gutters v-else>
+              <v-row v-else no-gutters>
                 <v-col>
                   <b>Assunto com maior quantidade de acessos: </b>
                   {{ conteudoMaisAcessado.nome_assunto }} ( {{ conteudoMaisAcessado.acessos }} acessos)
@@ -106,40 +106,40 @@
             </v-alert>
 
             <!-- Área de Gráficos e tabela para Datas Históricas-->
-            <v-alert rounded="xl" class="mt-3" v-if="totemConfigs.tipo_totem != 'normal'">
+            <v-alert v-if="totemConfigs.tipo_totem != 'normal'" class="mt-3" rounded="xl">
 
               <!--- btn para abrir/fechar tabela -->
-              <v-btn small v-if="!showTotalContent" @click="showHideTable" class="rounded-xl" color="secondary"> Exibir
+              <v-btn v-if="!showTotalContent" class="rounded-xl" color="secondary" small @click="showHideTable"> Exibir
                 Tabela de Dados
               </v-btn>
 
               <!-- chart-->
-              <apexchart v-if="!carregandoDados && totemConfigs.tipo_totem ==='data'" width="100%" type="bar"
-                         :options="options"
-                         :series="series"></apexchart>
+              <apexchart v-if="!carregandoDados && totemConfigs.tipo_totem ==='data'" :options="options" :series="series"
+                         type="bar"
+                         width="100%"></apexchart>
 
               <!--- tabela de dados-->
-              <v-alert v-if="showTotalContent" color="cyan lighten-4" rounded="xl"
-                       class="elevation-10 mt-3 pb-8 pl-8 pr-8">
+              <v-alert v-if="showTotalContent" class="elevation-10 mt-3 pb-8 pl-8 pr-8" color="cyan lighten-4"
+                       rounded="xl">
 
                 <!--- btn para abrir/fechar tabela -->
-                <v-btn small v-if="showTotalContent" @click="showHideTable" class="rounded-xl" color="secondary">
+                <v-btn v-if="showTotalContent" class="rounded-xl" color="secondary" small @click="showHideTable">
                   Ocultar Tabela de Dados
                 </v-btn>
 
                 <!--DataTable-->
                 <v-data-table
+                  :calculate-widths="true"
                   :headers="headers"
                   :items="eventos"
-                  :search="search"
-                  class="elevation-21 mt-4 rounded-xl"
-                  sort-by="ano"
-                  group-by="ano"
                   :items-per-page="-1"
-                  hide-default-footer
-                  dense
+                  :search="search"
                   :sort-desc="true"
-                  :calculate-widths="true"
+                  class="elevation-21 mt-4 rounded-xl"
+                  dense
+                  group-by="ano"
+                  hide-default-footer
+                  sort-by="ano"
                 >
 
                   <!--template do topo da tabela-->
@@ -159,12 +159,12 @@
 
                       <!--Pesquisar-->
                       <v-text-field
+                        v-model="search"
                         append-icon="mdi-magnify"
                         hide-details
                         label="Pesquisar"
                         placeholder="Pesquisar"
                         single-line
-                        v-model="search"
                       ></v-text-field>
 
                     </v-toolbar>
@@ -178,39 +178,39 @@
             </v-alert>
 
             <!-- Área de Gráficos e tabela para Curiosidades-->
-            <v-alert rounded="xl" class="mt-3" v-else>
+            <v-alert v-else class="mt-3" rounded="xl">
 
               <!--- btn para abrir/fechar tabela -->
-              <v-btn small v-if="!showTotalContent" @click="showHideTable" class="rounded-xl" color="secondary"> Exibir
+              <v-btn v-if="!showTotalContent" class="rounded-xl" color="secondary" small @click="showHideTable"> Exibir
                 Tabela de Dados
               </v-btn>
 
               <!-- chart-->
-              <apexchart v-if="!carregandoDados && totemConfigs.tipo_totem ==='normal'" width="100%" :type="tipoGrafico"
-                         :options="options"
-                         :series="series"></apexchart>
+              <apexchart v-if="!carregandoDados && totemConfigs.tipo_totem ==='normal'" :options="options" :series="series"
+                         :type="tipoGrafico"
+                         width="100%"></apexchart>
 
               <!--- tabela de dados-->
-              <v-alert v-if="showTotalContent" color="cyan lighten-4" rounded="xl"
-                       class="elevation-10 mt-3 pb-8 pl-8 pr-8">
+              <v-alert v-if="showTotalContent" class="elevation-10 mt-3 pb-8 pl-8 pr-8" color="cyan lighten-4"
+                       rounded="xl">
 
                 <!--- btn para abrir/fechar tabela -->
-                <v-btn small v-if="showTotalContent" @click="showHideTable" class="rounded-xl" color="secondary">
+                <v-btn v-if="showTotalContent" class="rounded-xl" color="secondary" small @click="showHideTable">
                   Ocultar Tabela de Dados
                 </v-btn>
 
                 <!--DataTable-->
                 <v-data-table
+                  :calculate-widths="true"
                   :headers="headersAssunto"
                   :items="assuntos"
-                  :search="search"
-                  class="elevation-21 mt-4 rounded-xl"
-                  sort-by="acessos"
                   :items-per-page="-1"
-                  hide-default-footer
-                  dense
+                  :search="search"
                   :sort-desc="true"
-                  :calculate-widths="true"
+                  class="elevation-21 mt-4 rounded-xl"
+                  dense
+                  hide-default-footer
+                  sort-by="acessos"
                 >
 
                   <!--template do topo da tabela-->
@@ -230,12 +230,12 @@
 
                       <!--Pesquisar-->
                       <v-text-field
+                        v-model="search"
                         append-icon="mdi-magnify"
                         hide-details
                         label="Pesquisar"
                         placeholder="Pesquisar"
                         single-line
-                        v-model="search"
                       ></v-text-field>
 
                     </v-toolbar>
@@ -255,37 +255,37 @@
               <v-divider class="pb-15"></v-divider>
 
               <!--- btn para abrir/fechar tabela -->
-              <v-btn small v-if="!showTotalContent2 && totemConfigs.tipo_totem ==='normal'" @click="showHideTable2"
-                     class="rounded-xl" color="secondary"> Exibir
+              <v-btn v-if="!showTotalContent2 && totemConfigs.tipo_totem ==='normal'" class="rounded-xl" color="secondary"
+                     small @click="showHideTable2"> Exibir
                 Tabela de Dados
               </v-btn>
 
               <!-- chart-->
-              <apexchart v-if="!carregandoDados && totemConfigs.tipo_totem ==='normal'" width="100%" type="bar"
-                         :options="options2"
-                         :series="series2"></apexchart>
+              <apexchart v-if="!carregandoDados && totemConfigs.tipo_totem ==='normal'" :options="options2" :series="series2"
+                         type="bar"
+                         width="100%"></apexchart>
 
               <!--- tabela de dados-->
-              <v-alert v-if="showTotalContent2" color="cyan lighten-4" rounded="xl"
-                       class="elevation-10 mt-3 pb-8 pl-8 pr-8">
+              <v-alert v-if="showTotalContent2" class="elevation-10 mt-3 pb-8 pl-8 pr-8" color="cyan lighten-4"
+                       rounded="xl">
 
                 <!--- btn para abrir/fechar tabela -->
-                <v-btn small v-if="showTotalContent2" @click="showHideTable2" class="rounded-xl" color="secondary">
+                <v-btn v-if="showTotalContent2" class="rounded-xl" color="secondary" small @click="showHideTable2">
                   Ocultar Tabela de Dados
                 </v-btn>
 
                 <!--DataTable-->
                 <v-data-table
+                  :calculate-widths="true"
                   :headers="headersImagens"
                   :items="imagens"
-                  :search="search2"
-                  class="elevation-21 mt-4 rounded-xl"
-                  sort-by="acessos"
                   :items-per-page="-1"
-                  hide-default-footer
-                  dense
+                  :search="search2"
                   :sort-desc="true"
-                  :calculate-widths="true"
+                  class="elevation-21 mt-4 rounded-xl"
+                  dense
+                  hide-default-footer
+                  sort-by="acessos"
                 >
 
                   <!--template do topo da tabela-->
@@ -305,12 +305,12 @@
 
                       <!--Pesquisar-->
                       <v-text-field
+                        v-model="search2"
                         append-icon="mdi-magnify"
                         hide-details
                         label="Pesquisar"
                         placeholder="Pesquisar"
                         single-line
-                        v-model="search2"
                       ></v-text-field>
 
                     </v-toolbar>
@@ -574,7 +574,8 @@ export default {
     search: '',
     search2: '',
     showTotalContent: false,
-    showTotalContent2: false
+    showTotalContent2: false,
+    apiVersion: ''
   }),
   computed: {
     ...mapGetters(['usuarioLogado', 'paginaEmAtulizacao'])
@@ -594,6 +595,7 @@ export default {
   },
   async mounted () {
     await this.getConfigs()
+    await this.getApiVersion()
   },
   methods: {
     async getConfigs () {
@@ -601,6 +603,25 @@ export default {
         const response = await this.$http.get('totemconfig/plus')
         this.totemConfigs = Object.assign({}, response.data)
         await this.getEstatisticas()
+      } catch (erro) {
+        console.log(erro)
+      }
+    },
+
+    async getApiVersion () {
+      try {
+        const response = await this.$http.get(this.configSis.urlDownload)
+        const htmlString = response.data
+
+        // Usar uma expressão regular para encontrar a versão da API
+        const regex = /<b>Versão da api:<\/b> (\d+\.\d+)/
+        const match = htmlString.match(regex)
+
+        if (match) {
+          this.apiVersion = match[1]
+        } else {
+          this.apiVersion = 'Versão da API não encontrada.'
+        }
       } catch (erro) {
         console.log(erro)
       }

@@ -42,8 +42,8 @@
                   <!--select de assuntos-->
                   <v-col cols="10">
                     <v-autocomplete
+                      v-model="myAssunto"
                       :items="assuntoSelect"
-                      @change="getAtualAssunto"
                       clearable
                       dense
                       item-text="nome_assunto"
@@ -53,7 +53,7 @@
                       return-object
                       rounded
                       solo
-                      v-model="myAssunto"
+                      @change="getAtualAssunto"
                     ></v-autocomplete>
                   </v-col>
 
@@ -62,7 +62,7 @@
                     <template>
                       <v-tooltip top>
                         <template v-slot:activator="{ on, attrs }">
-                          <v-btn @click="openDialogAdmAssunto" block rounded v-bind="attrs"
+                          <v-btn block rounded v-bind="attrs" @click="openDialogAdmAssunto"
                                  v-on="on">
                             <v-icon>mdi-pencil-box-outline</v-icon>
                           </v-btn>
@@ -86,19 +86,22 @@
             <v-row v-if="myAssunto !== null && myAssunto !== undefined && myAssunto !== ''">
 
               <!--exibição de Imagens e Ajustes de imagens-->
-              <v-col align-self="start" cols="6"><span class="ml-0 textoBranco">Imagem</span>
+              <v-col align-self="start" cols="6">
+                <v-row class="mb-5">
+                  <v-col><span class="ml-0 textoBranco">Imagem</span></v-col>
+                </v-row>
 
                 <!--Alert de Imagem-->
                 <v-alert color="white" rounded="xl">
 
-                  <v-img :src="this.$configSis.urlDownload + imagemAtual.imagem"
-                         class="rounded-xl" v-if="qtdImg !== 0" aspect-ratio="1.5"/>
+                  <v-img v-if="qtdImg !== 0"
+                         :src="this.$configSis.urlDownload + imagemAtual.imagem" aspect-ratio="1.5" class="rounded-xl"/>
 
-                  <v-img :src="require('../../../assets/img/noimage.png')"
-                         v-else class="rounded-xl" aspect-ratio="1.5"/>
+                  <v-img v-else
+                         :src="require('../../../assets/img/noimage.png')" aspect-ratio="1.5" class="rounded-xl"/>
 
-                  <v-alert rounded="xl" class="mt-3" color="grey lighten-3" v-if="imagemAtual.fonte">
-                    <b>Fonte: </b> {{imagemAtual.fonte}}
+                  <v-alert v-if="imagemAtual.fonte" class="mt-3" color="grey lighten-3" rounded="xl">
+                    <b>Fonte: </b> {{ imagemAtual.fonte }}
                   </v-alert>
 
                   <!-- paginação, exclusão e edição de imagem-->
@@ -106,8 +109,9 @@
 
                     <!--Pagination-->
                     <v-col class="text-left">
-                      <v-btn :key="objImg.id" @click="recebeImagemSolicitada(objImg.ordem)" class="primary mr-1 mb-2"
-                             retain-focus-on-click rounded small v-for="objImg in arrayImages" v-if="qtdImg !== 0">
+                      <v-btn v-for="objImg in arrayImages" v-if="qtdImg !== 0" :key="objImg.id"
+                             class="primary mr-1 mb-2" retain-focus-on-click rounded small
+                             @click="recebeImagemSolicitada(objImg.ordem)">
                         {{ objImg.ordem }}
                       </v-btn>
                     </v-col>
@@ -120,21 +124,21 @@
 
                         <!--add-->
                         <v-col class="text-right mr-1">
-                          <v-btn @click="openDialogAddImg" block class="primary" small>
+                          <v-btn block class="primary" small @click="openDialogAddImg">
                             <v-icon small>mdi-plus</v-icon>
                           </v-btn>
                         </v-col>
 
                         <!--edit-->
-                        <v-col class="text-right mr-1" v-if="qtdImg !== 0">
-                          <v-btn @click="openDialogEditImg" block class="warning" small>
+                        <v-col v-if="qtdImg !== 0" class="text-right mr-1">
+                          <v-btn block class="warning" small @click="openDialogEditImg">
                             <v-icon small>mdi-pen</v-icon>
                           </v-btn>
                         </v-col>
 
                         <!--delete-->
-                        <v-col class="text-right" v-if="qtdImg !== 0">
-                          <v-btn @click="openDialogDeletaImagem()" block class="error" small>
+                        <v-col v-if="qtdImg !== 0" class="text-right">
+                          <v-btn block class="error" small @click="openDialogDeletaImagem()">
                             <v-icon small>mdi-delete</v-icon>
                           </v-btn>
                         </v-col>
@@ -151,11 +155,48 @@
 
               <!--exibição de Legendas e saiba mais-->
               <v-col cols="6">
-                <span class="ml-0 textoBranco" v-if="qtdImg !== 0">Título e Legenda da Imagem</span>
-                <v-alert class="mb-0 pb-0" color="white" dense rounded="xl" v-if="qtdImg !== 0">
+
+                <!--selecao de idiomas-->
+                <v-row class="mb-1">
+                  <v-col>
+                    <span v-if="qtdImg !== 0" class="ml-0 textoBranco">Título e Legenda da Imagem</span>
+                  </v-col>
+                  <!-- selecao de idiomas-->
+                  <v-col class="text-right">
+
+                    <!-- portugues-->
+                    <v-btn class="mt-1" rounded retain-focus-on-click text @click="ajusta_linguagem('pt_br')">
+                      <v-img
+                        :src="require('@/assets/img/bra.png')"
+                        alt="Translate to en_us"
+                        class="mt-1 img_small"
+                      ></v-img>
+                    </v-btn>
+
+                    <!-- ingles-->
+                    <v-btn class="mt-1" rounded retain-focus-on-click text @click="ajusta_linguagem('en')">
+                      <v-img
+                        :src="require('@/assets/img/eua.png')"
+                        alt="Translate to en_us"
+                        class="mt-1 img_small"
+                      ></v-img>
+                    </v-btn>
+
+                    <!-- espanhol-->
+                    <v-btn class="mt-1" rounded retain-focus-on-click text @click="ajusta_linguagem('es')">
+                      <v-img
+                        :src="require('@/assets/img/spain.png')"
+                        alt="Translate to en_us"
+                        class="mt-1 img_small"
+                      ></v-img>
+                    </v-btn>
+                  </v-col>
+                </v-row>
+
+                <v-alert v-if="qtdImg !== 0" class="mb-0 pb-0" color="white" dense rounded="xl">
                   <v-row class="text-center">
                     <v-col>
-                      <h3>{{ imagemAtual.nome }} <span v-if="imagemAtual.banner"> ( Banner )</span></h3>
+                      <h3>{{ nomeExibImg }} <span v-if="imagemAtual.banner"> ( Banner )</span></h3>
                       <h4>Ordem de Exibição: {{ imagemAtual.ordem }}</h4>
                     </v-col>
                   </v-row>
@@ -166,14 +207,14 @@
                       <!--legenda -->
                       <v-alert class="rounded-xl">
                         <p><b>Legenda:</b></p>
-                        <div v-html="imagemAtual.legenda" v-if="imagemAtual.legenda"></div>
+                        <div v-if="legendaExibImg" v-html="legendaExibImg"></div>
                         <span v-else> Sem Legenda</span>
                       </v-alert>
 
                       <!--saiba mais-->
                       <v-alert class="rounded-xl">
                         <p><b>Saiba Mais:</b></p>
-                        <div v-html="imagemAtual.saibamais" v-if="imagemAtual.saibamais"></div>
+                        <div v-if="imagemAtual.saibamais" v-html="imagemAtual.saibamais"></div>
                         <span v-else> Sem Saiba Mais</span>
                       </v-alert>
 
@@ -197,7 +238,7 @@
     </v-row>
 
     <!--Dialog para administrar assunto-->
-    <v-dialog max-width="70%" v-model="dialogAdmAssunto">
+    <v-dialog v-model="dialogAdmAssunto" max-width="70%">
       <v-card>
         <v-card-title class="justify-center" primary-title>
           <v-row>
@@ -241,16 +282,16 @@
 
                       <!--Pesquisar-->
                       <v-text-field
+                        v-model="searchAssuntos"
                         append-icon="mdi-magnify"
                         hide-details
                         label="Pesquisar"
                         placeholder="Pesquisar"
                         single-line
-                        v-model="searchAssuntos"
                       ></v-text-field>
 
                       <!--Dialog para deletar assunto-->
-                      <v-dialog max-width="800px" v-model="dialogDeleteAssunto">
+                      <v-dialog v-model="dialogDeleteAssunto" max-width="800px">
                         <v-card>
                           <v-card-title class="justify-center" primary-title>
                             <v-icon
@@ -272,16 +313,16 @@
                           </v-card-text>
                           <v-card-actions class="pb-5">
                             <v-spacer></v-spacer>
-                            <v-btn @click="dialogDeleteAssunto = false" color="grey lighten-1">Cancelar</v-btn>
+                            <v-btn color="grey lighten-1" @click="dialogDeleteAssunto = false">Cancelar</v-btn>
                             <span class="pl-5 pr-5"></span>
-                            <v-btn @click="deleteAssuntoConfirm" color="red lighten-1">Excluir</v-btn>
+                            <v-btn color="red lighten-1" @click="deleteAssuntoConfirm">Excluir</v-btn>
                             <v-spacer></v-spacer>
                           </v-card-actions>
                         </v-card>
                       </v-dialog>
 
                       <!--Dialog para editar assunto-->
-                      <v-dialog max-width="800px" v-model="dialogEditAssunto">
+                      <v-dialog v-model="dialogEditAssunto" max-width="800px">
                         <v-card>
                           <v-form @submit.prevent="editAssuntoConfirm">
                             <v-card-title class="justify-center" primary-title>
@@ -294,12 +335,42 @@
                                 <v-col>
                                   <span class="pl-3">Nome</span>
                                   <v-text-field
+                                    v-model="nomeEditAssunto"
                                     class="ml-3"
                                     dense
                                     label="Nome Assunto"
                                     rounded
                                     solo
-                                    v-model="nomeEditAssunto"
+                                  ></v-text-field>
+                                </v-col>
+                              </v-row>
+
+                              <!--nome assunto (ingles)-->
+                              <v-row no-gutters>
+                                <v-col>
+                                  <span class="pl-3">Nome (Inglês)</span>
+                                  <v-text-field
+                                    v-model="nomeEditAssuntoEng"
+                                    class="ml-3"
+                                    dense
+                                    label="Nome Assunto (Inglês)"
+                                    rounded
+                                    solo
+                                  ></v-text-field>
+                                </v-col>
+                              </v-row>
+
+                              <!--nome assunto (espanhol)-->
+                              <v-row no-gutters>
+                                <v-col>
+                                  <span class="pl-3">Nome (Espanhol)</span>
+                                  <v-text-field
+                                    v-model="nomeEditAssuntoSpa"
+                                    class="ml-3"
+                                    dense
+                                    label="Nome Assunto (Espanhol)"
+                                    rounded
+                                    solo
                                   ></v-text-field>
                                 </v-col>
                               </v-row>
@@ -309,6 +380,7 @@
                                 <v-col>
                                   <span class="pl-3">Ordem de Exibição</span>
                                   <v-text-field
+                                    v-model="ordemEditAssunto"
                                     class="ml-3"
                                     dense
                                     label="Ordem de Exibição"
@@ -316,7 +388,6 @@
                                     rounded
                                     solo
                                     type="number"
-                                    v-model="ordemEditAssunto"
                                   ></v-text-field>
                                 </v-col>
                               </v-row>
@@ -324,7 +395,7 @@
                             </v-card-text>
                             <v-card-actions class="pb-5">
                               <v-spacer></v-spacer>
-                              <v-btn @click="dialogEditAssunto = false" color="warning lighten-1">Cancelar</v-btn>
+                              <v-btn color="warning lighten-1" @click="dialogEditAssunto = false">Cancelar</v-btn>
                               <span class="pl-5 pr-5"></span>
                               <v-btn color="success" type="submit">Editar</v-btn>
                               <v-spacer></v-spacer>
@@ -346,10 +417,10 @@
                     <v-tooltip top>
                       <template v-slot:activator="{ on, attrs }">
                         <v-icon
-                          @click="editAssunto(item)"
                           class="mr-2"
                           small
                           v-bind="attrs"
+                          @click="editAssunto(item)"
                           v-on="on"
                         >
                           mdi-pen
@@ -362,10 +433,10 @@
                     <v-tooltip top>
                       <template v-slot:activator="{ on, attrs }">
                         <v-icon
-                          @click="deleteAssunto(item)"
                           class="mr-2"
                           small
                           v-bind="attrs"
+                          @click="deleteAssunto(item)"
                           v-on="on"
                         >
                           mdi-delete
@@ -374,6 +445,12 @@
                       <span>Excluir Assunto</span>
                     </v-tooltip>
 
+                  </template>
+
+                  <template v-slot:item.nome_assunto="{item}">
+                    {{ item.nome_assunto }} / <span v-if="item.nome_assunto_en">{{ item.nome_assunto_en }}</span> <span
+                    v-else> Not assigned yet</span>/ <span v-if="item.nome_assunto_es">{{ item.nome_assunto_es }}</span>
+                    <span v-else> Aún no asignado</span>
                   </template>
 
                 </v-data-table>
@@ -389,9 +466,9 @@
         <v-card-actions class="pb-5 mr-5">
           <v-spacer></v-spacer>
           <v-btn
-            @click="dialogAdmAssunto=false"
             color="error"
-            elevation="2">Fechar
+            elevation="2"
+            @click="dialogAdmAssunto=false">Fechar
           </v-btn>
         </v-card-actions>
 
@@ -399,7 +476,7 @@
     </v-dialog>
 
     <!--Dialog para add assunto-->
-    <v-dialog max-width="800px" v-model="dialogAddAssunto">
+    <v-dialog v-model="dialogAddAssunto" max-width="800px">
       <v-card>
         <v-form @submit.prevent="efetuarCadastroAssunto">
           <v-card-title class="justify-center" primary-title>
@@ -412,12 +489,42 @@
               <v-col>
                 <span class="pl-3">Nome</span>
                 <v-text-field
+                  v-model="nomeNewAssunto"
                   class="ml-3"
                   dense
                   label="Nome Assunto"
                   rounded
                   solo
-                  v-model="nomeNewAssunto"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+
+            <!--nome assunto (ingles)-->
+            <v-row no-gutters>
+              <v-col>
+                <span class="pl-3">Nome (Inglês)</span>
+                <v-text-field
+                  v-model="nomeNewAssuntoEng"
+                  class="ml-3"
+                  dense
+                  label="Nome Assunto (Inglês)"
+                  rounded
+                  solo
+                ></v-text-field>
+              </v-col>
+            </v-row>
+
+            <!--nome assunto (espanhol)-->
+            <v-row no-gutters>
+              <v-col>
+                <span class="pl-3">Nome (Espanhol)</span>
+                <v-text-field
+                  v-model="nomeNewAssuntoSpa"
+                  class="ml-3"
+                  dense
+                  label="Nome Assunto (Espanhol)"
+                  rounded
+                  solo
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -427,6 +534,7 @@
               <v-col>
                 <span class="pl-3">Ordem de Exibição</span>
                 <v-text-field
+                  v-model="ordemNewAssunto"
                   class="ml-3"
                   dense
                   label="Ordem de Exibição"
@@ -434,7 +542,6 @@
                   rounded
                   solo
                   type="number"
-                  v-model="ordemNewAssunto"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -442,7 +549,7 @@
           </v-card-text>
           <v-card-actions class="pb-5">
             <v-spacer></v-spacer>
-            <v-btn @click="dialogAddAssunto = false" color="warning lighten-1">Cancelar</v-btn>
+            <v-btn color="warning lighten-1" @click="dialogAddAssunto = false">Cancelar</v-btn>
             <span class="pl-5 pr-5"></span>
             <v-btn color="success" type="submit">Cadastrar</v-btn>
             <v-spacer></v-spacer>
@@ -454,7 +561,7 @@
     </v-dialog>
 
     <!--Dialog para add imagem-->
-    <v-dialog max-width="80%" v-model="dialogAddImagem">
+    <v-dialog v-model="dialogAddImagem" max-width="80%">
 
       <!--Card de cadastro edição-->
       <v-card>
@@ -483,6 +590,7 @@
                 <v-col>
                   <span class="ml-3">Nome da Imagem</span>
                   <v-text-field
+                    v-model="nomeNewImage"
                     dense
                     hint="Por exemplo: Conquista de Monte Castelo (caso não coloque o nome, não aparecerá nada no Título da Imagem"
                     label="Nome da Imagem"
@@ -491,8 +599,7 @@
                     placeholder="Insira um nome de referência"
                     required
                     rounded
-                    solo
-                    v-model="nomeNewImage">
+                    solo>
 
                   </v-text-field>
 
@@ -501,7 +608,7 @@
                 <!--imagem-->
                 <v-col>
                   <span class="ml-3">Imagem * (Campo Obrigatório)</span>
-                  <v-file-input @change="selectImage"
+                  <v-file-input v-model="inputImagem"
                                 accept="image/*"
                                 dense
                                 hint="Escolha uma imagem no formato .png ou .jpg"
@@ -511,20 +618,40 @@
                                 rounded
                                 show-size
                                 solo
-                                v-model="inputImagem"
+                                @change="selectImage"
                   ></v-file-input>
 
                 </v-col>
 
               </v-row>
 
-              <!--ordem de exibicao e é banner-->
+              <!--nome ingles / ordem de exibicão-->
               <v-row dense>
+
+                <!--nome eng-->
+                <v-col>
+                  <span class="ml-3">Nome da Imagem (Inglês)</span>
+                  <v-text-field
+                    v-model="nomeNewImageEng"
+                    dense
+                    hint="Deve ser inserido o nome da imagem na lingua inglesa"
+                    label="Nome da Imagem (Inglês)"
+                    name="nome_en"
+                    persistent-hint
+                    placeholder="Insira um nome de referência (em inglês)"
+                    required
+                    rounded
+                    solo>
+
+                  </v-text-field>
+
+                </v-col>
 
                 <!--ordem Exibicao-->
                 <v-col>
                   <span class="ml-3">Ordem de Exibição</span>
                   <v-text-field
+                    v-model="imagemNewOrdem"
                     class="mr-3"
                     dense
                     hint="Ordem em que a imagem será exibida na paginação. Caso não coloque nada, o sistema irá entender que essa imagem deverá ser adicionada no final da lista."
@@ -534,8 +661,31 @@
                     rounded
                     solo
                     type="number"
-                    v-model="imagemNewOrdem"
                   ></v-text-field>
+
+                </v-col>
+
+              </v-row>
+
+              <!--nome espanhol e é banner-->
+              <v-row dense>
+
+                <!--nome espanhol-->
+                <v-col>
+                  <span class="ml-3">Nome da Imagem (Espanhol)</span>
+                  <v-text-field
+                    v-model="nomeNewImageSpa"
+                    dense
+                    hint="Deve ser inserido o nome da imagem na lingua espanhola"
+                    label="Nome da Imagem (Espanhol)"
+                    name="nome_es"
+                    persistent-hint
+                    placeholder="Insira um nome de referência (em espanhol)"
+                    required
+                    rounded
+                    solo>
+
+                  </v-text-field>
 
                 </v-col>
 
@@ -543,11 +693,11 @@
                 <v-col>
 
                   <v-checkbox
+                    v-model="isImgNewBanner"
                     class="pl-3 pt-3"
                     hint="Se marcada, essa imagem será usada como referência do assunto na tela de navegação principal. Ao marcar a imagem como banner, caso haja mais de uma marcada, apenas a última será considerada para fins de exibição. Caso nenhuma seja marcada, a primeira imagem cadastrada será o banner"
                     label="É Banner"
                     persistent-hint
-                    v-model="isImgNewBanner"
                   ></v-checkbox>
 
                 </v-col>
@@ -571,7 +721,7 @@
 
                 <!--preview-->
                 <v-col>
-                  <v-alert elevation="10" rounded="xl" v-if="previewImage">
+                  <v-alert v-if="previewImage" elevation="10" rounded="xl">
                     <h3>Preview:</h3>
                     <img :src="previewImage" alt="" class="v-responsive my-3 ml-auto mr-auto rounded-xl"/>
                   </v-alert>
@@ -580,6 +730,7 @@
                   <v-col>
                     <span class="ml-3">Fonte da Imagem</span>
                     <v-text-field
+                      v-model="fonteNewImagem"
                       dense
                       hint="Por exemplo: https://eb.mil.br/1256"
                       label="Fonta da Imagem"
@@ -588,8 +739,7 @@
                       placeholder="Insira a fonte da Imagem (SFC)"
                       required
                       rounded
-                      solo
-                      v-model="fonteNewImagem">
+                      solo>
 
                     </v-text-field>
 
@@ -597,6 +747,33 @@
 
                 </v-col>
 
+              </v-row>
+
+              <!--legenda ingles e espanhol-->
+              <v-row>
+                <!--Legenda ingles-->
+                <v-col>
+
+                  <v-alert class="rounded-xl">
+                    <span>Legenda (Inglês)</span>
+                    <vue-editor v-model="legendaNewImgEng"></vue-editor>
+                    <span
+                      class="caption">Se deixado em branco, a não será mostrado nenhum texto como legenda (Inglês).</span>
+                  </v-alert>
+
+                </v-col>
+
+                <!--Legenda espanhol-->
+                <v-col>
+
+                  <v-alert class="rounded-xl">
+                    <span>Legenda (Espanhol)</span>
+                    <vue-editor v-model="legendaNewImgSpa"></vue-editor>
+                    <span
+                      class="caption">Se deixado em branco, a não será mostrado nenhum texto como legenda (Espanhol).</span>
+                  </v-alert>
+
+                </v-col>
               </v-row>
 
               <!--saibamais-->
@@ -608,6 +785,34 @@
                     <vue-editor v-model="saibaMaisNewImg"></vue-editor>
                     <span
                       class="caption">Se deixado em branco, a não será mostrado nenhum texto como Saiba Mais.</span>
+                  </v-alert>
+
+                </v-col>
+              </v-row>
+
+              <!--saibamais (inglês)-->
+              <v-row>
+                <v-col>
+
+                  <v-alert class="rounded-xl">
+                    <span>Saiba Mais (Inglês)</span>
+                    <vue-editor v-model="saibaMaisNewImgEng"></vue-editor>
+                    <span
+                      class="caption">Se deixado em branco, a não será mostrado nenhum texto como Saiba Mais (inglês).</span>
+                  </v-alert>
+
+                </v-col>
+              </v-row>
+
+              <!--saibamais espanhol-->
+              <v-row>
+                <v-col>
+
+                  <v-alert class="rounded-xl">
+                    <span>Saiba Mais (Espanhol)</span>
+                    <vue-editor v-model="saibaMaisNewImgSpa"></vue-editor>
+                    <span
+                      class="caption">Se deixado em branco, a não será mostrado nenhum texto como Saiba Mais (Espanhol).</span>
                   </v-alert>
 
                 </v-col>
@@ -627,9 +832,9 @@
 
                   <!--Cancelar-->
                   <v-btn
-                    @click="dialogAddImagem = false"
                     class="ml-6"
-                    color="red darken-1">
+                    color="red darken-1"
+                    @click="dialogAddImagem = false">
                     Cancelar
                   </v-btn>
 
@@ -648,7 +853,7 @@
     </v-dialog>
 
     <!--Dialog para deletar imagem-->
-    <v-dialog max-width="800px" v-model="dialogDeleteImagem">
+    <v-dialog v-model="dialogDeleteImagem" max-width="800px">
       <v-card>
         <v-card-title class="justify-center" primary-title>
           <v-icon
@@ -670,16 +875,16 @@
         </v-card-text>
         <v-card-actions class="pb-5">
           <v-spacer></v-spacer>
-          <v-btn @click="dialogDeleteImagem = false" color="grey lighten-1">Cancelar</v-btn>
+          <v-btn color="grey lighten-1" @click="dialogDeleteImagem = false">Cancelar</v-btn>
           <span class="pl-5 pr-5"></span>
-          <v-btn @click="deleteImagemConfirm" color="red lighten-1">Excluir</v-btn>
+          <v-btn color="red lighten-1" @click="deleteImagemConfirm">Excluir</v-btn>
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
     </v-dialog>
 
     <!--Dialog para editar imagem-->
-    <v-dialog max-width="80%" v-model="dialogEditImagem">
+    <v-dialog v-model="dialogEditImagem" max-width="80%">
 
       <!--Card de edição-->
       <v-card>
@@ -708,6 +913,7 @@
                 <v-col>
                   <span class="ml-3">Nome da Imagem</span>
                   <v-text-field
+                    v-model="nomeEditImage"
                     dense
                     hint="Por exemplo: Conquista de Monte Castelo (caso não coloque o nome, não aparecerá nada no Título da Imagem"
                     label="Nome da Imagem"
@@ -716,8 +922,7 @@
                     placeholder="Insira um nome de referência"
                     required
                     rounded
-                    solo
-                    v-model="nomeEditImage">
+                    solo>
 
                   </v-text-field>
 
@@ -727,24 +932,44 @@
                 <v-col>
 
                   <v-checkbox
+                    v-model="isImgEditBanner"
                     class="pl-3 pt-3"
                     hint="Se marcada, essa imagem será usada como referência do assunto na tela de navegação principal. Ao marcar a imagem como banner, caso haja mais de uma marcada, apenas a última será considerada para fins de exibição. Caso nenhuma seja marcada, a primeira imagem cadastrada será o banner"
                     label="É Banner"
                     persistent-hint
-                    v-model="isImgEditBanner"
                   ></v-checkbox>
 
                 </v-col>
 
               </v-row>
 
-              <!--Assunto, ordem de exibicao, btn alterar image -->
+              <!--nome ingles / assunto-->
               <v-row dense>
 
+                <!--nome ingles-->
+                <v-col>
+                  <span class="ml-3">Nome da Imagem (Inglês)</span>
+                  <v-text-field
+                    v-model="nomeEditImageEng"
+                    dense
+                    hint="Insira o nome da imagem no idioma Inglês."
+                    label="Nome da Imagem (Inglês)"
+                    name="nome_edit_en"
+                    persistent-hint
+                    placeholder="Insira um nome de referência em inglês"
+                    required
+                    rounded
+                    solo>
+
+                  </v-text-field>
+
+                </v-col>
+
                 <!--select de assunto-->
-                <v-col cols="6">
+                <v-col>
                   <span class="ml-3">Assunto</span>
                   <v-autocomplete
+                    v-model="myAssuntoEdit"
                     :items="assuntoSelect"
                     clearable
                     dense
@@ -754,14 +979,37 @@
                     name="nome_assunto"
                     rounded
                     solo
-                    v-model="myAssuntoEdit"
                   ></v-autocomplete>
+                </v-col>
+              </v-row>
+
+              <!--Nome em espamnhol, ordem de exibicao, btn alterar image -->
+              <v-row dense>
+
+                <!--nome ingles-->
+                <v-col cols="6">
+                  <span class="ml-3">Nome da Imagem (Espanhol)</span>
+                  <v-text-field
+                    v-model="nomeEditImageSpa"
+                    dense
+                    hint="Insira o nome da imagem no idioma Espanhol."
+                    label="Nome da Imagem (Espanhol)"
+                    name="nome_edit_es"
+                    persistent-hint
+                    placeholder="Insira um nome de referência em espanhol"
+                    required
+                    rounded
+                    solo>
+
+                  </v-text-field>
+
                 </v-col>
 
                 <!--ordem Exibicao-->
                 <v-col>
                   <span class="ml-3">Ordem de Exibição</span>
                   <v-text-field
+                    v-model="imagemEditOrdem"
                     class="ml-3"
                     dense
                     hint="Ordem em que a imagem será exibida na paginação. Caso não coloque nada, o sistema irá entender que essa imagem deverá ser adicionada no final da lista."
@@ -771,14 +1019,13 @@
                     rounded
                     solo
                     type="number"
-                    v-model="imagemEditOrdem"
                   ></v-text-field>
 
                 </v-col>
 
                 <!--btn edita imagem-->
                 <v-col class="text-right">
-                  <v-btn @click="toggleEditImagem" class="mt-6 warning" rounded> {{ textoBtnAlteraCancela }}</v-btn>
+                  <v-btn class="mt-6 warning" rounded @click="toggleEditImagem"> {{ textoBtnAlteraCancela }}</v-btn>
                 </v-col>
 
               </v-row>
@@ -807,7 +1054,7 @@
                     <!--imagem-->
                     <v-col>
                       <span class="ml-3">Imagem * (Campo Obrigatório)</span>
-                      <v-file-input @change="selectEditImage"
+                      <v-file-input v-model="inputEditImagem"
                                     accept="image/*"
                                     dense
                                     hint="Escolha uma nova imagem no formato .png ou .jpg (a anterior será excluída)"
@@ -817,11 +1064,11 @@
                                     rounded
                                     show-size
                                     solo
-                                    v-model="inputEditImagem"
+                                    @change="selectEditImage"
 
                       ></v-file-input>
 
-                      <v-alert border="left" type="warning" v-if="!previewEditImage">Para finalizar a alteração da
+                      <v-alert v-if="!previewEditImage" border="left" type="warning">Para finalizar a alteração da
                         imagem, após a escolha da
                         nova, é
                         necessário revisar os campos do formulário e apertar no botão "Salvar".<br>Isso destruirá a foto
@@ -832,7 +1079,7 @@
                   </v-row>
 
                   <!--preview Img-->
-                  <v-alert elevation="10" rounded="xl" v-if="previewEditImage">
+                  <v-alert v-if="previewEditImage" elevation="10" rounded="xl">
                     <h3>Preview:</h3>
                     <img :src="previewEditImage" alt="" class="v-responsive my-3 ml-auto mr-auto rounded-xl"/>
                   </v-alert>
@@ -850,6 +1097,7 @@
                     <v-col>
                       <span class="ml-3">Fonte da Imagem</span>
                       <v-text-field
+                        v-model="fonteEditImagem"
                         dense
                         hint="Por exemplo: https://eb.mil.br/1256"
                         label="Fonta da Imagem"
@@ -858,13 +1106,39 @@
                         placeholder="Insira a fonte da Imagem (SFC)"
                         required
                         rounded
-                        solo
-                        v-model="fonteEditImagem">
+                        solo>
 
                       </v-text-field>
 
                     </v-col>
                   </v-row>
+
+                </v-col>
+
+              </v-row>
+
+              <!--legenda ingles e espanhol-->
+              <v-row>
+
+                <!--Legenda ingles -->
+                <v-col>
+                  <v-alert class="rounded-xl">
+                    <span>Legenda (Inglês)</span>
+                    <vue-editor v-model="legendaEditImgEng"></vue-editor>
+                    <span
+                      class="caption">Se deixado em branco, a não será mostrado nenhum texto como legenda (Inglês).</span>
+                  </v-alert>
+
+                </v-col>
+
+                <!--Legenda espanhol -->
+                <v-col>
+                  <v-alert class="rounded-xl">
+                    <span>Legenda (Espanhol)</span>
+                    <vue-editor v-model="legendaEditImgSpa"></vue-editor>
+                    <span
+                      class="caption">Se deixado em branco, a não será mostrado nenhum texto como legenda (Espanhol).</span>
+                  </v-alert>
 
                 </v-col>
 
@@ -878,6 +1152,30 @@
                     <vue-editor v-model="saibaMaisEditImg"></vue-editor>
                     <span
                       class="caption">Se deixado em branco, a não será mostrado nenhum texto como Saiba Mais.</span>
+                  </v-alert>
+                </v-col>
+              </v-row>
+
+              <!-- saiba mais ingles-->
+              <v-row>
+                <v-col>
+                  <v-alert class="rounded-xl">
+                    <span>Saiba Mais (Inglês)</span>
+                    <vue-editor v-model="saibaMaisEditImgEng"></vue-editor>
+                    <span
+                      class="caption">Se deixado em branco, a não será mostrado nenhum texto como Saiba Mais.(Inglês)</span>
+                  </v-alert>
+                </v-col>
+              </v-row>
+
+              <!-- saiba mais espanhol-->
+              <v-row>
+                <v-col>
+                  <v-alert class="rounded-xl">
+                    <span>Saiba Mais (Espanhol)</span>
+                    <vue-editor v-model="saibaMaisEditImgSpa"></vue-editor>
+                    <span
+                      class="caption">Se deixado em branco, a não será mostrado nenhum texto como Saiba Mais.(Espanhol)</span>
                   </v-alert>
                 </v-col>
               </v-row>
@@ -896,9 +1194,9 @@
 
                   <!--Cancelar-->
                   <v-btn
-                    @click="dialogEditImagem = false"
                     class="ml-6"
-                    color="red darken-1">
+                    color="red darken-1"
+                    @click="dialogEditImagem = false">
                     Cancelar
                   </v-btn>
 
@@ -953,6 +1251,9 @@ export default {
     ],
     totemConfigs: {
       nome_totem: '',
+      nome_totem_en: '',
+      nome_totem_es: '',
+      selected_lang: '',
       altura_index: '',
       largura_index: '',
       altura_detail: '',
@@ -966,9 +1267,13 @@ export default {
     dialogAddAssunto: false,
     ordemNewAssunto: '',
     nomeNewAssunto: '',
+    nomeNewAssuntoEng: '',
+    nomeNewAssuntoSpa: '',
     editedAssuntoIndex: -1,
     editedAssunto: {},
     nomeEditAssunto: '',
+    nomeEditAssuntoEng: '',
+    nomeEditAssuntoSpa: '',
     ordemEditAssunto: '',
     dialogAddImagem: false,
     editedImageIndex: -1,
@@ -978,23 +1283,37 @@ export default {
     inputImagem: undefined,
     legendaImg: '',
     nomeNewImage: '',
+    nomeNewImageEng: '',
+    nomeNewImageSpa: '',
     fonteNewImagem: '',
     imagemNewOrdem: '',
     isImgNewBanner: false,
     legendaNewImg: '',
+    legendaNewImgEng: '',
+    legendaNewImgSpa: '',
     saibaMaisNewImg: '',
+    saibaMaisNewImgEng: '',
+    saibaMaisNewImgSpa: '',
     myAssunto: '',
     qtdImg: 0,
     arrayImages: [],
     imagemAtual: {},
+    nomeExibImg: '',
+    legendaExibImg: '',
     dialogDeleteImagem: false,
     dialogEditImagem: false,
     nomeEditImage: '',
+    nomeEditImageEng: '',
+    nomeEditImageSpa: '',
     imagemEditOrdem: '',
     isImgEditBanner: false,
     legendaEditImg: '',
+    legendaEditImgEng: '',
+    legendaEditImgSpa: '',
     fonteEditImagem: '',
     saibaMaisEditImg: '',
+    saibaMaisEditImgEng: '',
+    saibaMaisEditImgSpa: '',
     myAssuntoEdit: {},
     previewEditImage: undefined,
     currentEditImage: undefined,
@@ -1050,6 +1369,8 @@ export default {
       this.editedAssuntoIndex = this.assuntoSelect.indexOf(item)
       this.editedAssunto = Object.assign({}, item)
       this.nomeEditAssunto = this.editedAssunto.nome_assunto
+      this.nomeEditAssuntoEng = this.editedAssunto.nome_assunto_en
+      this.nomeEditAssuntoSpa = this.editedAssunto.nome_assunto_es
       this.ordemEditAssunto = this.editedAssunto.ordem_exibicao
       this.dialogEditAssunto = true
     },
@@ -1096,6 +1417,8 @@ export default {
       } else {
         let objetoParaEnvio = {}
         objetoParaEnvio['nome_assunto'] = this.nomeNewAssunto
+        objetoParaEnvio['nome_assunto_en'] = this.nomeNewAssuntoEng
+        objetoParaEnvio['nome_assunto_es'] = this.nomeNewAssuntoSpa
         objetoParaEnvio['ordem_exibicao'] = this.ordemNewAssunto
 
         try {
@@ -1113,6 +1436,8 @@ export default {
 
     openDialogAddAssunto () {
       this.nomeNewAssunto = ''
+      this.nomeNewAssuntoEng = ''
+      this.nomeNewAssuntoSpa = ''
       this.ordemNewAssunto = ''
       this.dialogAddAssunto = true
     },
@@ -1125,6 +1450,8 @@ export default {
       } else {
         let objetoParaEnvio = {}
         objetoParaEnvio['nome_assunto'] = this.nomeEditAssunto
+        objetoParaEnvio['nome_assunto_en'] = this.nomeEditAssuntoEng
+        objetoParaEnvio['nome_assunto_es'] = this.nomeEditAssuntoSpa
         objetoParaEnvio['ordem_exibicao'] = this.ordemEditAssunto
 
         this.$http.put('assunto/' + this.editedAssunto.id, objetoParaEnvio)
@@ -1153,10 +1480,16 @@ export default {
       this.inputImagem = undefined
       this.legendaImg = ''
       this.nomeNewImage = ''
+      this.nomeNewImageEng = ''
+      this.nomeNewImageSpa = ''
       this.imagemNewOrdem = ''
       this.isImgNewBanner = false
       this.legendaNewImg = ''
+      this.legendaNewImgEng = ''
+      this.legendaNewImgSpa = ''
       this.saibaMaisNewImg = ''
+      this.saibaMaisNewImgEng = ''
+      this.saibaMaisNewImgSpa = ''
       this.fonteNewImagem = ''
     },
 
@@ -1170,12 +1503,18 @@ export default {
       this.textoBtnAlteraCancela = 'Alterar a Imagem Atual'
 
       this.nomeEditImage = this.imagemAtual.nome
+      this.nomeEditImageEng = this.imagemAtual.nome_en
+      this.nomeEditImageSpa = this.imagemAtual.nome_es
       this.imagemEditOrdem = this.imagemAtual.ordem
 
       this.isImgEditBanner = this.imagemAtual.banner
       this.legendaEditImg = this.imagemAtual.legenda
+      this.legendaEditImgEng = this.imagemAtual.legenda_en
+      this.legendaEditImgSpa = this.imagemAtual.legenda_es
       this.fonteEditImagem = this.imagemAtual.fonte
       this.saibaMaisEditImg = this.imagemAtual.saibamais
+      this.saibaMaisEditImgEng = this.imagemAtual.saibamais_en
+      this.saibaMaisEditImgSpa = this.imagemAtual.saibamais_es
       this.myAssuntoEdit = this.imagemAtual.assunto_id
     },
 
@@ -1198,6 +1537,8 @@ export default {
         this.qtdImg = arrayImgIni.length
         this.arrayImages = arrayImgIni
         this.imagemAtual = arrayImgIni[0]
+        this.nomeExibImg = this.imagemAtual.nome
+        this.legendaExibImg = this.imagemAtual.legenda
       }
     },
 
@@ -1208,10 +1549,16 @@ export default {
         formData.append('imagem', this.currentImage)
         formData.append('fonte', this.fonteNewImagem)
         formData.append('nome', this.nomeNewImage)
+        formData.append('nome_en', this.nomeNewImageEng)
+        formData.append('nome_es', this.nomeNewImageSpa)
         formData.append('ordem', this.imagemNewOrdem)
         formData.append('banner', this.isImgNewBanner)
         formData.append('legenda', this.legendaNewImg)
+        formData.append('legenda_en', this.legendaNewImgEng)
+        formData.append('legenda_es', this.legendaNewImgSpa)
         formData.append('saibamais', this.saibaMaisNewImg)
+        formData.append('saibamais_en', this.saibaMaisNewImgEng)
+        formData.append('saibamais_es', this.saibaMaisNewImgSpa)
         formData.append('assunto_id', this.myAssunto.id)
         return this.$http.post('img', formData, {
           headers: {
@@ -1242,19 +1589,24 @@ export default {
       formData.append('id', this.imagemAtual.id)
       formData.append('imagem', this.currentEditImage)
       formData.append('nome', this.nomeEditImage)
+      formData.append('nome_en', this.nomeEditImageEng)
+      formData.append('nome_es', this.nomeEditImageSpa)
       formData.append('ordem', this.imagemEditOrdem)
       formData.append('banner', this.isImgEditBanner)
       formData.append('fonte', this.fonteEditImagem)
       formData.append('legenda', this.legendaEditImg)
+      formData.append('legenda_en', this.legendaEditImgEng)
+      formData.append('legenda_es', this.legendaEditImgSpa)
       formData.append('saibamais', this.saibaMaisEditImg)
+      formData.append('saibamais_en', this.saibaMaisEditImgEng)
+      formData.append('saibamais_es', this.saibaMaisEditImgSpa)
       formData.append('assunto_id', this.myAssuntoEdit)
       formData.append('trocaImagem', this.showHideEditInputImage)
       return this.$http.post('img/update', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
-      }).then((response) => {
-        console.log(response.data)
+      }).then(() => {
         this.dialogEditImagem = false
         this.getAtualAssunto()
         this.$toastr.s(
@@ -1300,6 +1652,8 @@ export default {
       for (let i = 0; i < this.arrayImages.length; i++) {
         if (ordem === this.arrayImages[i].ordem) {
           this.imagemAtual = this.arrayImages[i]
+          this.nomeExibImg = this.imagemAtual.nome
+          this.legendaExibImg = this.imagemAtual.legenda
         }
       }
     },
@@ -1340,6 +1694,36 @@ export default {
         this.showHideEditInputImage = true
         this.textoBtnAlteraCancela = 'Cancelar alteração de Imagem'
       }
+    },
+
+    ajusta_linguagem (qual) {
+      // tipos possiveis
+      // pt_br
+      // en
+      // es
+      if (qual === 'pt_br') {
+        this.nomeExibImg = this.imagemAtual.nome
+        this.legendaExibImg = this.imagemAtual.legenda
+      }
+      if (qual === 'en') {
+        if (this.imagemAtual.nome_en === '' || this.imagemAtual.nome_en === null || this.imagemAtual.nome_en === 'null') {
+          this.nomeExibImg = 'Name not assigned yet!'
+          this.legendaExibImg = 'Subtitle not assigned yet!'
+        } else {
+          this.nomeExibImg = this.imagemAtual.nome_en
+          this.legendaExibImg = this.imagemAtual.legenda_en
+        }
+      }
+
+      if (qual === 'es') {
+        if (this.imagemAtual.nome_es === '' || this.imagemAtual.nome_es === null || this.imagemAtual.nome_es === 'null') {
+          this.nomeExibImg = 'Nombre aún no asignado!'
+          this.legendaExibImg = 'Subtítulo aún no asignado!'
+        } else {
+          this.nomeExibImg = this.imagemAtual.nome_es
+          this.legendaExibImg = this.imagemAtual.legenda_es
+        }
+      }
     }
   }
 }
@@ -1349,5 +1733,9 @@ export default {
 
 .textoBranco {
   color: white;
+}
+
+.img_small {
+  width: 30px;
 }
 </style>

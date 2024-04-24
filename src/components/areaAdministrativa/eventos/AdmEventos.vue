@@ -59,12 +59,12 @@
 
                   <!--Pesquisar-->
                   <v-text-field
+                    v-model="searchEventos"
                     append-icon="mdi-magnify"
                     hide-details
                     label="Pesquisar"
                     placeholder="Pesquisar"
                     single-line
-                    v-model="searchEventos"
                   ></v-text-field>
 
                 </v-toolbar>
@@ -79,26 +79,64 @@
 
               </template>
 
+              <!--Template de nome -->
+              <template v-slot:item.nome="{ item }">
+
+                <ul>
+                  <li>{{ item.nome }}</li>
+                  <li><span v-if="item.nome_en">{{ item.nome_en }}</span> <span v-else
+                                                                                class="atencao"> Not assigned yet</span>
+                  </li>
+                  <li><span v-if="item.nome_es">{{ item.nome_es }}</span> <span v-else
+                                                                                class="atencao"> Aún no asignado</span>
+                  </li>
+                </ul>
+
+              </template>
+
               <!--Template de legendas -->
               <template v-slot:item.legenda="{ item }">
 
-                <span class="text-no-wrap warning" v-if="item.legenda === '' || item.legenda === null"> ---- SEM LEGENDA ----</span>
-                <span
-                  v-else class="text-justify" v-html="item.legenda"></span>
+                <h3>LEGENDA:</h3>
+
+                <span v-if="item.legenda === '' || item.legenda === null" class="text-no-wrap warning"> ---- SEM LEGENDA ---- </span>
+                <v-alert v-else class="text-justify mt-0 mb-o pt-0 pb-0"
+                         color="green lighten-4" dense
+                         v-html="'<h3>Portugês</h3>'+ item.legenda"></v-alert>
+
+                <span v-if="item.legenda_en === '' || item.legenda_en === null" class="text-no-wrap warning"> ---- SEM LEGENDA (Inglês) ---- </span>
+                <v-alert v-else class="text-justify mt-0 mb-o pt-0 pb-0"
+                         color="blue lighten-4" dense
+                         v-html="'<h3>Inglês</h3>'+ item.legenda_en"></v-alert>
+
+                <span v-if="item.legenda_es === '' || item.legenda_es === null" class="text-no-wrap warning"> ---- SEM LEGENDA (Espanhol) ---- </span>
+                <v-alert v-else class="text-justify mt-0 mb-o pt-0 pb-0"
+                         color="red lighten-4" dense
+                         v-html="'<h3>Espanhol</h3>'+ item.legenda_es"></v-alert>
 
                 <hr>
-                SAIBA MAIS:
+                <h3>SAIBA MAIS:</h3>
+                <span v-if="item.saibamais === '' || item.saibamais === null" class="text-no-wrap warning"> ---- SEM SAIBA MAIS ---- </span>
+                <v-alert v-else class="text-justify mt-0 mb-o pt-0 pb-0"
+                         color="green lighten-5" dense
+                         v-html="'<h3>Portugês</h3>'+ item.saibamais"></v-alert>
 
-                <span class="text-no-wrap warning" v-if="item.saibamais === '' || item.saibamais === null"><br> ---- SEM SAIBA MAIS ----</span>
-                <span
-                  v-else class="text-justify" v-html="item.saibamais"><br></span>
+                <span v-if="item.saibamais_en === '' || item.saibamais_en === null" class="text-no-wrap warning"> ---- SEM SAIBA MAIS (Inglês)---- </span>
+                <v-alert v-else class="text-justify mt-0 mb-o pt-0 pb-0"
+                         color="blue lighten-5" dense
+                         v-html="'<h3>Inglês</h3>'+ item.saibamais_en"></v-alert>
+
+                <span v-if="item.saibamais_es === '' || item.saibamais_es === null" class="text-no-wrap warning"> ---- SEM SAIBA MAIS (Espanhol)---- </span>
+                <v-alert v-else class="text-justify mt-0 mb-o pt-0 pb-0"
+                         color="red lighten-5" dense
+                         v-html="'<h3>Espanhol</h3>'+ item.saibamais_es"></v-alert>
 
               </template>
 
               <!--Template de imagens -->
               <template v-slot:item.imagem="{ item }">
 
-                <span class="text-no-wrap warning" v-if="item.imagem === null"> ---- SEM IMAGEM ----</span> <span
+                <span v-if="item.imagem === null" class="text-no-wrap warning"> ---- SEM IMAGEM ----</span> <span
                 v-else><v-icon @click="showImg(item)">mdi-magnify</v-icon></span>
 
               </template>
@@ -110,10 +148,10 @@
                 <v-tooltip top>
                   <template v-slot:activator="{ on, attrs }">
                     <v-icon
-                      @click="openDialogAdmCadastraEditaEvento('Edição', item)"
                       class=""
                       small
                       v-bind="attrs"
+                      @click="openDialogAdmCadastraEditaEvento('Edição', item)"
                       v-on="on"
                     >
                       mdi-pen
@@ -125,10 +163,10 @@
                 <v-tooltip top>
                   <template v-slot:activator="{ on, attrs }">
                     <v-icon
-                      @click="deleteEvento(item)"
                       class=""
                       small
                       v-bind="attrs"
+                      @click="deleteEvento(item)"
                       v-on="on"
                     >
                       mdi-delete
@@ -153,13 +191,13 @@
     </v-container>
 
     <!--Dialog para Conteúdos-->
-    <v-dialog max-width="85%" v-model="dialogGeneric70" persistent>
+    <v-dialog v-model="dialogGeneric70" max-width="85%" persistent>
 
       <!-- CADASTRO E EDIÇÃO-->
       <AdmCadastroEditaEvento
-        :typeOfAction="selectTypeOfAction" :evento="selectedEvento"
-        v-if="selectedTypeOfContent ==='AdmCadastraEditaEvento'" @ajustarVisibilidade="dialogGeneric70 = $event"
-        @adjustSelectedTypeOfContent="selectedTypeOfContent = $event" @ajustaTipoContent="getEventos"
+        v-if="selectedTypeOfContent ==='AdmCadastraEditaEvento'" :evento="selectedEvento"
+        :typeOfAction="selectTypeOfAction" @adjustSelectedTypeOfContent="selectedTypeOfContent = $event"
+        @ajustaTipoContent="getEventos" @ajustarVisibilidade="dialogGeneric70 = $event"
         @resetaEventoSelecionado="selectedEvento = $event"
 
       ></AdmCadastroEditaEvento>
@@ -177,8 +215,8 @@
 
     </v-dialog>
 
-    <!--Dialog para mostrar a imagem de um evento   PRECISO MELHORAR PARA MOSTRAR TB AS IMAGENS ADICIONAIS-->
-    <v-dialog max-width="70%" v-model="dialogShowImagemEvento">
+    <!--Dialog para mostrar a imagem de um evento -->
+    <v-dialog v-model="dialogShowImagemEvento" max-width="70%">
       <v-card>
         <v-card-title>
           Visualização de Imagem
@@ -187,16 +225,44 @@
           <v-img :src="this.$configSis.urlDownload + imgEventoShow"
                  class="rounded-xl v-responsive ml-auto mr-auto"/>
 
-          <v-alert color="grey lighten-2" class="mt-2">
+          <v-alert class="mt-2" color="grey lighten-2">
 
             <span v-if="imgEventoFonteShow !== null || imgEventoFonteShow !== ''">{{ imgEventoFonteShow }}</span>
             <span v-if="imgEventoFonteShow === null || imgEventoFonteShow === ''"> Sem Fonte</span>
 
           </v-alert>
+
+          <hr>
+          <br>
+          <h2>Imagens Adicionais</h2>
+          <br>
+          <v-alert v-for="imgadic in listaImgAdicional" v-if="listaImgAdicional.length > 0" :key="imgadic.id"
+                   color="blue lighten-3">
+
+            <v-container>
+              <v-row>
+                <v-col>
+
+                  <v-img :src="configSis.urlDownload + imgadic.imagem"
+                         class="rounded-xl v-responsive"/>
+
+                  <br>
+                  <v-alert color="white">
+                    <h3>Descrição</h3> <br>
+                    <b>Português: </b> {{ imgadic.descricao }}<br>
+                    <b>Inglês: </b> {{ imgadic.descricao_en }}<br>
+                    <b>Espanhol: </b> {{ imgadic.descricao_es }}
+                  </v-alert>
+                </v-col>
+              </v-row>
+            </v-container>
+
+          </v-alert>
+
         </v-card-text>
         <v-card-actions class="pb-5">
           <v-spacer></v-spacer>
-          <v-btn @click="dialogShowImagemEvento = false" color="grey lighten-1">Fechar</v-btn>
+          <v-btn color="grey lighten-1" @click="dialogShowImagemEvento = false">Fechar</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -204,7 +270,7 @@
     <!-- REVISAR -->
 
     <!--Dialog para deletar evento-->
-    <v-dialog max-width="800px" v-model="dialogDeleteEvento">
+    <v-dialog v-model="dialogDeleteEvento" max-width="800px">
       <v-card>
         <v-card-title class="justify-center" primary-title>
           <v-icon
@@ -225,9 +291,9 @@
         </v-card-text>
         <v-card-actions class="pb-5">
           <v-spacer></v-spacer>
-          <v-btn @click="dialogDeleteEvento= false" color="grey lighten-1">Cancelar</v-btn>
+          <v-btn color="grey lighten-1" @click="dialogDeleteEvento= false">Cancelar</v-btn>
           <span class="pl-5 pr-5"></span>
-          <v-btn @click="deleteEventoConfirm" color="red lighten-1">Excluir</v-btn>
+          <v-btn color="red lighten-1" @click="deleteEventoConfirm">Excluir</v-btn>
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
@@ -263,7 +329,7 @@ export default {
         value: 'nome'
       },
       {
-        text: 'Legenda',
+        text: 'Legenda / Saiba Mais',
         value: 'legenda'
       },
       {
@@ -298,7 +364,8 @@ export default {
     dialogDeleteImagemAdicionalEvento: false,
     imagemAdicionalParaDeletar: {},
     selectedTypeOfContent: '',
-    selectTypeOfAction: ''
+    selectTypeOfAction: '',
+    listaImgAdicional: []
   }),
   computed: {
     ...mapGetters(['usuarioLogado'])
@@ -357,10 +424,14 @@ export default {
 
     showImg (imagem) {
       this.imgEventoShow = ''
+      this.listaImgAdicional = []
       this.imgEventoFonteShow = ''
       this.dialogShowImagemEvento = true
       this.imgEventoShow = imagem.imagem
       this.imgEventoFonteShow = imagem.fonteimagempcp
+      this.listaImgAdicional = imagem.imagens_adicionais
+
+      console.log(this.listaImgAdicional)
     }
 
   }
@@ -368,4 +439,7 @@ export default {
 </script>
 
 <style>
+.atencao {
+  background-color: yellow;
+}
 </style>

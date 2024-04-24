@@ -16,7 +16,11 @@
 
       <!--espaçador + btn voltar-->
       <v-col align-self="center" class="text-center" cols="1">
-        <v-btn v-if="pagAtualEvento > 1" color="#eb9234" @click="changeEventPage(pagAtualEvento - 1)">Voltar</v-btn>
+        <v-btn v-if="pagAtualEvento > 1" color="#eb9234" @click="changeEventPage(pagAtualEvento - 1)">
+          <span v-if="selected_lang === 'pt_br'"> Voltar</span>
+          <span v-else-if="selected_lang === 'en'"> Back</span>
+          <span v-else> Volver</span>
+        </v-btn>
       </v-col>
 
       <v-col align-self="center">
@@ -50,7 +54,21 @@
                 <v-row>
                   <v-col>
                     <ul>
-                      <li v-for="ev in le1.eventos" :key="ev.id"><strong>{{ ev.nome }}</strong></li>
+                      <li v-for="ev in le1.eventos" v-if="selected_lang === 'pt_br'" :key="ev.id"><strong>{{
+                          ev.nome
+                        }}</strong></li>
+                      <li v-for="ev in le1.eventos" v-if="selected_lang === 'en'" :key="ev.id"><strong>
+                        <span
+                          v-if="ev.nome_en === '' || ev.nome_en === 'null' || ev.nome_en === null">{{
+                            naoTraduzidoEn
+                          }}</span><span
+                        v-else>{{ ev.nome_en }}</span></strong></li>
+                      <li v-for="ev in le1.eventos" v-if="selected_lang === 'es'" :key="ev.id"><strong>
+                        <span
+                          v-if="ev.nome_es === '' || ev.nome_es === 'null' || ev.nome_es === null">{{
+                            naoTraduzidoEs
+                          }}</span><span
+                        v-else>{{ ev.nome_es }}</span></strong></li>
                     </ul>
                   </v-col>
                 </v-row>
@@ -88,7 +106,22 @@
                 <v-row>
                   <v-col>
                     <ul>
-                      <li v-for="ev2 in le2.eventos" :key="ev2.id"><strong>{{ ev2.nome }}</strong></li>
+                      <li v-for="ev2 in le2.eventos" v-if="selected_lang === 'pt_br'" :key="ev2.id">
+                        <strong>{{
+                            ev2.nome
+                          }}</strong></li>
+                      <li v-for="ev2 in le2.eventos" v-if="selected_lang === 'en'" :key="ev2.id"><strong>
+                        <span
+                          v-if="ev2.nome_en === '' || ev2.nome_en === 'null' || ev2.nome_en === null">{{
+                            naoTraduzidoEn
+                          }}</span><span
+                        v-else>{{ ev2.nome_en }}</span></strong></li>
+                      <li v-for="ev2 in le2.eventos" v-if="selected_lang === 'es'" :key="ev2.id"><strong>
+                        <span
+                          v-if="ev2.nome_es === '' || ev2.nome_es === 'null' || ev2.nome_es === null">{{
+                            naoTraduzidoEs
+                          }}</span><span
+                        v-else>{{ ev2.nome_es }}</span></strong></li>
                     </ul>
                   </v-col>
                 </v-row>
@@ -102,7 +135,11 @@
 
       <!--espaçador + btn avançar-->
       <v-col align-self="center" class="text-center" cols="1">
-        <v-btn v-if="temProxPag" color="#eb9234" @click="changeEventPage(pagAtualEvento + 1)">Avançar</v-btn>
+        <v-btn v-if="temProxPag" color="#eb9234" @click="changeEventPage(pagAtualEvento + 1)">
+          <span v-if="selected_lang === 'pt_br'"> Avançar</span>
+          <span v-else-if="selected_lang === 'en'"> Next</span>
+          <span v-else> Avance</span>
+        </v-btn>
       </v-col>
 
     </v-row>
@@ -114,9 +151,15 @@
         <v-row>
           <v-col cols="3"></v-col>
           <v-col class="text-center">
-            <v-btn v-if="totemConfigs.quiz === 'Sim'" block class="pt-8 pb-8" color="warning" elevation="21"
-                   rounded x-large @click="openDialogQuiz"><h2
-              class="black--text">Teste o seu conhecimento!</h2></v-btn>
+            <v-btn v-if="totemConfigs.quiz === 'Sim'" block class="pt-8 pb-8" color="warning"
+                   elevation="21" rounded x-large @click="openDialogQuiz">
+              <h2 v-if="this.selected_lang === 'pt_br'" class="black--text"> Teste o seu
+                conhecimento!</h2>
+              <h2 v-else-if="this.selected_lang === 'en'" class="black--text"> Test your
+                knowledge!</h2>
+              <h2 v-else class="black--text"> ¡Prueba tus conocimientos! </h2>
+            </v-btn>
+
           </v-col>
           <v-col cols="3"></v-col>
         </v-row>
@@ -147,10 +190,22 @@
           <v-row v-if="Object.keys(selectedAnoEvento).length !== 0 && selectedAnoEvento.eventos.length > 1"
                  class="mt-1">
             <v-col>
-              <v-btn v-for="(evento, index) in selectedAnoEvento.eventos" :key="evento.id" class="mr-5 mb-3" color="primary"
-                     @click="mostraEventoSelecionado(index)"> {{
-                  evento.nome
-                }}
+              <v-btn v-for="(evento, index) in selectedAnoEvento.eventos" :key="evento.id" class="mr-5 mb-3"
+                     color="primary"
+                     @click="mostraEventoSelecionado(index)">
+                <span v-if="selected_lang === 'pt_br'">{{ evento.nome }}</span>
+                <span v-else-if="selected_lang === 'en'">
+                  <span v-if="evento.nome_en === '' || evento.nome_en === 'null' || evento.nome_en === null">
+                    {{ naoTraduzidoEn }}
+                  </span>
+                  <span v-else>{{ evento.nome_en }}</span>
+                </span>
+                <span v-else>
+                  <span v-if="evento.nome_es === '' || evento.nome_es === 'null' || evento.nome_es === null">
+                    {{ naoTraduzidoEs }}
+                  </span>
+                  <span v-else>{{ evento.nome_es }}</span>
+                </span>
               </v-btn>
             </v-col>
           </v-row>
@@ -172,7 +227,8 @@
                     </v-btn>
 
                     <!--imagens adicionais-->
-                    <v-btn v-for="(imgaddadd, index) in eventoVisivel.imagens_adicionais" :key="imgaddadd.id" class="mx-2 mb-4" color="secondary"
+                    <v-btn v-for="(imgaddadd, index) in eventoVisivel.imagens_adicionais" :key="imgaddadd.id"
+                           class="mx-2 mb-4" color="secondary"
                            retain-focus-on-click
                            @click="mostraImagemAdicional(imgaddadd, 'adicional')">
                       {{ index + 2 }}
@@ -204,7 +260,8 @@
                     </v-btn>
 
                     <!--imagens adicionais-->
-                    <v-btn v-for="(imgaddadd, index) in eventoVisivel.imagens_adicionais" :key="imgaddadd.id" class="mx-2 mt-4" color="secondary"
+                    <v-btn v-for="(imgaddadd, index) in eventoVisivel.imagens_adicionais" :key="imgaddadd.id"
+                           class="mx-2 mt-4" color="secondary"
                            retain-focus-on-click
                            @click="mostraImagemAdicional(imgaddadd, 'adicional')">
                       {{ index + 2 }}
@@ -223,8 +280,24 @@
               <v-row>
                 <v-col>
                   <v-alert class="text-center text-h3" rounded="xl">
-                    <b><span class="font-preta"> {{ eventoVisivel.nome }} <span
-                      v-if="eventoVisivel.dia || eventoVisivel.mes">(</span> <span
+                    <b><span class="font-preta">
+                      <span v-if="selected_lang === 'pt_br'">{{ eventoVisivel.nome }}</span>
+                      <span v-if="selected_lang === 'en'">
+                        <span
+                          v-if="eventoVisivel.nome_en === '' || eventoVisivel.nome_en === 'null' || eventoVisivel.nome_en === null">
+                          {{ naoTraduzidoEn }}
+                        </span>
+                        <span v-else>{{ eventoVisivel.nome_en }}</span>
+                      </span>
+                      <span v-if="selected_lang === 'es'">
+                        <span
+                          v-if="eventoVisivel.nome_eS === '' || eventoVisivel.nome_es === 'null' || eventoVisivel.nome_es === null">
+                          {{ naoTraduzidoEs }}
+                        </span>
+                        <span v-else>{{ eventoVisivel.nome_es }}</span>
+                      </span>
+                      <span
+                        v-if="eventoVisivel.dia || eventoVisivel.mes">(</span> <span
                       v-if="eventoVisivel.dia"> {{ eventoVisivel.dia }} de </span> <span
                       v-if="eventoVisivel.mes">  {{ converteNumEmMes(eventoVisivel.mes) }} </span>
                       <span v-if="eventoVisivel.dia || eventoVisivel.mes">)</span></span></b>
@@ -251,16 +324,43 @@
                     <v-row v-if="!saibaMaisAreaVisibility" class="mb-1">
                       <v-col :class=tamanhoTexto class="text-justify">
 
-                        <div v-html="eventoVisivel.legenda">
-                        </div>
+                        <span v-if="selected_lang==='pt_br'" v-html="eventoVisivel.legenda"/>
 
+                        <span v-if="selected_lang === 'en'">
+                          <span
+                            v-if="eventoVisivel.legenda_en === '' || eventoVisivel.legenda_en === 'null' || eventoVisivel.legenda_en === null ">
+                          {{ naoTraduzidoEn }}
+                          </span>
+                          <span v-else v-html="eventoVisivel.legenda_en"/>
+                        </span>
+                        <span v-if="selected_lang==='es'">
+                          <span
+                            v-if="eventoVisivel.legenda_es === '' || eventoVisivel.legenda_es === 'null' || eventoVisivel.legenda_es === null ">
+                          {{ naoTraduzidoEs }}
+                          </span>
+                          <span v-else v-html="eventoVisivel.legenda_es"/>
+                        </span>
                       </v-col>
                     </v-row>
 
                     <!-- texto do saiba mais -->
                     <v-row v-if="saibaMaisAreaVisibility">
                       <v-col class="text-justify">
-                        <div :class="tamanhoTexto" v-html="eventoVisivel.saibamais">
+                        <div v-if="selected_lang === 'pt_br'" :class="tamanhoTexto"
+                             v-html="eventoVisivel.saibamais"/>
+                        <div v-if="selected_lang === 'en'" :class="tamanhoTexto">
+                          <span
+                            v-if="eventoVisivel.saibamais_en === '' || eventoVisivel.saibamais_en === 'null' || eventoVisivel.saibamais_en === null">
+                            {{ naoTraduzidoEn }}
+                          </span>
+                          <span v-else v-html="eventoVisivel.saibamais_en"/>
+                        </div>
+                        <div v-if="selected_lang === 'es'" :class="tamanhoTexto">
+                          <span
+                            v-if="eventoVisivel.saibamais_es === '' || eventoVisivel.saibamais_es === 'null' || eventoVisivel.saibamais_es === null">
+                            {{ naoTraduzidoEs }}
+                          </span>
+                          <span v-else v-html="eventoVisivel.saibamais_es"/>
                         </div>
                       </v-col>
                     </v-row>
@@ -286,7 +386,11 @@
         <!-- Actions-->
         <v-card-actions class="pb-5">
           <v-spacer></v-spacer>
-          <v-btn color="grey lighten-1" @click="dialogNavegaAno = false">Voltar</v-btn>
+          <v-btn color="grey lighten-1" @click="dialogNavegaAno = false">
+            <span v-if="selected_lang === 'pt_br'"> Voltar</span>
+            <span v-if="selected_lang === 'en'"> Close</span>
+            <span v-if="selected_lang === 'es'"> Cerrar</span>
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -353,13 +457,16 @@ export default {
       essaEImgEventoPcp: true,
       explicacaoImgAddEvevntox: '',
       soTemUmaImagem: true,
-      dialogQuiz: false
+      dialogQuiz: false,
+      naoTraduzidoEn: 'Not translated yet',
+      naoTraduzidoEs: 'Aún no traducido'
     }
   },
   watch: {},
 
   props: {
-    totemConfigs: Object
+    totemConfigs: Object,
+    selected_lang: String
   },
 
   computed: {},
@@ -375,6 +482,7 @@ export default {
       try {
         this.$http.get('evento/principal')
           .then(response => {
+            console.log(response.data)
             this.eventos = response.data[0]
             this.pagAtualEvento = response.data[1]
             this.temProxPag = response.data[2]
@@ -473,13 +581,17 @@ export default {
     },
 
     mostraEventoSelecionado (index) {
-      console.log('oi')
-      console.log(index)
       this.tamanhoTexto = 'text-h5'
       this.legendaBtnAumentaDiminui = 'A--'
       this.saibamaisevent = ''
       this.saibaMaisAreaVisibility = false
-      this.saibaMaisTextButton = 'SAIBA MAIS...'
+      if (this.selected_lang === 'pt_br') {
+        this.saibaMaisTextButton = 'SAIBA MAIS...'
+      } else if (this.selected_lang === 'en') {
+        this.saibaMaisTextButton = 'KNOW MORE...'
+      } else {
+        this.saibaMaisTextButton = 'SEPA MAS...'
+      }
       this.eventoVisivel = this.selectedAnoEvento.eventos[index]
       this.essaEImgEventoPcp = true
       this.objPcpEventoParaImagemAdicional = {}
@@ -534,11 +646,23 @@ export default {
       if (this.saibaMaisAreaVisibility === false) {
         this.saibamaisevent = this.eventoVisivel.saibamais
         this.saibaMaisAreaVisibility = true
-        this.saibaMaisTextButton = 'Ocultar informações adicionais.'
+        if (this.selected_lang === 'pt_br') {
+          this.saibaMaisTextButton = 'Ocultar informações adicionais.'
+        } else if (this.selected_lang === 'en') {
+          this.saibaMaisTextButton = 'Hide additional information.'
+        } else {
+          this.saibaMaisTextButton = 'Ocultar información adicional.'
+        }
       } else {
         this.saibamaisevent = ''
         this.saibaMaisAreaVisibility = false
-        this.saibaMaisTextButton = 'SAIBA MAIS...'
+        if (this.selected_lang === 'pt_br') {
+          this.saibaMaisTextButton = 'SAIBA MAIS...'
+        } else if (this.selected_lang === 'en') {
+          this.saibaMaisTextButton = 'KNOW MORE...'
+        } else {
+          this.saibaMaisTextButton = 'SEPA MAS...'
+        }
       }
     },
 
@@ -555,7 +679,21 @@ export default {
         this.essaEImgEventoPcp = false
         eventoVisivelCopia.imagem = objeto.imagem
         eventoVisivelCopia.fonteimagempcp = objeto.fonte
-        this.explicacaoImgAddEvevntox = objeto.descricao
+        if (this.selected_lang === 'pt_br') {
+          this.explicacaoImgAddEvevntox = objeto.descricao
+        } else if (this.selected_lang === 'en') {
+          if (objeto.descricao_en === '' || objeto.descricao_en === 'null' || objeto.descricao_en === null) {
+            this.explicacaoImgAddEvevntox = this.naoTraduzidoEn
+          } else {
+            this.explicacaoImgAddEvevntox = objeto.descricao_en
+          }
+        } else {
+          if (objeto.descricao_es === '' || objeto.descricao_es === 'null' || objeto.descricao_es === null) {
+            this.explicacaoImgAddEvevntox = this.naoTraduzidoEs
+          } else {
+            this.explicacaoImgAddEvevntox = objeto.descricao_es
+          }
+        }
       }
 
       // Altera o estado do componente com a cópia do objeto

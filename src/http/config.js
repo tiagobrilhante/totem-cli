@@ -1,20 +1,26 @@
-const urlDownload = 'http://localhost:8000/'
-// const urlDownload = 'http://totemapi2.cma.eb.mil.br/'
+// const urlDownload = 'http://localhost:8000/'
+const urlDownload = 'http://totemapi3.cma.eb.mil.br/'
 // const urlDownload = 'http://totemapi.12rm.eb.mil.br/'
 
 const baseURL = urlDownload + 'api/'
 
-const nomeSis = 'EBTotem'
-const versaoSis = '2.4'
-const labelSis = 'Sistema de Totens'
-const criador = 'TC Brilhante'
-// info geral
-const revisarForm = 'Revise os campos do formulário.'
 const versoes = [
+  {
+    id: '2.5',
+    release: '182',
+    latest: true,
+    data: '23/04/2024',
+    detalhesVisiveis: false,
+    detalhes: [
+      'Possibilidade de acesso do conteúdo na lingua Inglesa (EUA)',
+      'Realocação do acesso da área administrativa no footer.',
+      'Correção de bugs'
+    ]
+  },
   {
     id: '2.4',
     release: '170',
-    latest: true,
+    latest: false,
     data: '19/02/2024',
     detalhesVisiveis: false,
     detalhes: [
@@ -126,6 +132,13 @@ const versoes = [
     ]
   }
 ]
+
+const nomeSis = 'EBTotem'
+const versaoSis = versoes[0].id
+const labelSis = 'Sistema de Totens'
+const criador = 'TC Brilhante'
+// info geral
+const revisarForm = 'Revise os campos do formulário.'
 
 export default {
   urlDownload,

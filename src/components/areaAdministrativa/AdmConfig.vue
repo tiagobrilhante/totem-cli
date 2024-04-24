@@ -29,16 +29,30 @@
                 </v-col>
               </v-row>
 
-              <!--cod acesso-->
+              <!--nome totem ingles-->
               <v-row no-gutters>
                 <v-col>
-                  <span class="ml-3">Código de Acesso a Área Administrativa</span>
+                  <span class="ml-3">Nome do Totem (Inglês)</span>
                   <v-text-field
                     dense
-                    label="Código do Totem"
+                    label="Nome do Totem (Inglês)"
                     rounded
                     solo
-                    v-model="totemConfigs.access_code"
+                    v-model="totemConfigs.nome_totem_en"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+
+              <!--nome totem espanhol-->
+              <v-row no-gutters>
+                <v-col>
+                  <span class="ml-3">Nome do Totem (Espanhol)</span>
+                  <v-text-field
+                    dense
+                    label="Nome do Totem (Espanhol)"
+                    rounded
+                    solo
+                    v-model="totemConfigs.nome_totem_es"
                   ></v-text-field>
                 </v-col>
               </v-row>
@@ -136,6 +150,20 @@
                   ></v-text-field>
                 </v-col>
 
+              </v-row>
+
+              <!--cod acesso-->
+              <v-row no-gutters>
+                <v-col>
+                  <span class="ml-3">Código de Acesso a Área Administrativa</span>
+                  <v-text-field
+                    dense
+                    label="Código do Totem"
+                    rounded
+                    solo
+                    v-model="totemConfigs.access_code"
+                  ></v-text-field>
+                </v-col>
               </v-row>
 
             </v-col>
@@ -335,6 +363,8 @@ export default {
     configSis: config,
     totemConfigs: {
       nome_totem: '',
+      nome_totem_en: '',
+      nome_totem_es: '',
       altura_index: '',
       largura_index: '',
       altura_detail: '',
