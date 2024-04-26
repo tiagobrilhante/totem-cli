@@ -29,8 +29,34 @@
                 </v-col>
               </v-row>
 
-              <!--nome totem ingles-->
+              <!-- multi idiomas-->
               <v-row no-gutters>
+                <v-col>
+                  <v-checkbox class="pt-0 mt-0"
+                    v-model="totemConfigs.permite_multi_lang"
+                    label="Habilitar multi-idiomas"
+                  ></v-checkbox>
+                </v-col>
+              </v-row>
+
+              <v-row no-gutters v-if="totemConfigs.permite_multi_lang">
+                <v-col>
+                  <v-checkbox class="pt-0 mt-0"
+                              v-model="totemConfigs.en_habilitado"
+                              label="Disponibilizar Inglês"
+                  ></v-checkbox>
+                </v-col>
+
+                <v-col>
+                  <v-checkbox class="pt-0 mt-0"
+                              v-model="totemConfigs.es_habilitado"
+                              label="Disponibilizar Espanhol"
+                  ></v-checkbox>
+                </v-col>
+              </v-row>
+
+              <!--nome totem ingles-->
+              <v-row no-gutters v-if="totemConfigs.permite_multi_lang && totemConfigs.en_habilitado">
                 <v-col>
                   <span class="ml-3">Nome do Totem (Inglês)</span>
                   <v-text-field
@@ -44,7 +70,7 @@
               </v-row>
 
               <!--nome totem espanhol-->
-              <v-row no-gutters>
+              <v-row no-gutters v-if="totemConfigs.permite_multi_lang && totemConfigs.es_habilitado">
                 <v-col>
                   <span class="ml-3">Nome do Totem (Espanhol)</span>
                   <v-text-field
@@ -370,7 +396,10 @@ export default {
       altura_detail: '',
       largura_detail: '',
       access_code: '',
-      quiz: ''
+      quiz: '',
+      permite_multi_lang: '',
+      en_habilitado: '',
+      es_habilitado: ''
     },
     dialogUpdateBG: false,
     currentEditBG: undefined,

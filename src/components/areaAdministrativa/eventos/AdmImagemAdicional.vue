@@ -23,11 +23,25 @@
                     <v-img :src="configSis.urlDownload + '/' +  imgadicional.imagem"
                            aspect-ratio="1.5" class="rounded-xl"/>
                   </v-col>
-                  <v-col><strong>Fonte: </strong>{{ imgadicional.fonte }}</v-col>
                   <v-col>
-                    <strong>Descrição: </strong>{{ imgadicional.descricao }}<br>
-                    <strong>Descrição (Inglês): </strong>{{ imgadicional.descricao_en }}<br>
-                    <strong>Descrição (Espanhol): </strong>{{ imgadicional.descricao_es }}
+                    <strong>Fonte: </strong>
+                    <p v-if="imgadicional.fonte">{{ imgadicional.fonte }}</p>
+                    <p v-else> Não existe uma fonte cadastrada.</p>
+                  </v-col>
+                  <v-col>
+                    <p>
+                      <strong>Descrição: </strong>{{ imgadicional.descricao }}
+                    </p>
+                    <p v-if="totemConfigs.en_habilitado">
+                      <strong>Descrição (Inglês): </strong>
+                      <span v-if="imgadicional.descricao_en">{{ imgadicional.descricao_en }}</span>
+                      <span v-else>Não foi cadastrada um descrição em Inglês</span>
+                    </p>
+                    <p v-if="totemConfigs.es_habilitado">
+                      <strong>Descrição (Espanhol): </strong>
+                      <span v-if="imgadicional.descricao_es">{{ imgadicional.descricao_es }}</span>
+                      <span v-else>Não foi cadastrada um descrição em Espanhol</span>
+                    </p>
                   </v-col>
                   <v-col class="text-right">
                     <v-btn color="error" @click="openDeleteImagem(imgadicional)">
@@ -112,7 +126,7 @@
               <!--Descricao en ptbr e ingles-->
               <v-row dense>
                 <!--descrição-->
-                <v-col>
+                <v-col cols ="6">
                   <span class="ml-3">Descrição da Imagem</span>
                   <v-text-field
                     v-model="descricaoNewImgAdicionalEvento"
@@ -130,7 +144,7 @@
                 </v-col>
 
                 <!--descrição (ingles)-->
-                <v-col>
+                <v-col cols="6" v-if="totemConfigs.en_habilitado">
                   <span class="ml-3">Descrição da Imagem (Inglês)</span>
                   <v-text-field
                     v-model="descricaoNewImgAdicionalEventoEng"
@@ -149,7 +163,7 @@
               </v-row>
 
               <!--Descricao espanhol-->
-              <v-row dense>
+              <v-row dense v-if="totemConfigs.es_habilitado">
                 <!--descrição es-->
                 <v-col>
                   <span class="ml-3">Descrição da Imagem (Espanhol)</span>
@@ -272,7 +286,8 @@ export default {
   }),
 
   props: {
-    selectedEvento: Object
+    selectedEvento: Object,
+    totemConfigs: Object
   },
   methods: {
 

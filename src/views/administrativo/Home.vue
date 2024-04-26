@@ -8,9 +8,9 @@
     <CabecalhoAA/>
 
     <!-- administração de eventos-->
-    <AdmEventos v-if="totemConfigs.tipo_totem ==='data'"></AdmEventos>
+    <AdmEventos @ajustaTipoContent="getConfigs" v-if="totemConfigs.tipo_totem ==='data'" :totemConfigs="totemConfigs"></AdmEventos>
     <!-- administração de assuntos-->
-    <AdmAssuntos v-else></AdmAssuntos>
+    <AdmAssuntos @ajustaTipoContent="getConfigs" :totemConfigs="totemConfigs" v-else></AdmAssuntos>
 
   </v-main>
 </template>
@@ -31,6 +31,11 @@ export default {
     configSis: config,
     totemConfigs: {
       nome_totem: '',
+      nome_totem_en: '',
+      nome_totem_es: '',
+      permite_multi_lang: '',
+      en_habilitado: '',
+      es_habilitado: '',
       altura_index: '',
       largura_index: '',
       altura_detail: '',

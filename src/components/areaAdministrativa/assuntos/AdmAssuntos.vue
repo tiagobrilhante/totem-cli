@@ -165,7 +165,8 @@
                   <v-col class="text-right">
 
                     <!-- portugues-->
-                    <v-btn class="mt-1" rounded retain-focus-on-click text @click="ajusta_linguagem('pt_br')">
+                    <v-btn :color="ajusta_color_pt_br" :elevation="ajusta_elevation_pt_br" class="mt-1 pt-2 pb-3"
+                           retain-focus-on-click rounded @click="ajusta_linguagem('pt_br')">
                       <v-img
                         :src="require('@/assets/img/bra.png')"
                         alt="Translate to en_us"
@@ -174,7 +175,9 @@
                     </v-btn>
 
                     <!-- ingles-->
-                    <v-btn class="mt-1" rounded retain-focus-on-click text @click="ajusta_linguagem('en')">
+                    <v-btn v-if="totemConfigs.en_habilitado" :color="ajusta_color_en" :elevation="ajusta_elevation_en"
+                           class="mt-1 pt-2 pb-3" retain-focus-on-click rounded
+                           @click="ajusta_linguagem('en')">
                       <v-img
                         :src="require('@/assets/img/eua.png')"
                         alt="Translate to en_us"
@@ -183,7 +186,9 @@
                     </v-btn>
 
                     <!-- espanhol-->
-                    <v-btn class="mt-1" rounded retain-focus-on-click text @click="ajusta_linguagem('es')">
+                    <v-btn v-if="totemConfigs.es_habilitado" :color="ajusta_color_es" :elevation="ajusta_elevation_es"
+                           class="mt-1 pt-2 pb-3" retain-focus-on-click rounded
+                           @click="ajusta_linguagem('es')">
                       <v-img
                         :src="require('@/assets/img/spain.png')"
                         alt="Translate to en_us"
@@ -194,6 +199,8 @@
                 </v-row>
 
                 <v-alert v-if="qtdImg !== 0" class="mb-0 pb-0" color="white" dense rounded="xl">
+
+                  <!--nome exib e ordem-->
                   <v-row class="text-center">
                     <v-col>
                       <h3>{{ nomeExibImg }} <span v-if="imagemAtual.banner"> ( Banner )</span></h3>
@@ -214,7 +221,7 @@
                       <!--saiba mais-->
                       <v-alert class="rounded-xl">
                         <p><b>Saiba Mais:</b></p>
-                        <div v-if="imagemAtual.saibamais" v-html="imagemAtual.saibamais"></div>
+                        <div v-if="saibamaisExibImg" v-html="saibamaisExibImg"></div>
                         <span v-else> Sem Saiba Mais</span>
                       </v-alert>
 
@@ -290,122 +297,6 @@
                         single-line
                       ></v-text-field>
 
-                      <!--Dialog para deletar assunto-->
-                      <v-dialog v-model="dialogDeleteAssunto" max-width="800px">
-                        <v-card>
-                          <v-card-title class="justify-center" primary-title>
-                            <v-icon
-                              class="mr-4">
-                              fa fa-exclamation-triangle
-                            </v-icon>
-                            Você tem certeza que quer deletar esse assunto?
-                            <v-icon
-                              class="ml-4">
-                              fa fa-exclamation-triangle
-                            </v-icon>
-
-                          </v-card-title>
-                          <v-card-text>
-                            <div class="text-center">Essa ação é irreversível. <br>
-                              Todas as imagens vinculadas a esse assunto também serão removidas.<br>
-                              Tenha certeza do que está fazendo.
-                            </div>
-                          </v-card-text>
-                          <v-card-actions class="pb-5">
-                            <v-spacer></v-spacer>
-                            <v-btn color="grey lighten-1" @click="dialogDeleteAssunto = false">Cancelar</v-btn>
-                            <span class="pl-5 pr-5"></span>
-                            <v-btn color="red lighten-1" @click="deleteAssuntoConfirm">Excluir</v-btn>
-                            <v-spacer></v-spacer>
-                          </v-card-actions>
-                        </v-card>
-                      </v-dialog>
-
-                      <!--Dialog para editar assunto-->
-                      <v-dialog v-model="dialogEditAssunto" max-width="800px">
-                        <v-card>
-                          <v-form @submit.prevent="editAssuntoConfirm">
-                            <v-card-title class="justify-center" primary-title>
-                              Editar Assunto
-                            </v-card-title>
-                            <v-card-text>
-
-                              <!--nome assunto-->
-                              <v-row no-gutters>
-                                <v-col>
-                                  <span class="pl-3">Nome</span>
-                                  <v-text-field
-                                    v-model="nomeEditAssunto"
-                                    class="ml-3"
-                                    dense
-                                    label="Nome Assunto"
-                                    rounded
-                                    solo
-                                  ></v-text-field>
-                                </v-col>
-                              </v-row>
-
-                              <!--nome assunto (ingles)-->
-                              <v-row no-gutters>
-                                <v-col>
-                                  <span class="pl-3">Nome (Inglês)</span>
-                                  <v-text-field
-                                    v-model="nomeEditAssuntoEng"
-                                    class="ml-3"
-                                    dense
-                                    label="Nome Assunto (Inglês)"
-                                    rounded
-                                    solo
-                                  ></v-text-field>
-                                </v-col>
-                              </v-row>
-
-                              <!--nome assunto (espanhol)-->
-                              <v-row no-gutters>
-                                <v-col>
-                                  <span class="pl-3">Nome (Espanhol)</span>
-                                  <v-text-field
-                                    v-model="nomeEditAssuntoSpa"
-                                    class="ml-3"
-                                    dense
-                                    label="Nome Assunto (Espanhol)"
-                                    rounded
-                                    solo
-                                  ></v-text-field>
-                                </v-col>
-                              </v-row>
-
-                              <!--ordem exibição-->
-                              <v-row no-gutters>
-                                <v-col>
-                                  <span class="pl-3">Ordem de Exibição</span>
-                                  <v-text-field
-                                    v-model="ordemEditAssunto"
-                                    class="ml-3"
-                                    dense
-                                    label="Ordem de Exibição"
-                                    min="1"
-                                    rounded
-                                    solo
-                                    type="number"
-                                  ></v-text-field>
-                                </v-col>
-                              </v-row>
-
-                            </v-card-text>
-                            <v-card-actions class="pb-5">
-                              <v-spacer></v-spacer>
-                              <v-btn color="warning lighten-1" @click="dialogEditAssunto = false">Cancelar</v-btn>
-                              <span class="pl-5 pr-5"></span>
-                              <v-btn color="success" type="submit">Editar</v-btn>
-                              <v-spacer></v-spacer>
-                            </v-card-actions>
-
-                          </v-form>
-                        </v-card>
-
-                      </v-dialog>
-
                     </v-toolbar>
 
                   </template>
@@ -447,10 +338,11 @@
 
                   </template>
 
+                  <!-- tem plate de apresentar o assunto em outros idiomas-->
                   <template v-slot:item.nome_assunto="{item}">
-                    {{ item.nome_assunto }} / <span v-if="item.nome_assunto_en">{{ item.nome_assunto_en }}</span> <span
-                    v-else> Not assigned yet</span>/ <span v-if="item.nome_assunto_es">{{ item.nome_assunto_es }}</span>
-                    <span v-else> Aún no asignado</span>
+                    {{ item.nome_assunto }} <span v-if="item.nome_assunto_en && totemConfigs.en_habilitado"> /  {{ item.nome_assunto_en }}</span> <span
+                    v-if="!item.nome_assunto_en && totemConfigs.en_habilitado"> / Not assigned yet</span> <span v-if="item.nome_assunto_es && totemConfigs.es_habilitado" > / {{ item.nome_assunto_es }}</span>
+                    <span v-if="!item.nome_assunto_es && totemConfigs.es_habilitado"> / Aún no asignado</span>
                   </template>
 
                 </v-data-table>
@@ -500,7 +392,7 @@
             </v-row>
 
             <!--nome assunto (ingles)-->
-            <v-row no-gutters>
+            <v-row v-if="totemConfigs.en_habilitado" no-gutters>
               <v-col>
                 <span class="pl-3">Nome (Inglês)</span>
                 <v-text-field
@@ -515,7 +407,7 @@
             </v-row>
 
             <!--nome assunto (espanhol)-->
-            <v-row no-gutters>
+            <v-row v-if="totemConfigs.es_habilitado" no-gutters>
               <v-col>
                 <span class="pl-3">Nome (Espanhol)</span>
                 <v-text-field
@@ -552,6 +444,122 @@
             <v-btn color="warning lighten-1" @click="dialogAddAssunto = false">Cancelar</v-btn>
             <span class="pl-5 pr-5"></span>
             <v-btn color="success" type="submit">Cadastrar</v-btn>
+            <v-spacer></v-spacer>
+          </v-card-actions>
+
+        </v-form>
+      </v-card>
+
+    </v-dialog>
+
+    <!--Dialog para deletar assunto-->
+    <v-dialog v-model="dialogDeleteAssunto" max-width="800px">
+      <v-card>
+        <v-card-title class="justify-center" primary-title>
+          <v-icon
+            class="mr-4">
+            fa fa-exclamation-triangle
+          </v-icon>
+          Você tem certeza que quer deletar esse assunto?
+          <v-icon
+            class="ml-4">
+            fa fa-exclamation-triangle
+          </v-icon>
+
+        </v-card-title>
+        <v-card-text>
+          <div class="text-center">Essa ação é irreversível. <br>
+            Todas as imagens vinculadas a esse assunto também serão removidas.<br>
+            Tenha certeza do que está fazendo.
+          </div>
+        </v-card-text>
+        <v-card-actions class="pb-5">
+          <v-spacer></v-spacer>
+          <v-btn color="grey lighten-1" @click="dialogDeleteAssunto = false">Cancelar</v-btn>
+          <span class="pl-5 pr-5"></span>
+          <v-btn color="red lighten-1" @click="deleteAssuntoConfirm">Excluir</v-btn>
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <!--Dialog para editar assunto-->
+    <v-dialog v-model="dialogEditAssunto" max-width="800px">
+      <v-card>
+        <v-form @submit.prevent="editAssuntoConfirm">
+          <v-card-title class="justify-center" primary-title>
+            Editar Assunto
+          </v-card-title>
+          <v-card-text>
+
+            <!--nome assunto-->
+            <v-row no-gutters>
+              <v-col>
+                <span class="pl-3">Nome</span>
+                <v-text-field
+                  v-model="nomeEditAssunto"
+                  class="ml-3"
+                  dense
+                  label="Nome Assunto"
+                  rounded
+                  solo
+                ></v-text-field>
+              </v-col>
+            </v-row>
+
+            <!--nome assunto (ingles)-->
+            <v-row v-if="totemConfigs.en_habilitado" no-gutters>
+              <v-col>
+                <span class="pl-3">Nome (Inglês)</span>
+                <v-text-field
+                  v-model="nomeEditAssuntoEng"
+                  class="ml-3"
+                  dense
+                  label="Nome Assunto (Inglês)"
+                  rounded
+                  solo
+                ></v-text-field>
+              </v-col>
+            </v-row>
+
+            <!--nome assunto (espanhol)-->
+            <v-row v-if="totemConfigs.es_habilitado" no-gutters>
+              <v-col>
+                <span class="pl-3">Nome (Espanhol)</span>
+                <v-text-field
+                  v-model="nomeEditAssuntoSpa"
+                  class="ml-3"
+                  dense
+                  label="Nome Assunto (Espanhol)"
+                  rounded
+                  solo
+                ></v-text-field>
+              </v-col>
+            </v-row>
+
+            <!--ordem exibição-->
+            <v-row no-gutters>
+              <v-col>
+                <span class="pl-3">Ordem de Exibição</span>
+                <v-text-field
+                  v-model="ordemEditAssunto"
+                  class="ml-3"
+                  dense
+                  label="Ordem de Exibição"
+                  min="1"
+                  rounded
+                  solo
+                  type="number"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+
+          </v-card-text>
+          <v-card-actions class="pb-5">
+            <v-spacer></v-spacer>
+            <v-btn color="warning lighten-1" @click="dialogEditAssunto = false">Cancelar</v-btn>
+            <span class="pl-5 pr-5"></span>
+            <v-btn color="success" type="submit">Editar</v-btn>
             <v-spacer></v-spacer>
           </v-card-actions>
 
@@ -629,7 +637,7 @@
               <v-row dense>
 
                 <!--nome eng-->
-                <v-col>
+                <v-col v-if="totemConfigs.en_habilitado" cols="6">
                   <span class="ml-3">Nome da Imagem (Inglês)</span>
                   <v-text-field
                     v-model="nomeNewImageEng"
@@ -648,7 +656,7 @@
                 </v-col>
 
                 <!--ordem Exibicao-->
-                <v-col>
+                <v-col cols="6">
                   <span class="ml-3">Ordem de Exibição</span>
                   <v-text-field
                     v-model="imagemNewOrdem"
@@ -671,7 +679,7 @@
               <v-row dense>
 
                 <!--nome espanhol-->
-                <v-col>
+                <v-col v-if="totemConfigs.es_habilitado" cols="6">
                   <span class="ml-3">Nome da Imagem (Espanhol)</span>
                   <v-text-field
                     v-model="nomeNewImageSpa"
@@ -690,7 +698,7 @@
                 </v-col>
 
                 <!--é banner?-->
-                <v-col>
+                <v-col cols="6">
 
                   <v-checkbox
                     v-model="isImgNewBanner"
@@ -750,9 +758,9 @@
               </v-row>
 
               <!--legenda ingles e espanhol-->
-              <v-row>
+              <v-row v-if="totemConfigs.permite_multi_lang">
                 <!--Legenda ingles-->
-                <v-col>
+                <v-col v-if="totemConfigs.en_habilitado" cols="6">
 
                   <v-alert class="rounded-xl">
                     <span>Legenda (Inglês)</span>
@@ -764,7 +772,7 @@
                 </v-col>
 
                 <!--Legenda espanhol-->
-                <v-col>
+                <v-col v-if="totemConfigs.es_habilitado" cols="6">
 
                   <v-alert class="rounded-xl">
                     <span>Legenda (Espanhol)</span>
@@ -791,7 +799,7 @@
               </v-row>
 
               <!--saibamais (inglês)-->
-              <v-row>
+              <v-row v-if="totemConfigs.en_habilitado">
                 <v-col>
 
                   <v-alert class="rounded-xl">
@@ -805,7 +813,7 @@
               </v-row>
 
               <!--saibamais espanhol-->
-              <v-row>
+              <v-row v-if="totemConfigs.es_habilitado">
                 <v-col>
 
                   <v-alert class="rounded-xl">
@@ -947,7 +955,7 @@
               <v-row dense>
 
                 <!--nome ingles-->
-                <v-col>
+                <v-col v-if="totemConfigs.en_habilitado" cols="6">
                   <span class="ml-3">Nome da Imagem (Inglês)</span>
                   <v-text-field
                     v-model="nomeEditImageEng"
@@ -981,13 +989,14 @@
                     solo
                   ></v-autocomplete>
                 </v-col>
+
               </v-row>
 
               <!--Nome em espamnhol, ordem de exibicao, btn alterar image -->
               <v-row dense>
 
-                <!--nome ingles-->
-                <v-col cols="6">
+                <!--nome espanhol-->
+                <v-col v-if="totemConfigs.es_habilitado" cols="6">
                   <span class="ml-3">Nome da Imagem (Espanhol)</span>
                   <v-text-field
                     v-model="nomeEditImageSpa"
@@ -1118,10 +1127,10 @@
               </v-row>
 
               <!--legenda ingles e espanhol-->
-              <v-row>
+              <v-row v-if="totemConfigs.permite_multi_lang">
 
                 <!--Legenda ingles -->
-                <v-col>
+                <v-col v-if="totemConfigs.en_habilitado" cols="6">
                   <v-alert class="rounded-xl">
                     <span>Legenda (Inglês)</span>
                     <vue-editor v-model="legendaEditImgEng"></vue-editor>
@@ -1132,7 +1141,7 @@
                 </v-col>
 
                 <!--Legenda espanhol -->
-                <v-col>
+                <v-col v-if="totemConfigs.es_habilitado" cols="6">
                   <v-alert class="rounded-xl">
                     <span>Legenda (Espanhol)</span>
                     <vue-editor v-model="legendaEditImgSpa"></vue-editor>
@@ -1157,7 +1166,7 @@
               </v-row>
 
               <!-- saiba mais ingles-->
-              <v-row>
+              <v-row v-if="totemConfigs.en_habilitado">
                 <v-col>
                   <v-alert class="rounded-xl">
                     <span>Saiba Mais (Inglês)</span>
@@ -1169,7 +1178,7 @@
               </v-row>
 
               <!-- saiba mais espanhol-->
-              <v-row>
+              <v-row v-if="totemConfigs.es_habilitado">
                 <v-col>
                   <v-alert class="rounded-xl">
                     <span>Saiba Mais (Espanhol)</span>
@@ -1249,18 +1258,6 @@ export default {
         sortable: false
       }
     ],
-    totemConfigs: {
-      nome_totem: '',
-      nome_totem_en: '',
-      nome_totem_es: '',
-      selected_lang: '',
-      altura_index: '',
-      largura_index: '',
-      altura_detail: '',
-      largura_detail: '',
-      access_code: '',
-      tipo_totem: ''
-    },
     dialogAdmAssunto: false,
     dialogDeleteAssunto: false,
     dialogEditAssunto: false,
@@ -1300,6 +1297,7 @@ export default {
     imagemAtual: {},
     nomeExibImg: '',
     legendaExibImg: '',
+    saibamaisExibImg: '',
     dialogDeleteImagem: false,
     dialogEditImagem: false,
     nomeEditImage: '',
@@ -1320,13 +1318,25 @@ export default {
     inputEditImagem: undefined,
     showHideEditInputImage: false,
     textoBtnAlteraCancela: 'Alterar a Imagem Atual',
-    selectedTypeOfContent: ''
+    selectedTypeOfContent: '',
+    selected_lang: 'pt_br',
+    naoTraduzidoEn: 'Not translated yet',
+    naoTraduzidoEs: 'Aún no traducido',
+    ajusta_elevation_pt_br: 21,
+    ajusta_elevation_en: 0,
+    ajusta_elevation_es: 0,
+    ajusta_color_pt_br: 'black',
+    ajusta_color_en: 'transparent',
+    ajusta_color_es: 'transparent'
   }),
   computed: {
     formTitle () {
       return this.editedImageIndex === -1 ? this.textoBtnNovaPos : this.textoBtnEditarPos
     },
-    ...mapGetters(['usuarioLogado'])
+    ...mapGetters(['usuarioLogado', 'paginaEmAtulizacao'])
+  },
+  props: {
+    totemConfigs: Object
   },
   watch: {
     dialogDelete (val) {
@@ -1410,9 +1420,9 @@ export default {
     },
 
     efetuarCadastroAssunto () {
-      if (this.nome_assunto === '') {
+      if (this.nomeNewAssunto === '') {
         this.$toastr.e(
-          'Não foi possível realizar o cadastro! Todos os capos devem ser preenchidos.', 'Erro!'
+          'Não foi possível realizar o cadastro! O nome do assunto deve ser preenchido.', 'Erro!'
         )
       } else {
         let objetoParaEnvio = {}
@@ -1539,6 +1549,7 @@ export default {
         this.imagemAtual = arrayImgIni[0]
         this.nomeExibImg = this.imagemAtual.nome
         this.legendaExibImg = this.imagemAtual.legenda
+        this.saibamaisExibImg = this.imagemAtual.saibamais
       }
     },
 
@@ -1652,8 +1663,57 @@ export default {
       for (let i = 0; i < this.arrayImages.length; i++) {
         if (ordem === this.arrayImages[i].ordem) {
           this.imagemAtual = this.arrayImages[i]
-          this.nomeExibImg = this.imagemAtual.nome
-          this.legendaExibImg = this.imagemAtual.legenda
+          // portugues
+          if (this.selected_lang === 'pt_br') {
+            // nome
+            this.nomeExibImg = this.imagemAtual.nome
+            if (this.imagemAtual.nome === null || this.imagemAtual.nome === 'null' || this.imagemAtual.nome === '') {
+              this.nomeExibImg = 'Sem nome cadastrado'
+            }
+            // legenda
+            this.legendaExibImg = this.imagemAtual.legenda
+            if (this.imagemAtual.legenda === null || this.imagemAtual.legenda === 'null' || this.imagemAtual.legenda === '') {
+              this.legendaExibImg = 'Sem legenda cadastrada'
+            }
+            // saibamais
+            this.saibamaisExibImg = this.imagemAtual.saibamais
+            if (this.imagemAtual.saibamais === null || this.imagemAtual.saibamais === 'null' || this.imagemAtual.saibamais === '') {
+              this.legendaExibImg = 'Sem Saiba Mais cadastrado'
+            }
+          } else if (this.selected_lang === 'en') {
+            // ingles
+
+            // nome
+            this.nomeExibImg = this.imagemAtual.nome_en
+            if (this.imagemAtual.nome_en === null || this.imagemAtual.nome_en === 'null' || this.imagemAtual.nome_en === '') {
+              this.nomeExibImg = 'Sem nome cadastrado (Inglês)'
+            }
+
+            // legenda
+            this.legendaExibImg = this.imagemAtual.legenda_en
+            if (this.imagemAtual.legenda_en === null || this.imagemAtual.legenda_en === 'null' || this.imagemAtual.legenda_en === '') {
+              this.legendaExibImg = 'Sem legenda cadastrada (Inglês)'
+            }
+            // saiba mais
+            this.saibamaisExibImg = this.imagemAtual.saibamais_en
+            if (this.imagemAtual.saibamais_en === null || this.imagemAtual.saibamais_en === 'null' || this.imagemAtual.saibamais_en === '') {
+              this.saibamaisExibImg = 'Sem Saiba Mais cadastrado (Inglês)'
+            }
+          } else {
+            // espanhol
+            this.nomeExibImg = this.imagemAtual.nome_es
+            if (this.imagemAtual.nome_es === null || this.imagemAtual.nome_es === 'null' || this.imagemAtual.nome_es === '') {
+              this.nomeExibImg = 'Sem nome cadastrado (Espanhol)'
+            }
+            this.legendaExibImg = this.imagemAtual.legenda_es
+            if (this.imagemAtual.legenda_es === null || this.imagemAtual.legenda_es === 'null' || this.imagemAtual.legenda_es === '') {
+              this.legendaExibImg = 'Sem legenda cadastrada (Espanhol)'
+            }
+            this.saibamaisExibImg = this.imagemAtual.saibamais_es
+            if (this.imagemAtual.saibamais_es === null || this.imagemAtual.saibamais_es === 'null' || this.imagemAtual.saibamais_es === '') {
+              this.saibamaisExibImg = 'Sem Saiba Mais cadastrado (Espanhol)'
+            }
+          }
         }
       }
     },
@@ -1665,12 +1725,7 @@ export default {
     deleteImagemConfirm () {
       this.$http.delete('img/' + this.imagemAtual.id)
         .then(() => {
-          for (let i = 0; i < this.arrayImages.length; i++) {
-            if (this.arrayImages[i].id === this.imagemAtual.id) {
-              this.arrayImages.splice(i, 1)
-            }
-          }
-          this.getImgExib(this.arrayImages)
+          this.getAtualAssunto()
           this.dialogDeleteImagem = false
           this.$toastr.s(
             'Imagem removida com sucesso', 'Sucesso!'
@@ -1701,28 +1756,88 @@ export default {
       // pt_br
       // en
       // es
+
+      this.nomeExibImg = ''
+      this.legendaExibImg = ''
+      this.saibamaisExibImg = ''
+      this.selected_lang = qual
+
+      this.ajusta_elevation_btn(qual)
+
       if (qual === 'pt_br') {
+        // nome
         this.nomeExibImg = this.imagemAtual.nome
+        if (this.imagemAtual.nome === null || this.imagemAtual.nome === 'null' || this.imagemAtual.nome === '') {
+          this.nomeExibImg = 'Sem nome cadastrado'
+        }
+        // legenda
         this.legendaExibImg = this.imagemAtual.legenda
+        if (this.imagemAtual.legenda === null || this.imagemAtual.legenda === 'null' || this.imagemAtual.legenda === '') {
+          this.legendaExibImg = 'Sem legenda cadastrada'
+        }
+        // saibamais
+        this.saibamaisExibImg = this.imagemAtual.saibamais
+        if (this.imagemAtual.saibamais === null || this.imagemAtual.saibamais === 'null' || this.imagemAtual.saibamais === '') {
+          this.legendaExibImg = 'Sem Saiba Mais cadastrado'
+        }
       }
       if (qual === 'en') {
-        if (this.imagemAtual.nome_en === '' || this.imagemAtual.nome_en === null || this.imagemAtual.nome_en === 'null') {
-          this.nomeExibImg = 'Name not assigned yet!'
-          this.legendaExibImg = 'Subtitle not assigned yet!'
-        } else {
-          this.nomeExibImg = this.imagemAtual.nome_en
-          this.legendaExibImg = this.imagemAtual.legenda_en
+        // nome
+        this.nomeExibImg = this.imagemAtual.nome_en
+        if (this.imagemAtual.nome_en === null || this.imagemAtual.nome_en === 'null' || this.imagemAtual.nome_en === '') {
+          this.nomeExibImg = 'Sem nome cadastrado (Inglês)'
+        }
+
+        // legenda
+        this.legendaExibImg = this.imagemAtual.legenda_en
+        if (this.imagemAtual.legenda_en === null || this.imagemAtual.legenda_en === 'null' || this.imagemAtual.legenda_en === '') {
+          this.legendaExibImg = 'Sem legenda cadastrada (Inglês)'
+        }
+        // saiba mais
+        this.saibamaisExibImg = this.imagemAtual.saibamais_en
+        if (this.imagemAtual.saibamais_en === null || this.imagemAtual.saibamais_en === 'null' || this.imagemAtual.saibamais_en === '') {
+          this.saibamaisExibImg = 'Sem Saiba Mais cadastrado (Inglês)'
         }
       }
-
       if (qual === 'es') {
-        if (this.imagemAtual.nome_es === '' || this.imagemAtual.nome_es === null || this.imagemAtual.nome_es === 'null') {
-          this.nomeExibImg = 'Nombre aún no asignado!'
-          this.legendaExibImg = 'Subtítulo aún no asignado!'
-        } else {
-          this.nomeExibImg = this.imagemAtual.nome_es
-          this.legendaExibImg = this.imagemAtual.legenda_es
+        // espanhol
+        this.nomeExibImg = this.imagemAtual.nome_es
+        if (this.imagemAtual.nome_es === null || this.imagemAtual.nome_es === 'null' || this.imagemAtual.nome_es === '') {
+          this.nomeExibImg = 'Sem nome cadastrado (Espanhol)'
         }
+        this.legendaExibImg = this.imagemAtual.legenda_es
+        if (this.imagemAtual.legenda_es === null || this.imagemAtual.legenda_es === 'null' || this.imagemAtual.legenda_es === '') {
+          this.legendaExibImg = 'Sem legenda cadastrada (Espanhol)'
+        }
+        this.saibamaisExibImg = this.imagemAtual.saibamais_es
+        if (this.imagemAtual.saibamais_es === null || this.imagemAtual.saibamais_es === 'null' || this.imagemAtual.saibamais_es === '') {
+          this.saibamaisExibImg = 'Sem Saiba Mais cadastrado (Espanhol)'
+        }
+      }
+    },
+
+    ajusta_elevation_btn (qual) {
+      if (qual === 'pt_br') {
+        this.ajusta_elevation_pt_br = 21
+        this.ajusta_elevation_en = 0
+        this.ajusta_elevation_es = 0
+        this.ajusta_color_pt_br = 'black'
+        this.ajusta_color_en = 'transparent'
+        this.ajusta_color_es = 'transparent'
+      } else if (qual === 'en') {
+        this.ajusta_elevation_pt_br = 0
+        this.ajusta_elevation_en = 21
+        this.ajusta_elevation_es = 0
+        this.ajusta_color_pt_br = 'transparent'
+        this.ajusta_color_en = 'black'
+        this.ajusta_color_es = 'transparent'
+      } else {
+        this.ajusta_elevation_pt_br = 0
+        this.ajusta_elevation_en = 0
+        this.ajusta_elevation_es = 21
+        this.ajusta_color_pt_br = 'transparent'
+        this.ajusta_color_en = 'transparent'
+        this.ajusta_color_es = 'black'
       }
     }
   }

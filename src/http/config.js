@@ -1,14 +1,37 @@
-// const urlDownload = 'http://localhost:8000/'
-const urlDownload = 'http://totemapi3.cma.eb.mil.br/'
+const urlDownload = 'http://localhost:8000/'
+// const urlDownload = 'http://totemapi3.cma.eb.mil.br/'
 // const urlDownload = 'http://totemapi.12rm.eb.mil.br/'
 
 const baseURL = urlDownload + 'api/'
 
 const versoes = [
   {
+    id: '2.7',
+    release: '195',
+    latest: true,
+    data: '24/04/2024',
+    detalhesVisiveis: false,
+    detalhes: [
+      'revisão de código da API',
+      'melhorias nos validadores de formulários',
+      'Correção de bugs'
+    ]
+  },
+  {
+    id: '2.6',
+    release: '191',
+    latest: false,
+    data: '24/04/2024',
+    detalhesVisiveis: false,
+    detalhes: [
+      'Melhoria no design gráfico da seleção de idiomas',
+      'Correção de bugs'
+    ]
+  },
+  {
     id: '2.5',
     release: '182',
-    latest: true,
+    latest: false,
     data: '23/04/2024',
     detalhesVisiveis: false,
     detalhes: [

@@ -26,7 +26,7 @@
         </v-col>
 
         <!-- selecao de idiomas-->
-        <v-col class="text-right" cols="2">
+        <v-col class="text-right" cols="2" v-if="totemConfigs.permite_multi_lang">
 
           <!-- portugues-->
           <v-btn :elevation="ajusta_elevation_pt_br" :color="ajusta_color_pt_br" class="mt-1 pt-2 pb-3" rounded  @click="ajusta_linguagem('pt_br')">
@@ -38,7 +38,7 @@
           </v-btn>
 
           <!-- ingles-->
-          <v-btn :elevation="ajusta_elevation_en" class="mt-1 pt-2 pb-3" rounded  :color="ajusta_color_en" @click="ajusta_linguagem('en')">
+          <v-btn v-if="totemConfigs.en_habilitado" :elevation="ajusta_elevation_en" class="mt-1 pt-2 pb-3" rounded  :color="ajusta_color_en" @click="ajusta_linguagem('en')">
             <v-img
               :src="require('@/assets/img/eua.png')"
               alt="Translate to en_us"
@@ -47,7 +47,7 @@
           </v-btn>
 
           <!-- espanhol-->
-          <v-btn :elevation="ajusta_elevation_es" class="mt-1 pt-2 pb-3" rounded  :color="ajusta_color_es" @click="ajusta_linguagem('es')">
+          <v-btn v-if="totemConfigs.es_habilitado" :elevation="ajusta_elevation_es" class="mt-1 pt-2 pb-3" rounded  :color="ajusta_color_es" @click="ajusta_linguagem('es')">
             <v-img
               :src="require('@/assets/img/spain.png')"
               alt="Translate to en_us"
@@ -55,6 +55,7 @@
             ></v-img>
           </v-btn>
         </v-col>
+        <v-col cols="2" v-else />
 
       </v-row>
 

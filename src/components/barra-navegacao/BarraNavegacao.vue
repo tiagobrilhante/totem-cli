@@ -132,7 +132,7 @@
 
         <AdmConfig v-if="selectedTypeOfContent ==='AdmConfig'" @ajustarVisibilidade="dialogGeneric70 = $event"
                    @adjustSelectedTypeOfContent="selectedTypeOfContent = $event"
-                   @ajustaTipoContent="refreshPage"/>
+                   @ajustaTipoContent="refreshPage" />
 
       </v-dialog>
 

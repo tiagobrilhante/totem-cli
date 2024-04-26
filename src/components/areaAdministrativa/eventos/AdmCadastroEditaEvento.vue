@@ -67,7 +67,7 @@
 
               <!--ano-->
               <v-col>
-                <span class="pl-3">Ano</span>
+                <span class="pl-3">Ano * (obrigatório)</span>
                 <v-text-field
                   v-model="anoEvento"
                   :maxlength="4"
@@ -91,10 +91,12 @@
 
         </v-row>
 
+        <!-- titulo do ecevnto em pt br e ingles -->
         <v-row>
+
           <!--titulo evento-->
-          <v-col>
-            <span class="pl-3">Título do evento</span>
+          <v-col cols="6">
+            <span class="pl-3">Título do evento * (obrigatório)</span>
 
             <v-text-field
               v-model="tituloEvento"
@@ -110,7 +112,7 @@
           </v-col>
 
           <!--titulo evento ingles-->
-          <v-col>
+          <v-col cols ="6" v-if="totemConfigs.en_habilitado">
             <span class="pl-3">Título do evento (Inglês)</span>
 
             <v-text-field
@@ -128,7 +130,7 @@
 
         </v-row>
 
-        <v-row>
+        <v-row v-if="totemConfigs.es_habilitado">
           <v-col>
             <!--titulo evento espanhol-->
             <v-col>
@@ -139,7 +141,7 @@
                 class="ml-3"
                 dense
                 hint="Exemplo: Batalla de Guararapes"
-                label="Título do Evento (Espanhos)"
+                label="Título do Evento (Espanhol)"
                 persistent-hint
                 rounded
                 solo
@@ -342,9 +344,9 @@
         </v-row>
 
         <!-- legenda em ingles e espanhol-->
-        <v-row>
+        <v-row v-if="totemConfigs.permite_multi_lang">
           <!--ingles-->
-          <v-col>
+          <v-col cols="6" v-if="totemConfigs.en_habilitado">
             <v-alert class="rounded-xl">
               <span>Legenda do evento (Inglês)</span>
               <vue-editor v-model="legendaEventoEng"></vue-editor>
@@ -354,7 +356,7 @@
           </v-col>
 
           <!-- espanhol-->
-          <v-col>
+          <v-col cols="6" v-if="totemConfigs.es_habilitado">
             <v-alert class="rounded-xl">
               <span>Legenda do evento (Espanhol)</span>
               <vue-editor v-model="legendaEventoSpa"></vue-editor>
@@ -378,7 +380,7 @@
         </v-row>
 
         <!--saiba mais ingles-->
-        <v-row>
+        <v-row v-if="totemConfigs.en_habilitado">
           <v-col>
             <v-alert class="rounded-xl mb-0">
               <span>Saiba Mais (Inglês)</span>
@@ -391,7 +393,7 @@
         </v-row>
 
         <!--saiba mais em espanhol-->
-        <v-row>
+        <v-row v-if="totemConfigs.es_habilitado">
           <v-col>
             <v-alert class="rounded-xl mb-0">
               <span>Saiba Mais (Espanhol)</span>
@@ -403,7 +405,7 @@
           </v-col>
         </v-row>
 
-        <AdmImagemAdicional v-if="typeOfAction==='Edição'" :selectedEvento="evento"></AdmImagemAdicional>
+        <AdmImagemAdicional :totemConfigs="totemConfigs" v-if="typeOfAction==='Edição'" :selectedEvento="evento"></AdmImagemAdicional>
 
         <!--btn action salvar cancelar-->
         <v-row>
@@ -420,6 +422,7 @@
         </v-row>
 
       </v-form>
+
     </v-card-text>
 
     <!--Dialog para deletar imagem de evento-->
@@ -553,7 +556,8 @@ export default {
   watch: {},
   props: {
     typeOfAction: String,
-    evento: Object
+    evento: Object,
+    totemConfigs: Object
   },
 
   created () {
@@ -566,9 +570,41 @@ export default {
 
   methods: {
     saveEvento () {
-      if (this.diaEvento !== '' && this.mesEvento === '') {
+      let contadorFalha = 0
+      // Verifica se o dia foi fornecido sem o mês ou o ano
+
+      const dia = this.diaEvento ? String(this.diaEvento).trim() : ''
+      const mes = this.mesEvento ? String(this.mesEvento).trim() : ''
+
+      let mensagemErro = ''
+
+      if (this.anoEvento === '') {
+        mensagemErro += '<li>O campo ANO é obrigatório</li>'
+        contadorFalha = 1
+      }
+
+      // Verifica se o dia foi fornecido sem o mês
+      if (dia && !mes) {
+        mensagemErro += '<li>Se você preenche o campo DIA, obrigatoriamente deve preenche o campo MÊS</li>'
+        contadorFalha = 1
+      }
+
+      // Verifica se o dia foi fornecido sem o mês
+      if (mes && this.anoEvento === '') {
+        mensagemErro += '<li>Se você preenche o campo MÊS, obrigatoriamente deve preenche o campo ANO</li>'
+        contadorFalha = 1
+      }
+
+      if (this.tituloEvento === '') {
+        mensagemErro += '<li>O campo Título do evento é obrigatório</li>'
+        contadorFalha = 1
+      }
+
+      if (contadorFalha === 1) {
         this.$toastr.e(
-          'Se você preenche o campo DIA, obrigatoriamente deve preenche o campo MÊS', 'Erro!'
+          '<ul>' +
+          mensagemErro +
+          '</ul>', 'Erro!'
         )
       } else {
         if (this.tituloEvento !== '' && this.anoEvento !== '') {
@@ -714,7 +750,6 @@ export default {
 
     // métodos para edição (específico)
     editExistentImageEvento () {
-      console.log('tenta edita imagem')
       this.guardadorDeImg = this.evento.imagem
       this.imagemParaEdicao.imagem = null
       this.momentoEditImg = true
@@ -749,7 +784,6 @@ export default {
     },
 
     opneSpaceForImgAdicional () {
-      console.log('adicional')
       this.controladorExibicaoImgAdicional = true
     }
   }
@@ -757,22 +791,8 @@ export default {
 </script>
 
 <style>
-
-.bgConfig {
-  background-color: #6b5252 !important;
-}
-
 .ajusteBtn {
   margin-top: -70px;
   margin-bottom: 10px;
-}
-
-.textlConfig {
-  font-family: 'Impact', sans-serif;
-  color: white;
-}
-
-.textoBranco {
-  color: white;
 }
 </style>

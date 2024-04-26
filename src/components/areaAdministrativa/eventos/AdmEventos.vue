@@ -84,11 +84,21 @@
 
                 <ul>
                   <li>{{ item.nome }}</li>
-                  <li><span v-if="item.nome_en">{{ item.nome_en }}</span> <span v-else
-                                                                                class="atencao"> Not assigned yet</span>
+                  <li v-if="totemConfigs.en_habilitado">
+                    <span v-if="item.nome_en">
+                      {{ item.nome_en }}
+                    </span>
+                    <span v-if="!item.nome_en" class="atencao">
+                      Not assigned yet
+                    </span>
                   </li>
-                  <li><span v-if="item.nome_es">{{ item.nome_es }}</span> <span v-else
-                                                                                class="atencao"> Aún no asignado</span>
+                  <li v-if="totemConfigs.es_habilitado">
+                    <span v-if="item.nome_es">
+                      {{ item.nome_es }}
+                    </span>
+                    <span v-if="!item.nome_es" class="atencao">
+                      Aún no asignado
+                    </span>
                   </li>
                 </ul>
 
@@ -104,13 +114,15 @@
                          color="green lighten-4" dense
                          v-html="'<h3>Portugês</h3>'+ item.legenda"></v-alert>
 
-                <span v-if="item.legenda_en === '' || item.legenda_en === null" class="text-no-wrap warning"> ---- SEM LEGENDA (Inglês) ---- </span>
-                <v-alert v-else class="text-justify mt-0 mb-o pt-0 pb-0"
+                <span v-if="totemConfigs.en_habilitado && (item.legenda_en === '' || item.legenda_en === null)"
+                      class="text-no-wrap warning"> ---- SEM LEGENDA (Inglês) ---- </span>
+                <v-alert v-if="totemConfigs.en_habilitado && item.legenda_en" class="text-justify mt-0 mb-o pt-0 pb-0"
                          color="blue lighten-4" dense
                          v-html="'<h3>Inglês</h3>'+ item.legenda_en"></v-alert>
 
-                <span v-if="item.legenda_es === '' || item.legenda_es === null" class="text-no-wrap warning"> ---- SEM LEGENDA (Espanhol) ---- </span>
-                <v-alert v-else class="text-justify mt-0 mb-o pt-0 pb-0"
+                <span v-if="totemConfigs.es_habilitado && (item.legenda_es === '' || item.legenda_es === null)"
+                      class="text-no-wrap warning"> ---- SEM LEGENDA (Espanhol) ---- </span>
+                <v-alert v-if="totemConfigs.es_habilitado && item.legenda_es" class="text-justify mt-0 mb-o pt-0 pb-0"
                          color="red lighten-4" dense
                          v-html="'<h3>Espanhol</h3>'+ item.legenda_es"></v-alert>
 
@@ -121,13 +133,15 @@
                          color="green lighten-5" dense
                          v-html="'<h3>Portugês</h3>'+ item.saibamais"></v-alert>
 
-                <span v-if="item.saibamais_en === '' || item.saibamais_en === null" class="text-no-wrap warning"> ---- SEM SAIBA MAIS (Inglês)---- </span>
-                <v-alert v-else class="text-justify mt-0 mb-o pt-0 pb-0"
+                <span v-if="totemConfigs.en_habilitado && (item.saibamais_en === '' || item.saibamais_en === null)"
+                      class="text-no-wrap warning"> ---- SEM SAIBA MAIS (Inglês)---- </span>
+                <v-alert v-if="totemConfigs.en_habilitado && item.saibamais_en" class="text-justify mt-0 mb-o pt-0 pb-0"
                          color="blue lighten-5" dense
                          v-html="'<h3>Inglês</h3>'+ item.saibamais_en"></v-alert>
 
-                <span v-if="item.saibamais_es === '' || item.saibamais_es === null" class="text-no-wrap warning"> ---- SEM SAIBA MAIS (Espanhol)---- </span>
-                <v-alert v-else class="text-justify mt-0 mb-o pt-0 pb-0"
+                <span v-if="totemConfigs.es_habilitado && (item.saibamais_es === '' || item.saibamais_es === null)"
+                      class="text-no-wrap warning"> ---- SEM SAIBA MAIS (Espanhol)---- </span>
+                <v-alert v-if="totemConfigs.es_habilitado && item.saibamais_es" class="text-justify mt-0 mb-o pt-0 pb-0"
                          color="red lighten-5" dense
                          v-html="'<h3>Espanhol</h3>'+ item.saibamais_es"></v-alert>
 
@@ -196,11 +210,10 @@
       <!-- CADASTRO E EDIÇÃO-->
       <AdmCadastroEditaEvento
         v-if="selectedTypeOfContent ==='AdmCadastraEditaEvento'" :evento="selectedEvento"
-        :typeOfAction="selectTypeOfAction" @adjustSelectedTypeOfContent="selectedTypeOfContent = $event"
-        @ajustaTipoContent="getEventos" @ajustarVisibilidade="dialogGeneric70 = $event"
-        @resetaEventoSelecionado="selectedEvento = $event"
-
-      ></AdmCadastroEditaEvento>
+        :totemConfigs="totemConfigs" :typeOfAction="selectTypeOfAction"
+        @adjustSelectedTypeOfContent="selectedTypeOfContent = $event" @ajustaTipoContent="getEventos"
+        @ajustarVisibilidade="dialogGeneric70 = $event" @resetaEventoSelecionado="selectedEvento = $event"
+      />
 
       <!-- auxilio na animação de fechamento do dialog-->
       <v-card v-else>
@@ -232,10 +245,10 @@
 
           </v-alert>
 
-          <hr>
-          <br>
-          <h2>Imagens Adicionais</h2>
-          <br>
+          <hr v-if="listaImgAdicional.length > 0">
+          <br v-if="listaImgAdicional.length > 0">
+          <h2 v-if="listaImgAdicional.length > 0">Imagens Adicionais</h2>
+          <br v-if="listaImgAdicional.length > 0">
           <v-alert v-for="imgadic in listaImgAdicional" v-if="listaImgAdicional.length > 0" :key="imgadic.id"
                    color="blue lighten-3">
 
@@ -367,6 +380,9 @@ export default {
     selectTypeOfAction: '',
     listaImgAdicional: []
   }),
+  props: {
+    totemConfigs: Object
+  },
   computed: {
     ...mapGetters(['usuarioLogado'])
   },
@@ -430,8 +446,6 @@ export default {
       this.imgEventoShow = imagem.imagem
       this.imgEventoFonteShow = imagem.fonteimagempcp
       this.listaImgAdicional = imagem.imagens_adicionais
-
-      console.log(this.listaImgAdicional)
     }
 
   }
