@@ -160,6 +160,25 @@
                       </v-col>
                     </v-row>
 
+                    <!-- Cabeçalho eng-->
+                    <v-row no-gutters v-if="totemConfigs.en_habilitado">
+                      <v-col>
+                        <b>Cabeçalho (Inglês):</b> <span v-if="quiz.cabecalho_en" class="text-justify"
+                                                         v-html="quiz.cabecalho_en"/> <span v-else>Cabeçalho não traduzido para o inglês.</span>
+                      </v-col>
+                    </v-row>
+
+                    <!-- Cabeçalho esp-->
+                    <v-row no-gutters v-if="totemConfigs.es_habilitado">
+                      <v-col>
+                        <b>Cabeçalho (Espanhol):</b> <span v-if="quiz.cabecalho_es" class="text-justify"
+                                                           v-html="quiz.cabecalho_es"/> <span v-else>Cabeçalho não traduzido para o espanhol.</span>
+                      </v-col>
+                    </v-row>
+
+                    <br>
+                    <hr>
+                    <br>
                     <!-- Ativo / QtdVezRespondido / criado em  -->
                     <v-row no-gutters>
                       <v-col><b>Ativo: </b> <span v-if="quiz.ativo === 1">Sim</span><span v-else>Não</span></v-col>
@@ -187,14 +206,30 @@
                     <v-row v-if="showHideDetailQuiz[quiz.id]" :key="'pr_'+quiz.id">
                       <v-col>
                         <v-alert v-for="pergunta in quiz.perguntas" :key="pergunta.id" color="yellow lighten-3">
-                          <b>Enunciado:</b> <span class="text-justify" v-html="pergunta.enunciado"></span>
+                          <b>Enunciado:</b> <span class="text-justify" v-html="pergunta.enunciado"></span><br>
+                          <span v-if="totemConfigs.en_habilitado">
+                          <b>Enunciado(Inglês):</b> <span v-if="pergunta.enunciado_en" class="text-justify"
+                                                          v-html="pergunta.enunciado_en"/><span v-else>Enunciado não traduzido para o inglês.</span><br>
+                          </span>
+                          <span v-if="totemConfigs.es_habilitado">
+                          <b>Enunciado(Espanhol):</b> <span v-if="pergunta.enunciado_es" class="text-justify"
+                                                            v-html="pergunta.enunciado_es"/><span v-else>Enunciado não traduzido para o espanhol.</span>
+                          </span>
 
+                          <br>
+                          <hr>
                           <br>
                           <b>Respostas cadastradas: </b>
 
                           <ul>
-                            <li v-for="resposta in pergunta.respostas" :key="resposta.id">{{ resposta.resposta }} <span
-                              v-if="resposta.correta ===1">( CORRETA )</span></li>
+                            <li v-for="resposta in pergunta.respostas" :key="resposta.id">{{ resposta.resposta }}
+                              <span v-if="totemConfigs.en_habilitado">
+                              <span v-if="resposta.resposta_en"> / <b>Inglês: </b> {{ resposta.resposta_en }}</span> <span v-else>Sem tradução para o inglês</span>
+                              </span>
+                              <span v-if="totemConfigs.es_habilitado">
+                              <span v-if="resposta.resposta_es"> / <b>Espanhol: </b>  {{ resposta.resposta_es }}</span> <span v-else>Sem tradução para o espanhol</span>
+                              </span>
+                              <span v-if="resposta.correta ===1" class="bgCorreto"><b>( CORRETA )</b></span></li>
                           </ul>
                         </v-alert>
                       </v-col>
@@ -266,6 +301,26 @@
               </v-col>
             </v-row>
 
+            <!--Cabecalho do quiz em ingles-->
+            <v-row v-if="totemConfigs.en_habilitado">
+              <v-col>
+                <span>Cabeçalho (Inglês)</span>
+                <vue-editor v-model="selectedQuiz.cabecalho_en"></vue-editor>
+                <span
+                  class="caption">Se deixado em branco, a não será mostrado nenhum texto na chamada do Quiz.</span>
+              </v-col>
+            </v-row>
+
+            <!--Cabecalho do quiz em espanhol-->
+            <v-row v-if="totemConfigs.es_habilitado">
+              <v-col>
+                <span>Cabeçalho (Espanhol)</span>
+                <vue-editor v-model="selectedQuiz.cabecalho_es"></vue-editor>
+                <span
+                  class="caption">Se deixado em branco, a não será mostrado nenhum texto na chamada do Quiz.</span>
+              </v-col>
+            </v-row>
+
             <!--pontuação máxima e add pergunta-->
             <v-row>
 
@@ -332,11 +387,27 @@
 
                     </v-row>
 
-                    <!-- enunciado da perghunta-->
+                    <!-- enunciado da pergunta-->
                     <v-row>
                       <v-col>
                         <span>Enunciado:</span>
                         <vue-editor v-model="pergunta.enunciado"></vue-editor>
+                      </v-col>
+                    </v-row>
+
+                    <!-- enunciado da pergunta (Inglês)-->
+                    <v-row v-if="totemConfigs.en_habilitado">
+                      <v-col>
+                        <span>Enunciado (Inglês):</span>
+                        <vue-editor v-model="pergunta.enunciado_en"></vue-editor>
+                      </v-col>
+                    </v-row>
+
+                    <!-- enunciado da pergunta(espanhol)-->
+                    <v-row v-if="totemConfigs.es_habilitado">
+                      <v-col>
+                        <span>Enunciado (Espanhol):</span>
+                        <vue-editor v-model="pergunta.enunciado_es"></vue-editor>
                       </v-col>
                     </v-row>
 
@@ -395,6 +466,36 @@
                                 <span>Excluir Resposta</span>
                               </v-tooltip>
                             </v-col>
+                          </v-row>
+
+                          <!--responsta em ingles-->
+                          <v-row v-if="totemConfigs.en_habilitado">
+                            <v-col cols="11">
+                              <v-text-field
+                                v-model="resposta.resposta_en"
+                                class="ml-3"
+                                dense
+                                label="Resposta (Inglês)"
+                                rounded
+                                solo
+                              ></v-text-field>
+                            </v-col>
+                            <v-col></v-col>
+                          </v-row>
+
+                          <!-- resposta em espanhol-->
+                          <v-row v-if="totemConfigs.es_habilitado">
+                            <v-col cols="11">
+                              <v-text-field
+                                v-model="resposta.resposta_es"
+                                class="ml-3"
+                                dense
+                                label="Resposta (Espanhol)"
+                                rounded
+                                solo
+                              ></v-text-field>
+                            </v-col>
+                            <v-col></v-col>
                           </v-row>
 
                           <!-- é correto ou não, só pode haver uma-->
@@ -522,6 +623,11 @@ export default {
     configSis: config,
     totemConfigs: {
       nome_totem: '',
+      nome_totem_en: '',
+      nome_totem_es: '',
+      permite_multi_lang: '',
+      en_habilitado: '',
+      es_habilitado: '',
       altura_index: '',
       largura_index: '',
       altura_detail: '',
@@ -534,11 +640,15 @@ export default {
     indexOfRespostas: 0,
     quizDefault: {
       cabecalho: '',
+      cabecalho_en: '',
+      cabecalho_es: '',
       maxscore: '',
       perguntas: []
     },
     selectedQuiz: {
       cabecalho: '',
+      cabecalho_en: '',
+      cabecalho_es: '',
       maxscore: '',
       perguntas: []
     },
@@ -602,6 +712,7 @@ export default {
         this.selectedQuiz = JSON.parse(JSON.stringify(this.quizDefault))
       } else {
         this.selectedQuiz = objeto
+        console.log(this.selectedQuiz)
       }
       this.textoDialogCadastroEdicao = acao
       this.dialogCadastroEdicaoQuiz = true
@@ -611,6 +722,8 @@ export default {
       const newQuestion = {
         id: this.indexOfPerguntas,
         enunciado: '',
+        enunciado_en: '',
+        enunciado_es: '',
         respostas: []
       }
 
@@ -630,18 +743,24 @@ export default {
           perguntaTarget.respostas.push({
             id: perguntaTarget.respostas.length,
             resposta: '',
+            resposta_en: '',
+            resposta_es: '',
             correta: false
           })
 
           perguntaTarget.respostas.push({
             id: perguntaTarget.respostas.length,
             resposta: '',
+            resposta_en: '',
+            resposta_es: '',
             correta: false
           })
         } else {
           perguntaTarget.respostas.push({
             id: perguntaTarget.respostas.length,
             resposta: '',
+            resposta_en: '',
+            resposta_es: '',
             correta: false
           })
         }
@@ -678,10 +797,9 @@ export default {
             if (this.selectedQuiz.perguntas[i].respostas.length < 2) {
               errorMsg.push('Existem perguntas que não possuem 2 respostas possíveis.')
             }
-
             let contaVerdade = 0
             for (let j = 0; j < this.selectedQuiz.perguntas[i].respostas.length; j++) {
-              if (this.selectedQuiz.perguntas[i].respostas[j].correta === true) {
+              if (this.selectedQuiz.perguntas[i].respostas[j].correta === true || this.selectedQuiz.perguntas[i].respostas[j].correta === 1) {
                 contaVerdade++
               }
             }
@@ -835,5 +953,9 @@ export default {
 <style>
 .bgConfig {
   background-color: #6b5252 !important;
+}
+
+.bgCorreto {
+  background-color: #fafcf9 !important;
 }
 </style>

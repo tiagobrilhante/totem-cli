@@ -1,15 +1,26 @@
 const urlDownload = 'http://localhost:8000/'
-// const urlDownload = 'http://totemapi3.cma.eb.mil.br/'
+// const urlDownload = 'http://totemapi2.cma.eb.mil.br/'
 // const urlDownload = 'http://totemapi.12rm.eb.mil.br/'
 
 const baseURL = urlDownload + 'api/'
 
 const versoes = [
   {
+    id: '2.8',
+    release: '201',
+    latest: true,
+    data: '02/05/2024',
+    detalhesVisiveis: false,
+    detalhes: [
+      'Todo o conteúdo do totem pode ser disponibilizado em 3 idiomas (pt_br, en, es)',
+      'Correção de bugs'
+    ]
+  },
+  {
     id: '2.7',
     release: '195',
-    latest: true,
-    data: '24/04/2024',
+    latest: false,
+    data: '26/04/2024',
     detalhesVisiveis: false,
     detalhes: [
       'revisão de código da API',

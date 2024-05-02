@@ -403,7 +403,11 @@
         <v-card-title class="justify-center text-center">
           <v-row>
             <v-col cols="1"></v-col>
-            <v-col class="text-h4" cols="10"><b>Teste o seu conhecimento!</b></v-col>
+            <v-col class="text-h4" cols="10">
+              <b v-if="selected_lang === 'pt_br'">Teste o seu conhecimento!</b>
+              <b v-else-if="selected_lang === 'en'">Test your knowledge!</b>
+              <b v-else>¡Prueba tus conocimientos!</b>
+            </v-col>
             <v-col cols="1">
               <v-btn color="grey lighten-1" @click="dialogQuiz = false">X</v-btn>
             </v-col>
@@ -414,12 +418,16 @@
         <!-- card Text-->
         <v-card-text>
 
-          <Quiz v-if="dialogQuiz"/>
+          <Quiz v-if="dialogQuiz" :selected_lang="selected_lang"/>
 
         </v-card-text>
         <v-card-actions class="pb-5">
           <v-spacer></v-spacer>
-          <v-btn color="grey lighten-1" @click="dialogQuiz = false">Sair</v-btn>
+          <v-btn color="grey lighten-1" @click="dialogQuiz = false">
+            <span v-if="selected_lang === 'pt_br'">Sair</span>
+            <span v-else-if="selected_lang === 'en'">Close</span>
+            <span v-else>Cerrar</span>
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -482,7 +490,6 @@ export default {
       try {
         this.$http.get('evento/principal')
           .then(response => {
-            console.log(response.data)
             this.eventos = response.data[0]
             this.pagAtualEvento = response.data[1]
             this.temProxPag = response.data[2]
