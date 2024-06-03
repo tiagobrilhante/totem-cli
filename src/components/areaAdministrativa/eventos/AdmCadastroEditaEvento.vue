@@ -467,7 +467,7 @@
           <v-icon class="mr-4">
             mdi-image-area
           </v-icon>
-          <span class="headline">Gerenciamento de Imagens Adicionais --- </span>
+          <span class="headline">Gerenciamento de Imagens Adicionais </span>
           <br>
           <span v-if="!controladorExibicaoImgAdicional" class="headline">
                         Adicionar Imagem Extra em evento?</span>
@@ -483,7 +483,7 @@
             para complementar a imagem principal.
           </v-alert>
 
-          <AdmImagemAdicional v-if="controladorExibicaoImgAdicional" :selectedEvento="evento"></AdmImagemAdicional>
+          <AdmImagemAdicional v-if="controladorExibicaoImgAdicional" :selectedEvento="evento" :totemConfigs = "totemConfigs"/>
 
           <v-row v-if="!controladorExibicaoImgAdicional" class="mt-10">
             <v-col class="text-right">

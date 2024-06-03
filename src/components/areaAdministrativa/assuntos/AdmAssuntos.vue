@@ -169,7 +169,7 @@
                            retain-focus-on-click rounded @click="ajusta_linguagem('pt_br')">
                       <v-img
                         :src="require('@/assets/img/bra.png')"
-                        alt="Translate to en_us"
+                        alt="Translate to pt_br"
                         class="mt-1 img_small"
                       ></v-img>
                     </v-btn>
@@ -191,7 +191,7 @@
                            @click="ajusta_linguagem('es')">
                       <v-img
                         :src="require('@/assets/img/spain.png')"
-                        alt="Translate to en_us"
+                        alt="Translate to es"
                         class="mt-1 img_small"
                       ></v-img>
                     </v-btn>
@@ -1678,7 +1678,7 @@ export default {
             // saibamais
             this.saibamaisExibImg = this.imagemAtual.saibamais
             if (this.imagemAtual.saibamais === null || this.imagemAtual.saibamais === 'null' || this.imagemAtual.saibamais === '') {
-              this.legendaExibImg = 'Sem Saiba Mais cadastrado'
+              this.saibamaisExibImg = 'Sem Saiba Mais cadastrado'
             }
           } else if (this.selected_lang === 'en') {
             // ingles
@@ -1778,7 +1778,7 @@ export default {
         // saibamais
         this.saibamaisExibImg = this.imagemAtual.saibamais
         if (this.imagemAtual.saibamais === null || this.imagemAtual.saibamais === 'null' || this.imagemAtual.saibamais === '') {
-          this.legendaExibImg = 'Sem Saiba Mais cadastrado'
+          this.saibamaisExibImg = 'Sem Saiba Mais cadastrado'
         }
       }
       if (qual === 'en') {

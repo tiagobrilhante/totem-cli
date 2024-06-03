@@ -1,14 +1,26 @@
 const urlDownload = 'http://localhost:8000/'
-// const urlDownload = 'http://totemapi2.cma.eb.mil.br/'
+// const urlDownload = 'http://totemapi3.cma.eb.mil.br/'
 // const urlDownload = 'http://totemapi.12rm.eb.mil.br/'
+// const urlDownload = 'http://totemapi4.2gpte.eb.mil.br/'
 
 const baseURL = urlDownload + 'api/'
 
 const versoes = [
   {
+    id: '2.9',
+    release: '205',
+    latest: true,
+    data: '03/06/2024',
+    detalhesVisiveis: false,
+    detalhes: [
+      'Correção de bugs - Corrigido o erro que não permitia a adição de imagens adicionais de eventos no cadastramento de um novo evento.',
+      'Correção de bugs - Corrigido o erro que não exibia o conteúdo de uma imagem de forma adequada durante a administração de assuntos.'
+    ]
+  },
+  {
     id: '2.8',
     release: '201',
-    latest: true,
+    latest: false,
     data: '02/05/2024',
     detalhesVisiveis: false,
     detalhes: [
